@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media
+    Built with passion.
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Photo</title>
+   <link rel="stylesheet" href="./profile-image.css">
+   <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+</head>
+<body>
+    <!-- Close Button -->
+    <button class="close-btn" onclick="closeViewer()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+    
+    <div class="container">
+        <!-- Image Display -->
+        <div class="image-box">
+            <img src="" alt="Photo" class="main-image" id="main-image" onclick="toggleZoom()">
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn zoom-btn" onclick="toggleZoom()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+                Zoom
+            </button>
+            
+            <button class="btn download-btn" onclick="downloadImage()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download
+            </button>
+            
+            <button class="btn share-btn" onclick="shareImage()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                Share
+            </button>
+        </div>
+        
+        <!-- Image Info -->
+        <div class="image-info" id="image-info">
+            Click image to zoom • Press ESC to close
+        </div>
+        
+        <!-- Zoom Info -->
+        <div class="zoom-info" id="zoom-info">
+            Zoomed in
+        </div>
+    </div>
+
+    <script>
+/* 
+ *  JOYIN Social Media - Interactive Functions
+ *  This file powers JOYIN's features.
+ *  (c) 2025 JOYIN
+ */
+
+        // Simple Image Viewer
+        
+        // Where to put your image URL:
+        // Option 1: Replace the URL below
+        // Option 2: Use URL parameter (see getImageUrl() function below)
+        
+        // YOUR IMAGE URL GOES HERE (Option 1):
+        const DEFAULT_IMAGE_URL = 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
+        
+        // DOM Elements
+        const mainImage = document.getElementById('main-image');
+        const zoomInfo = document.getElementById('zoom-info');
+        const imageInfo = document.getElementById('image-info');
+        
+        // State
+        let isZoomed = false;
+        
+        // Get image URL from different sources
+        function getImageUrl() {
+            // Option 1: URL parameter (example: simple-image-viewer.html?image=YOUR_URL_HERE)
+            const urlParams = new URLSearchParams(window.location.search);
+            const imageParam = urlParams.get('image');
+            
+            // Option 2: Direct variable (edit DEFAULT_IMAGE_URL above)
+            
+            // Priority: URL parameter > Default URL
+            return imageParam || DEFAULT_IMAGE_URL;
+        }
+        
+        // Initialize
+        function init() {
+            // Load the image
+            const imageUrl = getImageUrl();
+            mainImage.src = imageUrl;
+            
+            // Update page title with image info
+            document.title = "View Photo";
+            
+            // Setup keyboard shortcuts
+            setupKeyboard();
+            
+            // Update image info when loaded
+            mainImage.onload = function() {
+                const sizeText = Math.round(this.naturalWidth) + '×' + Math.round(this.naturalHeight);
+                imageInfo.innerHTML = `${sizeText} • Click to zoom • Press ESC to close`;
+            };
+            
+            // Handle image error
+            mainImage.onerror = function() {
+                imageInfo.textContent = "Failed to load image. Make sure the URL is correct.";
+                console.error("Failed to load image:", imageUrl);
+            };
+        }
+        
+        // Toggle zoom
+        function toggleZoom() {
+            const img = mainImage;
+            
+            if (isZoomed) {
+                // Zoom out
+                img.classList.remove('zoomed');
+                zoomInfo.textContent = "Zoomed out";
+            } else {
+                // Zoom in
+                img.classList.add('zoomed');
+                zoomInfo.textContent = "Zoomed in";
+            }
+            
+            // Show zoom info
+            zoomInfo.style.opacity = '1';
+            setTimeout(() => {
+                zoomInfo.style.opacity = '0';
+            }, 1500);
+            
+            isZoomed = !isZoomed;
+        }
+        
+        // Download image
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.href = mainImage.src;
+            link.download = 'photo-' + Date.now() + '.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show feedback
+            zoomInfo.textContent = "Downloading...";
+            zoomInfo.style.opacity = '1';
+            setTimeout(() => {
+                zoomInfo.style.opacity = '0';
+            }, 1500);
+        }
+        
+        // Share image
+        function shareImage() {
+            if (navigator.share) {
+                // Use Web Share API if available
+                navigator.share({
+                    title: 'Check out this photo',
+                    text: 'Shared from my profile',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: Copy URL to clipboard
+                navigator.clipboard.writeText(mainImage.src).then(() => {
+                    zoomInfo.textContent = "Image link copied!";
+                    zoomInfo.style.opacity = '1';
+                    setTimeout(() => {
+                        zoomInfo.style.opacity = '0';
+                    }, 1500);
+                });
+            }
+        }
+        
+        // Close viewer
+        function closeViewer() {
+            
+                window.history.back();
+            
+        }
+        
+        // Keyboard shortcuts
+        function setupKeyboard() {
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'Escape':
+                        closeViewer();
+                        break;
+                    case 'z':
+                    case 'Z':
+                        toggleZoom();
+                        break;
+                    case 'd':
+                    case 'D':
+                        if (event.ctrlKey || event.metaKey) {
+                            downloadImage();
+                        }
+                        break;
+                }
+            });
+        }
+        
+        // Start when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

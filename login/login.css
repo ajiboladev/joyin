@@ -1,0 +1,166 @@
+/* 
+ *  JOYIN Social Media
+ *  Custom CSS for JOYIN
+ *  (c) 2025 JOYIN. All rights reserved.
+ */
+body{
+    font-family: Arial, sans-serif;
+    background-color: #eaeffa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container{
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333333;
+}
+form{
+    display: flex;
+    flex-direction: column;
+}
+input[type="text"], input[type="email"], input[type="password"]{
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+     font-size: 16px;
+}
+label{
+    margin-bottom: 5px;
+    color: #555555;
+}   
+button{
+    padding: 10px;
+    background-color:#5B5EF2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover{
+    background-color: #4a4edb;
+}
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+    border-color: #8b8b8e;
+    outline: none;
+}
+input[type="text"], input[type="email"], input[type="password"]{
+    font-size: 16px;
+}
+
+
+.brand{
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #5B5EF2;
+}
+
+a{
+    color: #5B5EF2;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+
+     /* Responsiveness */
+@media (max-width: 400px) {
+    .container{
+        width: 70%;
+        padding: 20px;
+    }
+}
+
+.signup-prompt{
+    font-size: 11px;
+}
+
+input[type="text"], input[type="email"], input[type="password"]{
+    font-size: 12px;
+}
+label{
+    font-size: 13px;
+}
+button{
+    font-size: 12.5px;
+}
+
+h1{
+    font-size: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body{
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    .container{
+        background-color: #1e1e1e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    input[type="text"], input[type="email"], input[type="password"]{
+        background-color: #2c2c2c;
+        border: 1px solid #444444;
+        color: #e0e0e0;
+    }
+    input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder{
+        color: #aaaaaa;
+    }
+    label{
+        color: #bbbbbb;
+    }
+    button{
+        background-color: #5B5EF2;
+        color: white;
+    }
+    button:hover{
+        background-color: #4a4edb;
+    }
+    a{
+        color: #8ab4f8;
+    }
+}
+
+/* === SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.5s ease;
+        }

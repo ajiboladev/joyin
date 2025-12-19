@@ -1,0 +1,31 @@
+{
+  "type": "faq",
+  "title": "Troubleshooting Common Issues",
+  "description": "Solutions for common technical problems with JOYIN.",
+  "faqs": [
+    {
+      "question": "The app keeps crashing. What should I do?",
+      "answer": "Try these steps:<ol><li><strong>Force close and restart:</strong> Swipe away the app from your recent apps and reopen it</li><li><strong>Check for updates:</strong> Make sure you have the latest version from the app store</li><li><strong>Clear cache:</strong> Go to your device settings > Apps > JOYIN > Storage > Clear Cache</li><li><strong>Reinstall:</strong> As a last resort, uninstall and reinstall the app (your data is safe on our servers)</li></ol>If problems persist, contact our support team."
+    },
+    {
+      "question": "I can't upload photos or videos. Why?",
+      "answer": "Upload issues are usually related to:<ul><li><strong>File size:</strong> Ensure your media is under 100MB</li><li><strong>File format:</strong> We support JPG, PNG, GIF, MP4, and MOV formats</li><li><strong>Permissions:</strong> Make sure JOYIN has permission to access your photos/videos</li><li><strong>Connection:</strong> Check your internet connection strength</li><li><strong>Storage space:</strong> Ensure you have enough storage on your device</li></ul>"
+    },
+    {
+      "question": "Why am I not receiving notifications?",
+      "answer": "Notification issues can be caused by:<ul><li><strong>App permissions:</strong> Check that JOYIN has notification permissions enabled in your device settings</li><li><strong>In-app settings:</strong> Go to JOYIN Settings > Notifications to customize which notifications you receive</li><li><strong>Battery optimization:</strong> Some devices restrict background activity for battery saving</li><li><strong>Do Not Disturb:</strong> Check if Do Not Disturb mode is enabled on your device</li></ul>"
+    },
+    {
+      "question": "I forgot my password. How do I reset it?",
+      "answer": "On the login screen, tap 'Forgot Password'. Enter the email or phone number associated with your account, and we'll send you a password reset link. Make sure to check your spam folder if you don't see the email."
+    },
+    {
+      "question": "My feed isn't updating with new content",
+      "answer": "If your feed seems stuck:<ul><li><strong>Pull to refresh:</strong> Swipe down from the top of your feed to refresh</li><li><strong>Check connection:</strong> Ensure you have a stable internet connection</li><li><strong>Update the app:</strong> Make sure you're on the latest version</li><li><strong>Following activity:</strong> If you're new, you may need to follow more people to see content</li></ul>"
+    },
+    {
+      "question": "I'm having trouble with direct messages",
+      "answer": "For DM issues:<ul><li><strong>Recipient blocked:</strong> You can't message someone who has blocked you</li><li><strong>Message requests:</strong> Messages from people you don't follow go to message requests</li><li><strong>Media in DMs:</strong> Ensure you have permission to send/receive media in messages</li><li><strong>Group messages:</strong> Group chats support up to 50 participants</li></ul>"
+    }
+  ]
+}

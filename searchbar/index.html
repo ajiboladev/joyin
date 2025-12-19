@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media - User Search
+    Simple user search system
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Users | JOYIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./search.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+    <div class="search-container">
+        <!-- Header -->
+        <div class="search-header">
+            <div class="back-button" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <h1><i class="fas fa-search"></i> Search Users</h1>
+            <p class="subtitle">Find people on JOYIN</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Type username..."
+                    autocomplete="off"
+                    autofocus
+                >
+                <button class="clear-btn" id="clearBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <button class="search-action-btn" id="searchBtn">
+                <i class="fas fa-search"></i>
+                Search
+            </button>
+        </div>
+
+        <!-- Info -->
+        <div class="search-info">
+            <i class="fas fa-info-circle"></i>
+            <span>Only users are searchable on JOYIN</span>
+        </div>
+
+        <!-- Results -->
+        <div class="results-container">
+            <div class="results-header">
+                <h2 id="resultsTitle">Search Results</h2>
+                <span class="results-count" id="resultsCount">0</span>
+            </div>
+
+            <div class="results-list" id="searchResults">
+                <!-- Initial message -->
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-users"></i>
+                    <h3>Search for users</h3>
+                    <p>Enter a username above to find people on JOYIN</p>
+                </div>
+
+                <!-- Loading state (hidden by default) -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner"></div>
+                    <p>Searching...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Tips -->
+        <div class="quick-tips">
+            <h3><i class="fas fa-lightbulb"></i> Quick Tips</h3>
+            <ul>
+                <li>Type the exact username to find users</li>
+                <li>Search is case-insensitive</li>
+                <li>Click on any user to view their profile</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module" src="./search.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "type": "contact",
+  "title": "Contact Support",
+  "description": "Need help? Our support team is here for you.",
+  "formFields": [
+    {
+      "id": "name",
+      "name": "name",
+      "label": "Your Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "email",
+      "name": "email",
+      "label": "Email Address",
+      "type": "email",
+      "required": true
+    },
+    {
+      "id": "issue-type",
+      "name": "issue-type",
+      "label": "Issue Type",
+      "type": "select",
+      "required": true,
+      "options": ["Account Issue", "Technical Problem", "Content Report", "Feature Request", "Other"]
+    },
+    {
+      "id": "description",
+      "name": "description",
+      "label": "Describe your issue",
+      "type": "textarea",
+      "required": true
+    }
+  ],
+  "contactMethods": [
+    {
+      "icon": "fas fa-envelope",
+      "title": "Email Support",
+      "details": "support@joyin.com (Response within 24 hours)"
+    },
+    {
+      "icon": "fas fa-comment-dots",
+      "title": "In-App Support",
+      "details": "Go to Settings > Help > Contact Support"
+    },
+    {
+      "icon": "fas fa-bug",
+      "title": "Report a Bug",
+      "details": "Use the 'Report a Problem' option in app settings"
+    }
+  ]
+}

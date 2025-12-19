@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOYIN | User Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Import Firebase modules -->
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { 
+            collection,
+            query,
+            where,
+            getDocs,
+            getFirestore
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+        // Your Firebase configuration - REPLACE WITH YOUR CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUBllvOmhR7O0KqjeWoxsMnxuHoWoNJYA",
+  authDomain: "joyin-001.firebaseapp.com",
+  projectId: "joyin-001",
+  storageBucket: "joyin-001.firebasestorage.app",
+  messagingSenderId: "557041273144",
+  appId: "1:557041273144:web:a512b2e9df2c96b93399cd"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Make db available globally
+        window.db = db;
+        window.firebaseModules = { collection, query, where, getDocs };
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            margin: 20px 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #5b53f2, #a855f7);
+            /* -webkit-background-clip: text; */
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .logo-icon {
+            color: #5b53f2;
+            font-size: 2.2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Search Bar Styling */
+        .search-section {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .search-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ddd;
+            text-align: center;
+        }
+
+        .search-bar-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 18px 60px 18px 25px;
+            font-size: 1.1rem;
+            border: 2px solid #333;
+            border-radius: 50px;
+            background-color: #111;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: #5b53f2;
+            box-shadow: 0 0 0 3px rgba(91, 83, 242, 0.2);
+            background-color: #0a0a0a;
+        }
+
+        .search-bar::placeholder {
+            color: #888;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.3rem;
+            transition: color 0.3s;
+        }
+
+        .search-bar:focus + .search-icon {
+            color: #5b53f2;
+        }
+
+        .search-button {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #5b53f2;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #4a42e0;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Search Results */
+        .results-container {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
+            background-color: #111;
+            border-radius: 15px;
+            overflow: hidden;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .results-header {
+            padding: 18px 25px;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-title {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        .clear-results {
+            background: none;
+            border: none;
+            color: #5b53f2;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .clear-results:hover {
+            color: #7a73f4;
+        }
+
+        .results-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .user-result {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            border-bottom: 1px solid #222;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .user-result:hover {
+            background-color: #1a1a1a;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5b53f2, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .user-username {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .user-status {
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .online {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        .offline {
+            background-color: rgba(149, 165, 166, 0.15);
+            color: #95a5a6;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(91, 83, 242, 0.3);
+            border-radius: 50%;
+            border-top-color: #5b53f2;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        /* No Results */
+        .no-results {
+            padding: 40px 25px;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-bar {
+                padding: 16px 50px 16px 20px;
+                font-size: 1rem;
+            }
+            
+            .search-icon {
+                right: 16px;
+                font-size: 1.2rem;
+            }
+            
+            .user-result {
+                padding: 15px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .spinner {
+                right: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar {
+                padding: 14px 45px 14px 18px;
+            }
+            
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+                margin-right: 15px;
+            }
+            
+            .user-name {
+                font-size: 1rem;
+            }
+            
+            .user-username {
+                font-size: 0.9rem;
+            }
+            
+            .spinner {
+                right: 65px;
+            }
+        }
+
+        /* Instructions */
+        .instructions {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+        
+        /* Firebase Configuration Notice */
+        .firebase-notice {
+            background-color: #1a1a1a;
+            border: 1px solid #5b53f2;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            max-width: 700px;
+            font-size: 0.9rem;
+        }
+        
+        .firebase-notice h3 {
+            color: #5b53f2;
+            margin-bottom: 10px;
+        }
+        
+        .firebase-notice code {
+            background-color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #a855f7;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <i class="fas fa-smile-beam logo-icon"></i>
+        <h1>JOYIN</h1>
+    </div>
+    
+    <div class="container">
+        <div class="firebase-notice">
+            <h3><i class="fas fa-exclamation-circle"></i> Firebase Setup Required</h3>
+            <p>To make this search work, replace the Firebase configuration in the &lt;script&gt; tag with your own credentials from the Firebase Console.</p>
+            <p>Find your config at: Firebase Console → Project Settings → General → Your apps</p>
+        </div>
+        
+        <div class="search-section">
+            <h2 class="search-title">Search for users on JOYIN</h2>
+            <div class="search-bar-container">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search by username...">
+                <div class="spinner" id="loadingSpinner"></div>
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-button" id="searchBtn">Search</button>
+            </div>
+        </div>
+        
+        <div class="results-container" id="resultsContainer">
+            <div class="results-header">
+                <div class="results-title">Search Results</div>
+                <button class="clear-results" id="clearResults">Clear</button>
+            </div>
+            <div class="results-list" id="searchResults">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>Enter a username and click Search to find users on JOYIN.</p>
+            <p>Click on any user to view their profile.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Wait for Firebase to be loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Wait a moment for Firebase to initialize
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Get DOM elements
+            const searchBtn = document.getElementById("searchBtn");
+            const searchInput = document.getElementById("searchInput");
+            const resultsDiv = document.getElementById("searchResults");
+            const resultsContainer = document.getElementById("resultsContainer");
+            const clearResultsBtn = document.getElementById("clearResults");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            
+            // Check if Firebase is properly initialized
+            if (!window.db || !window.firebaseModules) {
+                console.error("Firebase not properly initialized. Check your configuration.");
+                showError("Firebase not initialized. Check configuration in the script tag.");
+                return;
+            }
+            
+            const { collection, query, where, getDocs } = window.firebaseModules;
+            const db = window.db;
+            
+            // Search function
+            async function performSearch() {
+                const username = searchInput.value.trim().toLowerCase();
+                resultsDiv.innerHTML = "";
+                
+                if (!username) {
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+                
+                // Show loading spinner
+                loadingSpinner.style.display = 'block';
+                searchBtn.disabled = true;
+                
+                try {
+                    // Create query to search for users
+                    const q = query(
+                        collection(db, "users"),
+                        where("username", "==", username)
+                    );
+                    
+                    const snapshot = await getDocs(q);
+                    
+                    // Hide loading spinner
+                    loadingSpinner.style.display = 'none';
+                    searchBtn.disabled = false;
+                    
+                    if (snapshot.empty) {
+                        resultsDiv.innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-user-slash" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <p>User "${username}" not found</p>
+                                <p style="margin-top: 10px; font-size: 0.9rem;">Try searching for a different username</p>
+                            </div>
+                        `;
+                        resultsContainer.style.display = 'block';
+                        return;
+                    }
+                    
+                    // Display results
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        
+                        // Create user result element
+                        const userDiv = document.createElement("div");
+                        userDiv.className = "user-result";
+                        userDiv.innerHTML = `
+                            <div class="user-avatar">${data.username ? data.username.charAt(0).toUpperCase() : 'U'}</div>
+                            <div class="user-info">
+                                <div class="user-name">${data.fullName || data.displayName || 'User'}</div>
+                                <div class="user-username">@${data.username}</div>
+                            </div>
+                            <div class="user-status ${data.online ? 'online' : 'offline'}">
+                                ${data.online ? 'Online' : 'Offline'}
+                            </div>
+                        `;
+                        
+                        // Add click event to navigate to profile
+                        userDiv.onclick = () => {
+                            // In your actual app, use this line:
+                            // window.location.href = `/profile/?uid=${docSnap.id}`;
+                            
+                            // For demo purposes, show an alert
+                            alert(`Navigating to ${data.username}'s profile\nUser ID: ${docSnap.id}\n\nIn the actual app, this would redirect to: /profile/?uid=${docSnap.id}`);
+                        };
+                        
+                        resultsDiv.appendChild(userDiv);
+                    });
+                    
+                    resultsContainer.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error("Search error:", error);
+                    loadingSpinner.style.display = 'none';
+                    searchBtn.disabled = false;
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px; color: #e74c3c;"></i>
+                            <p>Error searching for user</p>
+                            <p style="margin-top: 10px; font-size: 0.9rem;">${error.message || 'Check console for details'}</p>
+                        </div>
+                    `;
+                    resultsContainer.style.display = 'block';
+                }
+            }
+            
+            // Clear results function
+            function clearResults() {
+                searchInput.value = '';
+                resultsDiv.innerHTML = '';
+                resultsContainer.style.display = 'none';
+                searchInput.focus();
+            }
+            
+            // Show error message
+            function showError(message) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px; color: #e74c3c;"></i>
+                        <p>${message}</p>
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+            }
+            
+            // Event listeners
+            searchBtn.addEventListener("click", performSearch);
+            
+            // Also search on Enter key press
+            searchInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    performSearch();
+                }
+            });
+            
+            clearResultsBtn.addEventListener("click", clearResults);
+            
+            // Show search instructions
+            console.log("JOYIN Search System Ready!");
+            console.log("Remember to replace Firebase config with your own credentials.");
+        });
+    </script>
+</body>
+</html>

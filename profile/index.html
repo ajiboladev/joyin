@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media
+    Built with passion.
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Profile | JOYIN</title>
+    <link rel="stylesheet" href="./profile.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+   
+      <!-- Side bar Navigation -->
+            <section class="side-navigation">
+                <div class="side-navigation-container">
+                    <nav class="nav-links">
+                        <a class="nav-link" onclick="window.location.href= '../home/?view=home&tab=post&filter=popular'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg></span> For You</a>
+                        <a  class="nav-link active"  onclick="window.location.reload()"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4"/>
+                                <path d="M6 21v-2a6 6 0 0 1 12 0v2"/>
+                            </svg></span> Profile</a>
+                        <a  class="nav-link"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                    </span> Messages</a>
+                        <a  class="nav-link" id="followers-desktop"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <circle cx="8" cy="8" r="3"/>
+                                        <path d="M2 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                                        <circle cx="16" cy="8" r="3"/>
+                                        <path d="M22 20v-2a4 4 0 0 0-4-4h-4a4 4 0 0 0-4 4v2"/>
+                                    </svg>
+                                    </span> Followers</a>
+                        <a  class="nav-link" id="following-desktop"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="9" cy="8" r="3"/>
+                                <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                                <path d="M17 10l2 2 3-3"/>
+                            </svg></span> Following</a>
+                        <a  class="nav-link" id="upload-desktop" onclick="window.location.href='../upload/?view=upload'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M16 16l-4-4-4 4"/>
+                                <path d="M12 12v9"/>
+                                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                            </svg></span> Upload</a>
+                            <a  class="nav-link" id="upload-desktop" onclick="window.location.href='../searchbar/'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg></span>Search</a>
+                        <a  class="nav-link"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/>
+                                        <path d="M16 17l5-5-5-5"/>
+                                        <path d="M21 12H9"/>
+                                    </svg>
+                                    </span> Logout</a>
+                    </nav>
+                </div>
+            </section>
+
+
+            <!-- Bottom Navigations -->
+           <!-- Bottom Navigations -->
+<section class="bottom-navbar">
+    <div class="nav">
+        <nav class="nav-links">
+            <a class="nav-link" onclick="window.location.href= '../home/?view=home&tab=post&filter=popular'">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </span>
+                <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);"></span>
+            </a>
+            <a class="nav-link active" onclick="window.location.reload()">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="7" r="4"/>
+                        <path d="M6 21v-2a6 6 0 0 1 12 0v2"/>
+                    </svg>
+                </span>
+                <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);">Profile</span>
+            </a>
+            <a class="nav-link" id="upload-mobile" onclick="window.location.href='../upload/?view=upload'">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M16 16l-4-4-4 4"/>
+                        <path d="M12 12v9"/>
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                    </svg>
+                </span>
+                <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);"></span>
+            </a>
+            <a class="nav-link">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </span>
+                <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);"></span>
+            </a>
+            <a class="nav-link" id="followers-mobile">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="8" cy="8" r="3"/>
+                        <path d="M2 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                        <circle cx="16" cy="8" r="3"/>
+                        <path d="M22 20v-2a4 4 0 0 0-4-4h-4a4 4 0 0 0-4 4v2"/>
+                    </svg>
+                </span>
+                <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);"></span>
+            </a>
+        </nav>
+    </div>
+</section>
+
+
+<main class="main-container">
+     <button  class="back-button" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+    <!-- Profile desktop tab -->
+      <div class="block" style="text-align: center; padding-top: 10px; font-size: 13px;"></div>
+    <section class="profile-section">
+        <div class="profile-header">
+            <div class="profile-banner" onclick=" window.location.href= 'profile-image/?view=profile-image'" style="cursor: pointer;">
+                <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
+            </div>
+            <div class="profile-info">
+                <div><h1 id="username" class="username_s"></h1></div>
+                <div class="edit_settings">
+                    <button class="button" id="edit-profile-button" onclick="window.location.href= '../edit-profile/?view=profile&tab=edit-profile'">Edit Profile</button>
+                    <button class="button" id="edit-profile-button-message" onclick="window.location.href= '../edit-profile/?view=profile&tab=edit-profile'" style="display: none;">Message</button>
+                    <span class="settings-icon" id="settings-icon" onclick="window.location.href='../settings/?view=settings'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </span>
+                    <button id="follow-button">Follow</button>
+            </div>
+            <div class="follow">
+                    <p id="followers-count-desktop" style="cursor: pointer;"><span id="followers-count" class="followers-count">0</span> Followers</p>
+                    <p id="following-count-desktop" style="cursor: pointer;"><span id="following-count" class="following-count">0</span> Following</p>
+                    <p><span id="like-count" class="like-count">0</span> Likes</p>
+            </div>
+           <div class="bio">
+    <span id="bio-text-content" class="bio-text-content"></span>
+    <a class="see-more-link"  id="see-more-bio-link"
+       style="display:none; color: #007bff; cursor: pointer; text-decoration: none; margin-left: 5px;">
+        ...see more
+    </a>
+</div>
+<!-- Remove the inline script here -->
+
+        </div>
+    </section>
+
+    <!-- Profile SM Tab -->
+    <section class="profile-sm-section">
+    <div class="settings"> 
+        <span class="settings-icon" onclick="window.location.href='../settings/?view=settings'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        </span>
+    </div>
+    
+    <div class="profile-header">
+        <div class="profile-banner" onclick=" window.location.href= 'profile-image/?view=profile-image'" style="cursor: pointer;">
+            <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="username"><h2 id="username" class="username_s"></h2></div>
+       <div class="bio">
+    <span id="bio-text" class="bio-text-content"></span>
+<a class="see-more" id="see-more-bio-link-sm" 
+   style="display:none; color: #007bff; cursor: pointer; text-decoration: none; margin-left: 5px;">
+    ...see more
+</a>
+        <div class="count-system">
+            <div class="count">
+                <div id="followers-count-mobile" style="cursor: pointer;"><span id="followers-count" class="followers-count">0</span><p>Followers</p></div>
+                 <div id="following-count-mobile" style="cursor: pointer;"><span id="following-count" class="following-count">0</span><p>Following</p></div>
+                <div><span id="like-count" class="like-count">0</span><p>Likes</p></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="profile-actions">
+        <button class="follow .follow-button" id="follow-button-sm">Follow</button>
+        <button class="message">Message</button>
+        <button class="edit" id="edit-profile-sm" onclick="window.location.href= '../edit-profile/?view=profile&tab=edit-profile'">Edit Profile</button>
+    </div>
+</section>
+
+
+<!-- POST SYSTEM -->
+
+
+
+    
+
+     <!-- POST SYSTEM -->
+<main class="posts-container">
+    <section class="text-image-post-system">
+        <div class="post-system-container">
+            <!-- <div class="post"> -->
+                <div class="post-header">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="User avatar">
+                    <p id="post-username">Jane Smith</p>
+                    <div id="post-status"></div>
+                </div>
+                <div id="post-text">
+                    <span id="post-text-content">iores necessitatibus enim laudantium? Quaerat consectetur aperiam mollitia repellat qui placeat rem, delectus, perferendis impedit hic eum quod! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+                    <a id="see-more-link" style="display:none; cursor: pointer;">...see more</a>
+                </div>
+                
+                <span class="post-image-container">
+                    <img src="https://th.bing.com/th/id/OIP.ystiqvy5g4vBvCXWX5n6gQHaE8?w=294&h=196&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" alt="Post image">
+                </span>
+                
+                <div class="reaction">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
+                    <p id="reaction-count" class="reaction-count">0 likes</p>
+                </div>
+                
+                <!-- Add post actions -->
+                <div class="post-actions">
+                    <button class="action-button like-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        </svg>
+                        Like
+                    </button>
+                    <button class="action-button comment-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Comment
+                    </button>
+                    <button class="action-button share-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3"/>
+                            <circle cx="6" cy="12" r="3"/>
+                            <circle cx="18" cy="19" r="3"/>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                        </svg>
+                        Share
+                    </button>
+                </div>
+            <!-- </div> -->
+        </div>
+    </section>
+</main>
+
+<script>
+    /* 
+ *  JOYIN Social Media - Interactive Functions
+ *  This file powers JOYIN's features.
+ *  (c) 2025 JOYIN
+ */
+// Text truncation for posts
+const postText = document.getElementById('post-text-content');
+const seeMoreLink = document.getElementById('see-more-link');
+if (postText && seeMoreLink) {
+    const fullText = postText.textContent;
+    const charLimit = 120;
+    
+    if (fullText.length > charLimit) {
+        postText.textContent = fullText.substring(0, charLimit);
+        seeMoreLink.style.display = 'inline';
+        
+        seeMoreLink.addEventListener('click', function(e) {
+            // e.preventDefault();
+            // postText.textContent = fullText;
+            // seeMoreLink.style.display = 'none';
+            window.location.href= "more/?view=profile-post&tab=see-more"
+        });
+    }
+}
+
+// Like functionality
+// const likeBtn = document.querySelector('.like-btn');
+// const likeSvg = document.querySelector('.reaction svg');
+// const reactionCount = document.getElementById('reaction-count');
+// if (likeBtn && likeSvg && reactionCount) {
+//     let likeCount = 0;
+//     let isLiked = false;
+    
+//     likeBtn.addEventListener('click', function() {
+//         isLiked = !isLiked;
+        
+//         if (isLiked) {
+//             likeCount++;
+//             likeSvg.classList.add('liked');
+//             likeSvg.style.fill = '#5b53f2';
+//             likeSvg.style.stroke = '#fff';
+//             likeBtn.innerHTML = `
+//                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#5b53f2" stroke="#fff" stroke-width="2">
+//                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+//                 </svg>
+//                 Liked
+//             `;
+//         } else {
+//             likeCount--;
+//             likeSvg.classList.remove('liked');
+//             likeSvg.style.fill = 'none';
+//             likeSvg.style.stroke = 'currentColor';
+//             likeBtn.innerHTML = `
+//                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+//                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+//                 </svg>
+//                 Like
+//             `;
+//         }
+        
+//         reactionCount.textContent = `${likeCount} like${likeCount !== 1 ? 's' : ''}`;
+//     });
+    
+//     // Click heart icon to like
+//     likeSvg.addEventListener('click', function() {
+//         likeBtn.click();
+//     });
+// }
+</script>
+<!-- Add this section to your profile.html or settings.html -->
+
+<script type="module" src="./profile.js"></script>
+</main>
+</body>
+</html>

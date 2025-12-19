@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media - Landing Experience
+    The future of social connection
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOYIN - The Social App That's Always Fresh</title>
+    <link rel="stylesheet" href="./landing.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-dots">
+            <span class="dot active" data-page="1"></span>
+            <span class="dot" data-page="2"></span>
+            <span class="dot" data-page="3"></span>
+            <span class="dot" data-page="4"></span>
+        </div>
+    </div>
+
+    <!-- Skip Button (for returning users) -->
+    <button class="skip-btn" id="skipBtn">
+        Skip to App <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <!-- ========== PAGE 1: HERO ========== -->
+    <section class="landing-page active" id="page1">
+        <div class="container">
+            <!-- Animated Background -->
+            <div class="animated-bg">
+                <div class="pulse-circle"></div>
+                <div class="pulse-circle delay-1"></div>
+                <div class="pulse-circle delay-2"></div>
+            </div>
+
+            <!-- Logo -->
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4v12a5 5 0 0 1-5 5h-2"/>
+                </svg>
+                </div>
+                <h1 class="logo-text">JOYIN</h1>
+            </div>
+
+            <!-- Main Message -->
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    The Social App That's 
+                    <span class="highlight">Always Fresh</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    No downloads, no updates. Just open your browser and connect.
+                    <br>
+                    Experience social media that's always up-to-date and instantly available.
+                </p>
+
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="stat-number" id="userCount">0</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">No Storage Used</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0s</span>
+                        <span class="stat-label">Wait Time</span>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="cta-buttons">
+                    <button class="btn-primary" id="startBtn">
+                        Start Using JOYIN Now
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                    <button class="btn-secondary" id="nextBtn1">
+                        See How It Works
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PAGE 2: BENEFITS ========== -->
+    <section class="landing-page" id="page2">
+        <div class="container">
+            <div class="page-header">
+                <h2>Why JOYIN is Different</h2>
+                <p>Built for the modern web, designed for real connection</p>
+            </div>
+
+            <div class="benefits-grid">
+                <!-- Benefit 1 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Instant Access</h3>
+                    <p><strong>No app store, no wait.</strong> Use JOYIN instantly in your browser. Skip the 2-minute download process.</p>
+                    <div class="benefit-tag">⚡ 0 Second Setup</div>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Always Updated</h3>
+                    <p><strong>Get the latest features automatically.</strong> No more "Update Available" notifications. We handle updates seamlessly.</p>
+                    <div class="benefit-tag">🔄 Auto-Update</div>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Feels Like an App</h3>
+                    <p><strong>Add JOYIN to your home screen</strong> for a full app experience. Works offline, sends notifications.</p>
+                    <div class="benefit-tag">📱 PWA Ready</div>
+                </div>
+
+                <!-- Benefit 4 -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure by Design</h3>
+                    <p><strong>Your data is secure with direct, encrypted connections.</strong> No middleman, no app store data harvesting.</p>
+                    <div class="benefit-tag">🔒 End-to-End Safe</div>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn-outline" id="prevBtn2">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn-primary" id="nextBtn2">
+                    See It in Action <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PAGE 3: DEMO ========== -->
+    <section class="landing-page" id="page3">
+        <div class="container">
+            <div class="page-header">
+                <h2>Experience Pure Connection</h2>
+                <p>A clean, focused social experience without the bloat</p>
+            </div>
+
+            <!-- App Demo Preview -->
+            <div class="demo-container">
+                <!-- Mock Phone -->
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <!-- Demo Feed -->
+                        <div class="demo-feed">
+                            <!-- Post 1 -->
+                            <div class="demo-post">
+                                <div class="post-header">
+                                    <div class="post-avatar" style="background: linear-gradient(45deg, #5b53f2, #8a85ff);"></div>
+                                    <div class="post-user">
+                                        <div class="post-name">Alex Morgan</div>
+                                        <div class="post-time">Just now</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    "Finally a social app that just works. No nonsense, just connections. Loving JOYIN! ✨"
+                                </div>
+                                <div class="post-actions">
+                                    <span><i class="fas fa-heart"></i> 24</span>
+                                    <span><i class="fas fa-comment"></i> 8</span>
+                                    <span><i class="fas fa-share"></i> 3</span>
+                                </div>
+                            </div>
+
+                            <!-- Post 2 -->
+                            <div class="demo-post">
+                                <div class="post-header">
+                                    <div class="post-avatar" style="background: linear-gradient(45deg, #ff6b6b, #ffa36c);"></div>
+                                    <div class="post-user">
+                                        <div class="post-name">Sam Rivera</div>
+                                        <div class="post-time">2 min ago</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    "The fact that I didn't have to download anything? Game changer. Web apps are the future. 🚀"
+                                </div>
+                                <div class="post-image">
+                                    <div class="image-placeholder"></div>
+                                </div>
+                                <div class="post-actions">
+                                    <span><i class="fas fa-heart"></i> 42</span>
+                                    <span><i class="fas fa-comment"></i> 15</span>
+                                    <span><i class="fas fa-share"></i> 7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features List -->
+                <div class="features-list">
+                    <div class="feature-item active">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Real Communities</h4>
+                            <p>Connect with people who share your passions, not algorithms.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Visual Stories</h4>
+                            <p>Share moments that matter with our beautiful media uploads.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Meaningful Conversations</h4>
+                            <p>Threaded comments and real-time messaging built in.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Smart Notifications</h4>
+                            <p>Only notified about what matters to you. No spam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="btn-outline" id="prevBtn3">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="btn-primary" id="nextBtn3">
+                    Join Now <i class="fas fa-user-plus"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PAGE 4: JOIN ========== -->
+    <section class="landing-page" id="page4">
+        <div class="container">
+            <div class="join-container">
+                <!-- Left Side: Form -->
+                <div class="join-form-container">
+                    <div class="form-header">
+                        <h2>Ready to Connect?</h2>
+                        <p>Join JOYIN in seconds. No commitment, just connection.</p>
+                    </div>
+
+                    <!-- Quick Signup -->
+                    <!-- <div class="quick-signup">
+                        <button class="social-btn google-btn">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                        <button class="social-btn twitter-btn">
+                            <i class="fab fa-twitter"></i>
+                            Continue with Twitter
+                        </button>
+                        
+                        <div class="divider">
+                            <span>or</span>
+                        </div>
+
+                        Email Signup
+                        <form id="quickSignupForm">
+                            <div class="form-group">
+                                <input type="email" placeholder="Your best email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Choose a username" required>
+                            </div>
+                            <button type="submit" class="btn-primary full-width">
+                                Create Your Account
+                                <i class="fas fa-sparkles"></i>
+                            </button>
+                        </form> -->
+
+                        <p class="terms-note">
+                            By joining, you agree to our 
+                            <a onclick="window.location.href='../Terms&Condition/'" style="cursor: pointer;">Terms</a> and 
+                            <a onclick="window.location.href='../Privacy-Policy/'" style="cursor: pointer;">Privacy Policy</a>.
+                            We never share your data.
+                        </p>
+                    </div>
+
+                    <!-- Already have account -->
+                    <div class="login-prompt">
+                        Already on JOYIN? 
+                        <a  id="loginLink" onclick="window.location.href='../login/'" style="cursor: pointer;">Login here</a>
+                    </div>
+                </div>
+
+                <!-- Right Side: Testimonials -->
+                <div class="testimonials">
+                    <h3>What Early Users Say</h3>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "I was skeptical about a web app, but JOYIN works better than most native apps. The speed is incredible!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar" style="background: linear-gradient(45deg, #5b53f2, #8a85ff);"></div>
+                            <div class="author-info">
+                                <div class="author-name">Taylor Kim</div>
+                                <div class="author-role">Early User • 2 weeks</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "No more waiting for app updates! The features just appear. This is how social media should work."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar" style="background: linear-gradient(45deg, #ff6b6b, #ffa36c);"></div>
+                            <div class="author-info">
+                                <div class="author-name">Jordan Patel</div>
+                                <div class="author-role">Product Designer • 1 month</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PWA Install Hint -->
+                    <div class="pwa-hint">
+                        <div class="pwa-icon">
+                            <i class="fas fa-plus-square"></i>
+                        </div>
+                        <div class="pwa-text">
+                            <strong>Pro Tip:</strong> For the best experience, tap 
+                            <span class="pwa-highlight">"Add to Home Screen"</span> 
+                            in your browser menu.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final CTA -->
+            <div class="final-cta">
+                <button class="btn-primary btn-large" id="finalSignupBtn">
+                    Start Using JOYIN Now — It's Free!
+                </button>
+                <p class="cta-subtext">
+                    <i class="fas fa-lock"></i>
+                    Your data is encrypted • 
+                    <i class="fas fa-infinity"></i>
+                    No storage used • 
+                    <i class="fas fa-bolt"></i>
+                    Instant access
+                </p>
+            </div>
+
+            <div class="navigation-buttons center">
+                <button class="btn-outline" id="prevBtn4">
+                    <i class="fas fa-arrow-left"></i> See Benefits
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay (for app transition) -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Opening JOYIN</h3>
+            <p>Preparing your instant social experience...</p>
+        </div>
+    </div>
+
+    <script src="./landing.js"></script>
+</body>
+</html>

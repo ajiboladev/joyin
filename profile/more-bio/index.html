@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | User Name</title>
+     <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+    <style>
+        /* 
+ *  JOYIN Social Media
+ *  Custom CSS for JOYIN
+ *  (c) 2025 JOYIN. All rights reserved.
+ */
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-color: #000;
+            --text-color: #fff;
+            --subtext-color: #bfb9b9;
+            --accent-color: #5b53f2;
+            --card-bg: #121212;
+            --border-color: #333;
+            --transition: 0.3s ease;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            z-index: 100;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            transition: all var(--transition);
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-left: 20px;
+            flex-grow: 1;
+        }
+        
+        /* Bio Content */
+        .bio-content {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+        }
+        
+        .user-details h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .user-details p {
+            color: var(--subtext-color);
+            font-size: 14px;
+        }
+        
+        /* Bio Sections */
+        .bio-section {
+            margin-bottom: 25px;
+        }
+        
+        .bio-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .bio-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bio-section p {
+            font-size: 16px;
+            color: var(--text-color);
+            padding-left: 10px;
+        }
+        
+        .bio-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+        
+        .bio-section li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .bio-section li:before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding: 20px 0;
+            text-align: center;
+            color: var(--subtext-color);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(91, 83, 242, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--subtext-color);
+            margin-top: 5px;
+        }
+        
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px 0;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+                margin-left: 15px;
+            }
+            
+            .bio-content {
+                padding: 20px;
+                border-radius: 12px;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .avatar {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .stat-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .stat-number {
+                font-size: 20px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .bio-content {
+                padding: 15px;
+            }
+            
+            .bio-section h3 {
+                font-size: 16px;
+            }
+            
+            .bio-section p {
+                font-size: 14px;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .back-btn {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+        }
+        
+        /* Large screens (up to 2000px) */
+        @media screen and (min-width: 1200px) {
+            .container {
+                max-width: 900px;
+                padding: 40px 20px;
+            }
+            
+            .bio-content {
+                padding: 40px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .bio-content {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* === SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+        
+        /* Loading state */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back
+            </button>
+            <!-- <h1>About Me</h1> -->
+        </div>
+        
+        <!-- Bio Content -->
+        <div class="bio-content">
+            <!-- User Info -->
+            <div class="user-info"  onclick=" window.location.href= '../profile-image/?view=profile-image'" style="cursor: pointer;">
+                <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile" class="avatar">
+                <div class="user-details">
+                    <h2 id="user-name"></h2>
+                    <p id="user-handle"></p>
+                </div>
+            </div>
+            
+            <!-- Bio Sections -->
+            <div class="bio-section">
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Bio
+                </h3>
+                <p id="full-bio">
+                    
+                </p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="followers-count">0</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="following-count">0</span>
+                    <span class="stat-label">Following</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="posts-count">0</span>
+                    <span class="stat-label">Posts</span>
+                </div>
+            </div>
+        </div>
+        
+       
+    </div>
+        <script type="module" src="./index.js"></script>
+        
+</body>
+</html>

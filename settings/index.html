@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media
+    Built with passion.
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+   <link rel="stylesheet" href="./settings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+    <!-- Settings Container -->
+    <div class="settings-container">
+        <!-- Header -->
+        <div class="settings-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Settings</h1>
+        </div>
+
+        <!-- Settings List -->
+        <div class="settings-list">
+            <!-- Account Group -->
+            <div class="settings-group">
+                <h2>Account</h2>
+                
+                <a onclick="window.location.href='../edit-profile/?view=profile&tab=edit-profile'" class="setting-item">
+                    <i class="fas fa-user"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Edit Profile</div>
+                        <div class="setting-desc">Update your personal information</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+                
+                <a onclick="window.location.href='../edit-profile/#form-groups?view=profile&tab=edit-profile'"  class="setting-item">
+                    <i class="fas fa-key"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Change Password</div>
+                        <div class="setting-desc">Update your account password</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+                
+                <a class="setting-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Email Settings</div>
+                        <div class="setting-desc">Manage email notifications</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+            </div>
+
+            <!-- Privacy & Security -->
+            <div class="settings-group">
+                <h2>Privacy & Security</h2>
+                
+                <div class="setting-item" onclick="toggleSetting('privateAccount')">
+                    <i class="fas fa-lock"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Private Account</div>
+                        <div class="setting-desc">Only approved followers can see your content</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="privateAccount">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <div class="setting-item" onclick="toggleSetting('activityStatus')">
+                    <i class="fas fa-eye"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Show Activity Status</div>
+                        <div class="setting-desc">Let others see when you're active</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="activityStatus" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <a  class="setting-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Privacy Settings</div>
+                        <div class="setting-desc">Manage who can see your content</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-group">
+                <h2>Notifications</h2>
+                
+                <div class="setting-item" onclick="toggleSetting('pushNotifications')">
+                    <i class="fas fa-bell"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Push Notifications</div>
+                        <div class="setting-desc">Receive app notifications</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="pushNotifications" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <div class="setting-item" onclick="toggleSetting('emailNotifications')">
+                    <i class="fas fa-envelope-open"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Email Notifications</div>
+                        <div class="setting-desc">Receive email updates</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+                
+                <a class="setting-item">
+                    <i class="fas fa-cog"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Notification Settings</div>
+                        <div class="setting-desc">Customize notification preferences</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+            </div>
+
+            <!-- Legal -->
+              <div class="settings-group">
+                <h2>Legal</h2>
+                
+                
+                <a onclick="window.location.href= '../Privacy-Policy/?view=privacy-policy'" class="setting-item">
+                    <i class="fa fa-shield"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Privacy Policy</div>
+                        <div class="setting-desc">Understand how we protect your data</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+                 <a  onclick="window.location.href= '../Terms&Conditions/?view=terms&conditions'" class="setting-item">
+                    <i class="fa fa-file-text"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Terms & Conditions </div>
+                        <div class="setting-desc">Review the rules for using JOYIN</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+            </div>
+
+            <!-- Display -->
+            <div class="settings-group">
+                <h2>Display</h2>
+                
+                <div class="setting-item" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                    <div class="setting-content">
+                        <div class="setting-title">Dark Mode</div>
+                        <div class="setting-desc">Use dark theme</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="darkMode" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Feed back -->
+            <div class="settings-group">
+                <h2>Feedback</h2>
+                
+                 <a onclick="window.location.href= '../Feed-back/?view=feedback'" class="setting-item">
+                    <i class="fas fa-headset"></i>   
+                    <div class="setting-content">
+                        <div class="setting-title">Feedback</div>
+                        <div class="setting-desc">Share your feedback to help us improve.</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--subtext-color); font-size: 14px;"></i>
+                </a>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <div class="settings-group">
+                    <h2 style="color: var(--danger-color);">Danger Zone</h2>
+                    
+                    <div class="setting-item danger-item" onclick="showModal('deactivate')">
+                        <i class="fas fa-user-slash"></i>
+                        <div class="setting-content">
+                            <div class="setting-title">Deactivate Account</div>
+                            <div class="setting-desc">Temporarily disable your account</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    
+                    <div class="setting-item danger-item" onclick="showModal('delete')">
+                        <i class="fas fa-trash-alt"></i>
+                        <div class="setting-content">
+                            <div class="setting-title">Delete Account</div>
+                            <div class="setting-desc">Permanently delete your account and data</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                     <div class="setting-item danger-item" onclick="showModal('delete')">
+                        <i ><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/>
+                                        <path d="M16 17l5-5-5-5"/>
+                                        <path d="M21 12H9"/>
+                                    </svg>
+                                    </span></i>
+                        <div class="setting-content">
+                            <div class="setting-title">Logout</div>
+                            <div class="setting-desc">sign-out your account</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="settings-footer">
+            <div class="app-version">JOYIN v1.0.0 • MVP Release</div>
+        </div>
+    </div>
+
+    <!-- Deactivate Account Modal -->
+    <div class="modal-overlay" id="deactivate-modal">
+        <div class="modal">
+            <h3><i class="fas fa-user-slash" style="color: var(--danger-color); margin-right: 10px;"></i>Deactivate Account</h3>
+            <p>Your profile will be hidden and you won't appear in search results. You can reactivate your account at any time by logging back in.</p>
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="hideModal('deactivate')">Cancel</button>
+                <button class="modal-btn danger" onclick="deactivateAccount()">Deactivate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <h3><i class="fas fa-trash-alt" style="color: var(--danger-color); margin-right: 10px;"></i>Delete Account</h3>
+            <p><strong>This action cannot be undone.</strong> All your posts, comments, and data will be permanently deleted. This process may take up to 30 days to complete.</p>
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="hideModal('delete')">Cancel</button>
+                <button class="modal-btn danger" onclick="deleteAccount()">Delete Forever</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* 
+ *  JOYIN Social Media - Interactive Functions
+ *  This file powers JOYIN's features.
+ *  (c) 2025 JOYIN
+ */
+        // === NAVIGATION ===
+        function goBack() {
+            window.history.back();
+        }
+
+        // === TOGGLE SETTINGS ===
+        function toggleSetting(settingId) {
+            const checkbox = document.getElementById(settingId);
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                
+                // Save to localStorage for MVP
+                localStorage.setItem(settingId, checkbox.checked);
+                
+                // Show feedback for important toggles
+                if (settingId === 'privateAccount') {
+                    showToast(checkbox.checked ? 'Account is now private' : 'Account is now public');
+                }
+            }
+        }
+
+        // === THEME TOGGLE ===
+        function toggleTheme() {
+            const checkbox = document.getElementById('darkMode');
+            checkbox.checked = !checkbox.checked;
+            
+            // For MVP, just toggle a class on body
+            if (checkbox.checked) {
+                document.body.classList.remove('light-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            showToast(checkbox.checked ? 'Dark mode enabled' : 'Light mode enabled');
+        }
+
+        // === MODAL FUNCTIONS ===
+        function showModal(modalType) {
+            document.getElementById(`${modalType}-modal`).style.display = 'flex';
+        }
+
+        function hideModal(modalType) {
+            document.getElementById(`${modalType}-modal`).style.display = 'none';
+        }
+
+        // === DANGEROUS ACTIONS ===
+        function deactivateAccount() {
+            // In a real app, you would call an API here
+            alert('Account deactivation requested. This would normally send a confirmation email.');
+            hideModal('deactivate');
+        }
+
+        function deleteAccount() {
+            // In a real app, you would call an API here
+            const confirm = prompt('Type "DELETE" to confirm permanent account deletion:');
+            if (confirm === 'DELETE') {
+                alert('Account deletion initiated. You will receive a confirmation email.');
+                hideModal('delete');
+                // In reality: window.location.href = '/logout';
+            }
+        }
+
+        // === TOAST NOTIFICATION ===
+        function showToast(message) {
+            // Create toast if it doesn't exist
+            let toast = document.getElementById('toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--accent-color);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 10px;
+                    font-weight: 500;
+                    z-index: 1000;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                `;
+                document.body.appendChild(toast);
+            }
+            
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        // === LOAD SAVED SETTINGS ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load theme preference
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('darkMode').checked = false;
+            }
+            
+            // Load other settings from localStorage
+            const settings = ['privateAccount', 'activityStatus', 'pushNotifications', 'emailNotifications'];
+            settings.forEach(setting => {
+                const savedValue = localStorage.getItem(setting);
+                if (savedValue !== null) {
+                    document.getElementById(setting).checked = savedValue === 'true';
+                }
+            });
+            
+            // Light theme styles (optional)
+            const style = document.createElement('style');
+            style.textContent = `
+                .light-theme {
+                    --bg-color: #f5f5f5;
+                    --card-bg: #ffffff;
+                    --text-color: #333333;
+                    --subtext-color: #666666;
+                    --border-color: #e0e0e0;
+                    --item-bg: #f9f9f9;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // === KEYBOARD SHORTCUTS ===
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>

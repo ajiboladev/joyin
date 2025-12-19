@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media
+    Built with passion.
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Your Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./edit-profile.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+     <div id="message">
+            <!-- <i class="fas fa-check-circle"></i>  -->
+        </div>
+    <div class="edit-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Edit Profile</h1>
+            
+        </div>
+        
+        <!-- Success Message (Hidden by default) -->
+       
+        
+        <!-- Form Wrapper -->
+        <div class="form-wrapper">
+            <!-- Profile Picture Section - Kept in HTML but image functionality removed -->
+            <div class="picture-section">
+                <div class="avatar-upload">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" 
+                         alt="Profile Preview" 
+                         class="avatar-preview" 
+                         id="avatar-preview">
+                    <div class="upload-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+                <p class="upload-help">Profile picture can be changed from your profile page.</p>
+            </div>
+            
+            <!-- Form Section -->
+            <div class="form-section">
+                <form id="edit-profile-form" class="form-grid">
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" 
+                               id="username" 
+                               name="username" 
+                               placeholder="Enter your username" 
+                               required>
+                        <div class="error-message" id="username-error">Username must be at least 3 characters.</div>
+                    </div>
+                    
+                    <!-- Bio -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" 
+                                    class="bio"
+                                  name="bio" 
+                                  placeholder="Tell everyone about yourself..."
+                                  maxlength="500"></textarea>
+                        <div class="error-message" id="bio-error">Bio cannot exceed 500 characters.</div>
+                    </div>
+                </form>
+                
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn cancel-btn" onclick="goBack()">Cancel</button>
+                    <button type="button" class="btn save-btn" onclick="saveProfile()" id="saveProfile">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+/* 
+ *  JOYIN Social Media - Interactive Functions
+ *  This file powers JOYIN's features.
+ *  (c) 2025 JOYIN
+ */
+
+        // === GLOBAL VARIABLES ===
+        let isPasswordVisible = false;
+        
+        // === FUNCTION: GO BACK ===
+        function goBack() {
+            if (confirm('Are you sure? Any unsaved changes will be lost.')) {
+                window.history.back();
+            }
+        }
+        
+        // === FUNCTION: VALIDATE FORM ===
+        function validateForm() {
+            let isValid = true;
+            const username = document.getElementById('username').value.trim();
+            const bio = document.getElementById('bio').value.trim();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Validate username
+            if (username.length < 3) {
+                document.getElementById('username-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate bio length
+            if (bio.length > 500) {
+                document.getElementById('bio-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // === FUNCTION: SAVE PROFILE ===
+        function saveProfile() {
+            if (!validateForm()) {
+                // Scroll to first error
+                const firstError = document.querySelector('.error-message[style*="display: block"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+            
+            // Trigger the save button click event from your module
+            const saveBtn = document.getElementById("saveProfile");
+            if (saveBtn && !saveBtn.disabled) {
+                saveBtn.click();
+            } else if (saveBtn.disabled) {
+                // Show message if no changes were made
+                const message = document.getElementById("message");
+                message.style.color = "orange";
+                message.innerHTML = "No changes detected to save!";
+                
+                // Hide message after 3 seconds
+                setTimeout(() => {
+                    message.innerHTML = "";
+                }, 3000);
+            }
+        }
+        
+        // === KEYBOARD SHORTCUTS ===
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + S to save
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                event.preventDefault();
+                saveProfile();
+            }
+            
+            // Escape to cancel
+            if (event.key === 'Escape') {
+                goBack();
+            }
+        });
+        
+        // === INITIALIZE FORM ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // console.log("🔥 edit-profile.html loaded");
+            
+            // Set up character counter for bio
+            const bioField = document.getElementById('bio');
+            const bioError = document.getElementById('bio-error');
+            
+            if (bioField) {
+                bioField.addEventListener('input', function() {
+                    const length = this.value.length;
+                    if (length > 500) {
+                        bioError.textContent = `Bio is ${length - 500} characters too long.`;
+                    } else {
+                        bioError.textContent = 'Bio cannot exceed 500 characters.';
+                    }
+                });
+            }
+            
+            // Add real-time validation for username
+            const usernameField = document.getElementById('username');
+            const usernameError = document.getElementById('username-error');
+            
+            if (usernameField) {
+                usernameField.addEventListener('input', function() {
+                    const length = this.value.length;
+                    if (length > 0 && length < 3) {
+                        usernameError.style.display = 'block';
+                    } else {
+                        usernameError.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Add loading state to save button initially
+            const saveBtn = document.getElementById('saveProfile');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.style.opacity = '0.7';
+                saveBtn.style.cursor = 'not-allowed';
+            }
+        });
+    </script>
+
+    <script type="module" src="./edit-profile.js"></script>
+</body>
+</html>

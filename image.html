@@ -1,0 +1,45 @@
+<input type="file" id="photoInput" accept="image/*">
+<img id="profileImg" width="120">
+<script type="module" >
+    import { auth, db } from "./firebase.js";
+import { ref, uploadBytes, getDownloadURL } 
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+import { doc, updateDoc } 
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const photoInput = document.getElementById("photoInput");
+const profileImg = document.getElementById("profileImg");
+
+
+photoInput.addEventListener("change", async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const uid = user.uid;
+
+    // 1. Create storage location
+    const imageRef = ref(
+        storage, 
+        `profilePics/${uid}.jpg`
+    );
+
+    // 2. Upload image
+    await uploadBytes(imageRef, file);
+
+    // 3. Get image URL
+    const imageURL = await getDownloadURL(imageRef);
+
+    // 4. Save URL in Firestore
+    const userRef = doc(db, "users", uid);
+    await updateDoc(userRef, {
+        profilePic: imageURL
+    });
+
+    // 5. Show image instantly
+    profileImg.src = imageURL;
+});
+
+</script>

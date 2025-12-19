@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOYIN Help Center</title>
+    <link rel="stylesheet" href="./help.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="help-header">
+        <div class="header-container">
+            <a href="/" class="logo-link">
+                <div class="logo">
+                    <div class="logo-icon">J</div>
+                    <span class="logo-text">JOYIN</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="#getting-started" class="nav-link active" data-page="getting-started">
+                    <i class="fas fa-rocket"></i>Getting Started
+                </a>
+                <a href="#account-settings" class="nav-link" data-page="account-settings">
+                    <i class="fas fa-user-cog"></i>Account & Privacy
+                </a>
+                <a href="#community-guidelines" class="nav-link" data-page="community-guidelines">
+                    <i class="fas fa-users"></i>Community Guidelines
+                </a>
+                <a href="#troubleshooting" class="nav-link" data-page="troubleshooting">
+                    <i class="fas fa-tools"></i>Troubleshooting
+                </a>
+                <a href="#contact-support" class="nav-link" data-page="contact-support">
+                    <i class="fas fa-headset"></i>Contact Support
+                </a>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="help-main">
+        <div class="container">
+            <!-- Hero / Search Section -->
+            <section class="hero-section">
+                <h1>How can we help you today?</h1>
+                <p>Find answers to your questions about JOYIN v1.0.0</p>
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search for help topics, features, or issues...">
+                        <button id="search-btn">Search</button>
+                    </div>
+                    <div class="search-suggestions">
+                        <span class="suggestion-tag">Creating an account</span>
+                        <span class="suggestion-tag">Privacy settings</span>
+                        <span class="suggestion-tag">Posting content</span>
+                        <span class="suggestion-tag">Reporting issues</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Links -->
+            <section class="quick-links">
+                <h2>Quick Access</h2>
+                <div class="quick-link-grid">
+                    <a href="#getting-started" class="quick-link-card" data-page="getting-started">
+                        <div class="quick-link-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Getting Started</h3>
+                        <p>Learn the basics of JOYIN</p>
+                    </a>
+                    <a href="#account-settings" class="quick-link-card" data-page="account-settings">
+                        <div class="quick-link-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h3>Account & Privacy</h3>
+                        <p>Manage your settings and data</p>
+                    </a>
+                    <a href="#community-guidelines" class="quick-link-card" data-page="community-guidelines">
+                        <div class="quick-link-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Community Guidelines</h3>
+                        <p>Understand our rules and safety</p>
+                    </a>
+                    <a href="#troubleshooting" class="quick-link-card" data-page="troubleshooting">
+                        <div class="quick-link-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>Troubleshooting</h3>
+                        <p>Fix common issues</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Dynamic Content Area -->
+            <div id="content-area">
+                <!-- Content will be loaded here dynamically -->
+                <div class="welcome-message">
+                    <div class="welcome-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h2>Welcome to JOYIN Help</h2>
+                    <p>Select a topic from the navigation or quick links above to get started. We're here to help you make the most of JOYIN v1.0.0!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="help-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">J</div>
+                        <span class="logo-text">JOYIN</span>
+                    </div>
+                    <p class="footer-tagline">Connecting people, sharing joy.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#privacy-terms" data-page="privacy-terms">Privacy Policy</a>
+                    <a href="#privacy-terms" data-page="privacy-terms">Terms of Service</a>
+                    <a href="#contact-support" data-page="contact-support">Contact Us</a>
+                </div>
+                <div class="footer-copyright">
+                    <p>© <span id="year"></span> JOYIN. All rights reserved. Version 1.0.0</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+       let years = document.getElementById("year");
+years.textContent = new Date().getFullYear(); // Displays: 2025
+
+    </script>
+
+    <script src="./help.js"></script>
+</body>
+</html>

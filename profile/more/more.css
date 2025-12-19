@@ -1,0 +1,301 @@
+/* 
+ *  JOYIN Social Media
+ *  Custom CSS for JOYIN
+ *  (c) 2025 JOYIN. All rights reserved.
+ */
+body{
+    font-family: Arial, sans-serif;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Added height for scrolling */
+    transition: 0.3s all ease-in-out;
+    color: white;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    width: 100%;
+    max-width: 100%;
+}
+
+.arrow-back{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+    padding: 5px;
+}
+.arrow-back:hover{
+    color: #5b53f2;
+    transition: 0.3s all ease-in-out;
+    background-color: grey;
+    border-radius: 5px;}
+
+/* Post System */
+.text-image-post-system .post-system-container .post{
+    text-align: justify; 
+    min-width: 500px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 15px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 50px;
+     /* position: relative; */
+   /* height: 100vh; */
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    font-size: 12px;
+    font-weight: lighter;
+    line-break: auto;
+    line-height: 1.5rem;
+    color:rgb(206, 202, 202);
+    /* display: none; */
+}
+
+.text-image-post-system .post-system-container .post .post-header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.text-image-post-system .post-system-container .post .post-header:hover{
+    background-color: #1f1e1e;
+    padding: 1.5px 0px 1.5px 5px;
+    transition: 0.2s all ease-in-out;
+    border-radius: 4px;
+}
+
+.text-image-post-system .post-system-container .post .post-header img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.text-image-post-system .post-system-container .post .post-header div{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
+    border: 1px solid white;
+}
+
+.text-image-post-system .post-system-container .post .post-image-container {
+    width: 100%;
+    height: auto; /* Let it be natural height */
+    overflow: hidden;
+   padding-top: 10px;
+
+}
+
+.text-image-post-system .post-system-container .post .post-image-container img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Shows entire image */
+    border-radius: 8px;
+    display: block;
+    max-height: 80vh; /* Optional: limit to viewport */
+}
+
+.text-image-post-system .post-system-container .post .post-image-container img:hover {
+    transform: scale(1.02);
+    transition: 0.3s all ease-in-out;
+    filter: brightness(1px);
+    filter: contrast(1);
+    filter: opacity(1);
+    filter: saturate(1.05);
+    /* filter: blur(100px); */
+}
+
+.text-image-post-system .post-system-container .post .reaction:hover svg{
+    stroke: #5b53f2;
+    transition: 0.3s all ease-in-out;
+}
+
+.text-image-post-system .post-system-container .post .reaction svg{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   margin-bottom: -12px;
+   stroke: grey;
+    cursor: pointer;
+    padding-top: 3px;
+}
+
+.text-image-post-system .post-system-container .post .reaction .reaction-count{
+    font-size: 11px;
+    color: grey;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+} 
+
+
+
+
+
+/* Responsiveness */
+@media (max-width: 1130px) {
+     .text-image-post-system .post-system-container .post{
+        min-width: 400px;
+        left: -60px;
+        top: 120px;
+        padding: 10px;
+     }
+
+      .text-image-post-system .post-system-container .post .post-image-container img {
+        width: 80%;
+        margin: 0 auto;
+     }
+
+}
+
+@media (max-width: 1011px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 350px;
+        max-width: 400px;
+        left: -60px;
+        top: 100px;
+     }
+
+}
+
+@media (max-width: 818px){
+     .text-image-post-system .post-system-container .post{
+        min-width: 300px;
+        max-width: 350px;
+        left: -60px;
+        top: 100px;
+     }
+     .top-profile-tab .profile-tab-container .profile img{
+        width: 40px;
+        height: 40px;
+     }
+
+}
+
+     @media (max-width: 759px){
+        .text-image-post-system .post-system-container .post{
+            min-width: 257px;
+            max-width: 307px;
+            left: -90px;
+            top: 140px;
+        }
+    }
+
+    @media (max-width: 681px){
+    .text-image-post-system .post-system-container .post{
+        left: -125px;
+        /* 660  or 643 */
+    }
+
+}
+
+@media (max-width: 643px){
+     .text-image-post-system .post-system-container .post{
+        min-width: 300px;
+        max-width: 350px;
+        left: 0px;
+        top: 100px;
+     }
+}
+
+@media (max-width: 415px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 250px;
+        max-width: 300px;
+        left: 0px;
+        top: 100px;
+     }
+}
+
+@media (max-width: 357px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 220px;
+        max-width: 260px;
+        left: 5px;
+        top: 100px;
+        font-size:11.5px;
+        line-height: 1.3rem;
+     }
+
+     .text-image-post-system .post-system-container .post .post-header img{
+        width: 30px;
+        height: 30px;
+     }
+}
+
+@media (max-width: 306px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 200px;
+        max-width: 240px;
+        left: 0px;
+        top: 100px;
+        font-size:10.5px;
+        line-height: 1.2rem;
+     }
+}
+
+@media (max-width: 281px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 180px;
+        max-width: 220px;
+        left: 5px;
+        top: 100px;
+        font-size:9.5px;
+        line-height: 1.1rem;
+        padding: 7px;
+     }
+}
+
+@media (max-width: 251px){
+    .text-image-post-system .post-system-container .post{
+        min-width: 160px;
+        max-width: 200px;
+        left: 0px;
+        top: 100px;
+        font-size:8.5px;
+        line-height: 1rem;
+        padding: 7px;
+     }
+}
+
+/* === SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .text-image-post-system {
+            animation: fadeIn 0.5s ease;
+        }

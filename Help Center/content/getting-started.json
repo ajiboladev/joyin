@@ -1,0 +1,27 @@
+{
+  "type": "faq",
+  "title": "Getting Started with JOYIN",
+  "description": "Welcome to JOYIN! Here's everything you need to know to begin your journey.",
+  "faqs": [
+    {
+      "question": "How do I create a JOYIN account?",
+      "answer": "Creating an account is simple! Just download the JOYIN app from your device's app store, open it, and tap 'Sign Up'. You can register using your email address or phone number. Follow the on-screen instructions to set up your profile."
+    },
+    {
+      "question": "How do I customize my profile?",
+      "answer": "Tap on your profile picture in the bottom navigation, then select 'Edit Profile'. From here you can:<ul><li>Change your profile picture and cover photo</li><li>Update your display name and bio</li><li>Add links to other social profiles</li><li>Adjust your privacy settings</li></ul>"
+    },
+    {
+      "question": "How do I find and follow friends?",
+      "answer": "Use the search icon (magnifying glass) in the top navigation to search for people by name or username. You can also sync your contacts (with permission) to find friends who are already on JOYIN. Once you find someone, tap the 'Follow' button on their profile."
+    },
+    {
+      "question": "How do I create my first post?",
+      "answer": "Tap the '+' button at the bottom center of your screen. From there you can:<ul><li>Write text updates</li><li>Add photos or videos from your gallery</li><li>Record content directly in the app</li><li>Tag friends and add location</li><li>Choose who can see your post (Public, Friends Only, etc.)</li></ul>"
+    },
+    {
+      "question": "What are the main features of JOYIN v1.0?",
+      "answer": "JOYIN v1.0 includes:<ul><li><strong>Feed:</strong> See posts from people you follow</li><li><strong>Profile:</strong> Your personal space on JOYIN</li><li><strong>Messaging:</strong> Direct messages with friends</li><li><strong>Notifications:</strong> Stay updated on interactions</li><li><strong>Explore:</strong> Discover new content and people</li><li><strong>Settings:</strong> Customize your experience</li></ul>"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Following | JOYIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./following.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="header-title">
+                Following <span class="following-count" id="total-count">0</span>
+            </div>
+            <div style="width: 40px;"></div> <!-- Spacer for alignment -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs-container">
+             <div class="tabs">
+                <a id="followers-link" class="tab" style="cursor: pointer;">Followers</a>
+                <a  id="following-link" class="tab active" style="cursor: pointer;">Following</a>
+             </div>
+        </div>
+
+        <!-- Following List Container -->
+        <div class="following-list" id="following-list">
+            <!-- Following will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loading-state">
+            <div class="spinner"></div>
+            <p>Loading following...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <p class="empty-text">Not following anyone yet</p>
+            <p style="color: #888; margin-bottom: 30px; font-size: 14px;">
+                When you follow someone, they'll appear here.
+            </p>
+            <button class="explore-btn" onclick="exploreUsers()">
+                Explore Users
+            </button>
+            <!-- <button class="explore-btn2" onclick="window.location.href='../searchbar/'">
+                Explore Users
+            </button> -->
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module" src="./following.js">
+        
+    </script>
+</body>
+</html>
