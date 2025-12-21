@@ -7,18 +7,77 @@
     <link rel="icon" type="image/x-icon" href="joyin-favicon.ico">
 
     <!-- Social Media Meta Tags -->
-    <meta property="og:title" content="JOYIN - The Social App That's Always Fresh">
-<meta property="og:description" content="Connect instantly in your browser. No downloads, no updates, just pure social connection.">
-<meta property="og:image" content="https://joyin-social.vercel.app/Joyin.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:url" content="https://joyin-social.vercel.app/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="JOYIN">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="JOYIN - Always Fresh Social">
-<meta name="twitter:description" content="The social app that works instantly in your browser">
-<meta name="twitter:image" content="https://joyin-social.vercel.app/Joyin.png">
+    <meta name="title" content="JOYIN - The social app that's always fresh">
+    <meta name="description" content="Connect, share, and stay updated with JOYIN - The social app that's always fresh. Join the community today!">
+    <meta name="keywords" content="social media, joyin, connect, share, social network">
+    <meta name="author" content="JOYIN">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="JOYIN">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="JOYIN">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#5b53f2">
+    <meta name="msapplication-TileColor" content="#5b53f2">
+    <meta name="msapplication-navbutton-color" content="#5b53f2">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Favicons -->
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="shortcut icon" href="/favicon.ico"> -->
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-57x57.png">
+    
+    <!-- Apple Splash Screens -->
+    <link rel="apple-touch-startup-image" href="/splash/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="/splash/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joyin-web.vercel.app/">
+    <meta property="og:title" content="JOYIN - The social app that's always fresh">
+    <meta property="og:description" content="Connect, share, and stay updated with JOYIN">
+    <meta property="og:image" content="https://joyin-web.vercel.app/Joyin.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://joyin-web.vercel.app/">
+    <meta property="twitter:title" content="JOYIN - The social app that's always fresh">
+    <meta property="twitter:description" content="Connect, share, and stay updated with JOYIN">
+    <meta property="twitter:image" content="https://joyin-web.vercel.app/Joyin.png">
+    
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="/pwa-install.js"></script>
+
+
+
     
     <style>
         /* CSS Reset */
@@ -187,6 +246,8 @@
         <div class="loading-status" id="loadingStatus">Checking authentication...</div>
     </div>
 
+    
+
     <!-- Firebase Authentication Script -->
     <script type="module">
         // Your time preferences
@@ -298,5 +359,211 @@
             }
         });
     </script>
+
+     <!-- PWA Installation Script -->
+    <script src="/pwa-install.js"></script>
+    
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    Primary Meta Tags
+    <title>JOYIN - The social app that's always fresh</title>
+    
+    Styles
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .loader-container {
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            color: #5b53f2;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .slogan {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(91, 83, 242, 0.1);
+            border-top-color: #5b53f2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        .loading-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+        }
+        
+        .dots {
+            display: inline-block;
+        }
+        
+        .dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(91, 83, 242, 0.5),
+                             0 0 40px rgba(91, 83, 242, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(91, 83, 242, 0.8),
+                             0 0 60px rgba(91, 83, 242, 0.5);
+            }
+        }
+        
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+        
+        /* Fade out animation */
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="logo">JOYIN</div>
+        <div class="slogan">The social app that's always fresh</div>
+        <div class="spinner"></div>
+        <div class="loading-text">Loading<span class="dots"></span></div>
+    </div>
+
+    Firebase
+    <script type="module">
+        import { auth } from './firebase.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        Check authentication status
+        onAuthStateChanged(auth, (user) => {
+            const loaderContainer = document.querySelector('.loader-container');
+            
+            setTimeout(() => {
+                loaderContainer.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    if (user) {
+                        User is logged in - go to home
+                        console.log('✅ User authenticated:', user.uid);
+                        window.location.href = './home/?view=home&tab=post&filter=popular';
+                    } else {
+                        No user - go to login
+                        console.log('❌ No user found, redirecting to login');
+                        window.location.href = './login/?view=login';
+                    }
+                }, 500); // Wait for fade animation
+            }, 1500); // Show loading screen for at least 1.5 seconds
+        });
+    </script>
+
+    PWA Installation Script
+    <script src="/pwa-install.js"></script>
+    
+    Register Service Worker
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html> -->

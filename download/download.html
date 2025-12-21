@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN - Download Page
+    Get the JOYIN app experience
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download JOYIN - The Social App That's Always Fresh</title>
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="joyin-favicon.ico">
+    <style>
+        /* ========== BASE STYLES ========== */
+        :root {
+            --joyin-black: #000000;
+            --joyin-dark: #0a0a0a;
+            --joyin-darker: #050505;
+            --joyin-accent: #5b53f2;
+            --joyin-accent-light: #6c65f3;
+            --joyin-gradient: linear-gradient(135deg, #5b53f2, #8a85ff);
+            --joyin-white: #ffffff;
+            --joyin-light: #f8f9fa;
+            --joyin-gray: #6c757d;
+            --joyin-gray-dark: #343a40;
+            --joyin-border: #2d2d2d;
+            --joyin-card-bg: #121212;
+            --joyin-hover: #1a1a1a;
+            --joyin-success: #31a24c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--joyin-black);
+            color: var(--joyin-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ========== HEADER ========== */
+        .download-header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--joyin-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(91, 83, 242, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(138, 133, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--joyin-white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-home:hover {
+            background: var(--joyin-accent);
+            transform: translateX(-5px);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0 30px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--joyin-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-circle svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--joyin-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 30%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--joyin-gray);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .download-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* ========== DOWNLOAD OPTIONS ========== */
+        .download-options {
+            background: var(--joyin-card-bg);
+            border: 1px solid var(--joyin-border);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-options::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--joyin-gradient);
+        }
+
+        .option-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--joyin-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-title i {
+            color: var(--joyin-accent);
+        }
+
+        .device-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .device-option {
+            background: var(--joyin-hover);
+            border: 1px solid var(--joyin-border);
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .device-option:hover {
+            border-color: var(--joyin-accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(91, 83, 242, 0.2);
+        }
+
+        .device-option.active {
+            border-color: var(--joyin-accent);
+            background: rgba(91, 83, 242, 0.1);
+        }
+
+        .device-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .device-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(91, 83, 242, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--joyin-accent);
+            font-size: 24px;
+        }
+
+        .device-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--joyin-white);
+        }
+
+        .device-info p {
+            color: var(--joyin-gray);
+            font-size: 0.9rem;
+        }
+
+        .device-details {
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: none;
+        }
+
+        .device-option.active .device-details {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .download-steps {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .download-steps li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--joyin-gray);
+        }
+
+        .download-steps li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--joyin-accent);
+            font-weight: bold;
+        }
+
+        /* ========== MAIN DOWNLOAD BUTTON ========== */
+        .main-download-btn {
+            width: 100%;
+            padding: 22px;
+            background: var(--joyin-gradient);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-download-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(91, 83, 242, 0.4);
+        }
+
+        .main-download-btn:active {
+            transform: translateY(0);
+        }
+
+        .main-download-btn i {
+            font-size: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .btn-subtext {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* ========== FEATURES ========== */
+        .features-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--joyin-card-bg);
+            border: 1px solid var(--joyin-border);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--joyin-accent);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(91, 83, 242, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--joyin-accent);
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--joyin-white);
+        }
+
+        .feature-card p {
+            color: var(--joyin-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            background: var(--joyin-card-bg);
+            border: 1px solid var(--joyin-border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .testimonial-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--joyin-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 1024px) {
+            .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .testimonial-card {
+            background: var(--joyin-hover);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--joyin-accent);
+            transform: translateY(-5px);
+        }
+
+        .testimonial-text {
+            color: var(--joyin-white);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            font-size: 60px;
+            color: var(--joyin-accent);
+            opacity: 0.3;
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-family: serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--joyin-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--joyin-white);
+        }
+
+        .author-info p {
+            color: var(--joyin-gray);
+            font-size: 0.85rem;
+        }
+
+        /* ========== FAQ ========== */
+        .faq-section {
+            margin-top: 60px;
+        }
+
+        .faq-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--joyin-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: var(--joyin-card-bg);
+            border: 1px solid var(--joyin-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--joyin-white);
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-icon {
+            color: var(--joyin-accent);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--joyin-gray);
+            line-height: 1.5;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+
+        /* ========== FOOTER ========== */
+        .download-footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--joyin-border);
+            margin-top: 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--joyin-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--joyin-accent);
+        }
+
+        .copyright {
+            color: var(--joyin-gray);
+            font-size: 0.85rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .download-header {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .download-options,
+            .features-section,
+            .testimonials {
+                padding: 25px;
+            }
+            
+            .back-home {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                display: inline-flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
+            .device-option {
+                padding: 20px;
+            }
+            
+            .main-download-btn {
+                padding: 18px;
+                font-size: 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* ========== UTILITIES ========== */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mt-30 { margin-top: 30px; }
+        .mb-20 { margin-bottom: 20px; }
+        .mb-30 { margin-bottom: 30px; }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--joyin-darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--joyin-accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--joyin-accent-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="download-header">
+        <div class="header-bg"></div>
+        <a onclick="window.history.back()" class="back-home" style="cursor: pointer;">
+            <i class="fas fa-arrow-left"></i>
+            Back to JOYIN
+        </a>
+        
+        <div class="logo-container">
+            <div class="logo-circle">
+                <h1>J</h1>
+            </div>
+            <h1 class="logo-text">JOYIN</h1>
+        </div>
+        
+        <h1 class="page-title">Get the JOYIN Experience</h1>
+        <p class="page-subtitle">Install JOYIN on your device for faster access, offline use, and notifications</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="download-container">
+        <div class="content-grid">
+            <!-- Download Options -->
+            <section class="download-options">
+                <h2 class="option-title">
+                    <i class="fas fa-mobile-alt"></i>
+                    Choose Your Device
+                </h2>
+                
+                <div class="device-options">
+                    <!-- Android Option -->
+                    <div class="device-option active" data-device="android">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i class="fab fa-android"></i>
+                            </div>
+                            <div class="device-info">
+                                <h3>Android & Chrome</h3>
+                                <p>Chrome, Samsung Internet, Edge</p>
+                            </div>
+                        </div>
+                        <div class="device-details">
+                            <ul class="download-steps">
+                                <li>Tap "Add JOYIN to Home Screen" below</li>
+                                <li>In the prompt, tap "Add" or "Install"</li>
+                                <li>Find JOYIN on your home screen</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- iOS Option -->
+                    <div class="device-option" data-device="ios">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i class="fab fa-apple"></i>
+                            </div>
+                            <div class="device-info">
+                                <h3>iPhone & iPad</h3>
+                                <p>Safari, Chrome for iOS</p>
+                            </div>
+                        </div>
+                        <div class="device-details">
+                            <ul class="download-steps">
+                                <li>Tap the Share button <i class="fas fa-share-square"></i></li>
+                                <li>Scroll down and tap "Add to Home Screen"</li>
+                                <li>Tap "Add" in the top right corner</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Option -->
+                    <div class="device-option" data-device="desktop">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="device-info">
+                                <h3>Windows, Mac & Linux</h3>
+                                <p>Chrome, Edge, Firefox, Safari</p>
+                            </div>
+                        </div>
+                        <div class="device-details">
+                            <ul class="download-steps">
+                                <li>Look for the install icon in your address bar</li>
+                                <li>Or click "Install JOYIN" when prompted</li>
+                                <li>JOYIN will open in its own window</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Download Button -->
+                <button class="main-download-btn" id="installBtn">
+                    <i class="fas fa-rocket"></i>
+                    <div>
+                        Add JOYIN to Home Screen
+                        <span class="btn-subtext">No app store • Works offline • Free</span>
+                    </div>
+                </button>
+
+                <!-- Alternative Instructions -->
+                <div class="mt-30 text-center">
+                    <p style="color: var(--joyin-gray); font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i>
+                        Can't see the install button? 
+                        <a href="#manual-install" style="color: var(--joyin-accent); text-decoration: none;">
+                            View manual instructions
+                        </a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="features-section">
+                <h2 class="option-title">
+                    <i class="fas fa-star"></i>
+                    Why Install JOYIN?
+                </h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Instant Launch</h3>
+                        <p>Open JOYIN directly from your home screen. No browser tabs, no typing URLs.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-wifi-slash"></i>
+                        </div>
+                        <h3>Works Offline</h3>
+                        <p>Access your feed and messages even without an internet connection.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Push Notifications</h3>
+                        <p>Get instant alerts for new messages, likes, and mentions.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <h3>Auto Updates</h3>
+                        <p>Always get the latest features without visiting app stores.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Full App Experience</h3>
+                    <p>Runs in its own window with no browser interface. Feels like a native app with enhanced performance and security.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <h2 class="testimonial-title">
+                <i class="fas fa-comment-alt"></i>
+                What Users Say
+            </h2>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I installed JOYIN on my home screen and it feels exactly like a native app. The speed is incredible!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <h4>Sarah Chen</h4>
+                            <p>Designer • 2 months on JOYIN</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"No more waiting for app store updates. JOYIN just gets better automatically. This is the future!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <h4>Marcus Johnson</h4>
+                            <p>Developer • 1 month on JOYIN</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I was skeptical about web apps, but JOYIN works better than most native apps I've used. The offline support is amazing."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">T</div>
+                        <div class="author-info">
+                            <h4>Taylor Kim</h4>
+                            <p>Student • 3 weeks on JOYIN</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section" id="manual-install">
+            <h2 class="faq-title">
+                <i class="fas fa-question-circle"></i>
+                Frequently Asked Questions
+            </h2>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What's the difference between the website and installed app?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        The installed version runs in its own window (like a native app), works offline, sends push notifications, and launches faster from your home screen.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is it really free? No hidden costs?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, JOYIN is completely free. No subscriptions, no in-app purchases, no ads. We believe social connection should be accessible to everyone.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        I don't see the install button. What should I do?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Try these steps: 1) Use Chrome, Edge, or Safari 2) Visit the main JOYIN page first 3) Refresh the page 4) Look for the install icon in your address bar.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I uninstall JOYIN?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        On mobile: Press and hold the JOYIN icon, then tap "Uninstall" or "Remove from Home Screen". On desktop: Right-click the JOYIN window and select "Uninstall".
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Will installing use storage on my device?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Very little! JOYIN uses about 2-5MB of storage, compared to 100-200MB for typical social media apps. It's incredibly lightweight.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="download-footer">
+        <div class="footer-links">
+            <a href="../Privacy-Policy/">Privacy Policy</a>
+            <a href="../Terms&Conditions/">Terms of Service</a>
+            <a href="../Help Center/">Help Center</a>
+            <a href="../Feed-back/">Contact Us</a>
+            <a>About JOYIN</a>
+        </div>
+        <p class="copyright">
+            © 2025 JOYIN. The social app that's always fresh.<br>
+            No app stores. No wait. Just connection.
+        </p>
+    </footer>
+
+    <!-- Installation Success Modal -->
+    <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: var(--joyin-card-bg); border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; border: 2px solid var(--joyin-accent);">
+            <div style="font-size: 60px; color: var(--joyin-accent); margin-bottom: 20px;">
+                🎉
+            </div>
+            <h2 style="color: white; margin-bottom: 10px;">JOYIN Installed!</h2>
+            <p style="color: var(--joyin-gray); margin-bottom: 30px;">
+                Check your home screen for the JOYIN icon. 
+                Tap it anytime to open the app.
+            </p>
+            <button onclick="closeModal()" style="background: var(--joyin-accent); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer;">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+   
+
+    <script>
+        // ========== PWA INSTALLATION ==========
+        let installPrompt = null;
+        const installBtn = document.getElementById('installBtn');
+        
+        // Listen for install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('✅ PWA install available');
+            e.preventDefault();
+            installPrompt = e;
+            
+            // Enable install button
+            installBtn.disabled = false;
+            installBtn.innerHTML = `
+                <i class="fas fa-rocket"></i>
+                <div>
+                    Add JOYIN to Home Screen
+                    <span class="btn-subtext">Ready to install • Tap here</span>
+                </div>
+            `;
+            
+            installBtn.style.background = 'linear-gradient(135deg, #5b53f2, #8a85ff)';
+        });
+        
+        // Handle install button click
+        installBtn.addEventListener('click', async () => {
+            if (!installPrompt) {
+                showManualInstructions();
+                return;
+            }
+            
+            try {
+                // Show install prompt
+                const result = await installPrompt.prompt();
+                console.log('Install prompt shown');
+                
+                // Wait for user choice
+                const choiceResult = await result.userChoice;
+                
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted install');
+                    showSuccessModal();
+                } else {
+                    console.log('User dismissed install');
+                }
+                
+                installPrompt = null; // Reset
+                installBtn.disabled = true;
+                
+            } catch (error) {
+                console.error('Install failed:', error);
+                showManualInstructions();
+            }
+        });
+        
+        // Detect when app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 JOYIN was installed');
+            installBtn.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    JOYIN Installed!
+                    <span class="btn-subtext">Find it on your home screen</span>
+                </div>
+            `;
+            installBtn.style.background = '#31a24c';
+            installBtn.disabled = true;
+            showSuccessModal();
+        });
+        
+        // ========== DEVICE SELECTION ==========
+        const deviceOptions = document.querySelectorAll('.device-option');
+        
+        deviceOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                deviceOptions.forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
+                // Add active class to clicked option
+                option.classList.add('active');
+                
+                // Update install button text based on device
+                const device = option.dataset.device;
+                updateInstallButton(device);
+            });
+        });
+        
+        function updateInstallButton(device) {
+            const texts = {
+                'android': 'Add JOYIN to Home Screen',
+                'ios': 'Add JOYIN to Home Screen',
+                'desktop': 'Install JOYIN App'
+            };
+            
+            const subtitles = {
+                'android': 'For Android & Chrome browsers',
+                'ios': 'For iPhone, iPad & Safari',
+                'desktop': 'For Windows, Mac & Linux'
+            };
+            
+            installBtn.innerHTML = `
+                <i class="fas fa-rocket"></i>
+                <div>
+                    ${texts[device]}
+                    <span class="btn-subtext">${subtitles[device]}</span>
+                </div>
+            `;
+        }
+        
+        // ========== FAQ TOGGLE ==========
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // ========== MODAL FUNCTIONS ==========
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        function showManualInstructions() {
+            // Scroll to FAQ section
+            document.getElementById('manual-install').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Open first FAQ item
+            if (faqItems.length > 2) {
+                faqItems[2].classList.add('active');
+            }
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: #121212; border: 1px solid #5b53f2; border-radius: 10px; padding: 15px; z-index: 9999; max-width: 300px;">
+                    <strong style="color: white;">Manual instructions loaded</strong>
+                    <p style="color: #aaa; margin-top: 5px; font-size: 14px;">Scroll down for step-by-step guide</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // ========== INITIALIZE ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default device based on user agent
+            const userAgent = navigator.userAgent.toLowerCase();
+            let defaultDevice = 'desktop';
+            
+            if (userAgent.includes('android')) {
+                defaultDevice = 'android';
+            } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+                defaultDevice = 'ios';
+            }
+            
+            // Activate corresponding device option
+            const defaultOption = document.querySelector(`[data-device="${defaultDevice}"]`);
+            if (defaultOption) {
+                defaultOption.click();
+            }
+            
+            // Check if already installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                installBtn.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        JOYIN Already Installed
+                        <span class="btn-subtext">Open from your home screen</span>
+                    </div>
+                `;
+                installBtn.style.background = '#31a24c';
+                installBtn.disabled = true;
+            }
+            
+            console.log('📱 JOYIN Download Page Ready');
+        });
+    </script>
+</body>
+</html>

@@ -1,40 +1,28 @@
 // ============================================
-// FIREBASE IMPORTS - ADDED collection
+// FIREBASE IMPORTS
 // ============================================
-
-// Import Firebase Firestore functions we need
-import { doc, getDoc, updateDoc, increment, deleteDoc, setDoc, collection, getDocs } 
+import { doc, getDoc, updateDoc, increment, deleteDoc, setDoc,  collection,
+  query,
+  where,
+  orderBy,
+  getDocs } 
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-// Import our Firebase configuration from a local file
 import { auth, db } from "../firebase.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"; // Use your Firebase version
 
-// Import Firebase Authentication listener
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 // ============================================
 // DOM ELEMENT CACHE
 // ============================================
-
-// Get ALL elements with class ".username_s" (both desktop & mobile)
 const usernameElements = document.querySelectorAll(".username_s");
-
-// Get ALL elements with class ".bio-text-content"
 const bioElements = document.querySelectorAll(".bio-text-content");
-
-// Get ALL elements with class ".followers-count" (the number, not the text)
 const followersElements = document.querySelectorAll(".followers-count");
-
-// Get ALL elements with class ".following-count"
 const followingElements = document.querySelectorAll(".following-count");
-
-// Get ALL elements with class ".like-count"
 const likes = document.querySelectorAll(".like-count");
-
-// Get the SINGLE element with class ".block" (for showing messages)
 const message = document.querySelector(".block");
 
-// Get specific elements by their IDs for click functionality
 const followersDesktop = document.getElementById("followers-desktop");
 const followingDesktop = document.getElementById("following-desktop");
 const followersMobile = document.getElementById("followers-mobile");
@@ -44,57 +32,100 @@ const uploadMobile = document.getElementById("upload-mobile");
 // ============================================
 // GLOBAL VARIABLES
 // ============================================
-
-// Variable to store WHO is looking at the page (current logged-in user)
 let viewerId = null;
-
-// Variable to store WHOSE profile is being shown (could be viewer's own or someone else's)
 let profileUserId = null;
 
 // ============================================
-// SEE MORE LINK FUNCTION
+// SEE MORE LINK FUNCTION - COMPLETELY FIXED
 // ============================================
-
-// Function to make "See More" links work (for long bios)
 function setupSeeMoreLinks(uid) {
-  // Get the desktop "See More" link
-  const seeMoreLink = document.getElementById("see-more-bio-link");
-  // Get the mobile "See More" link
-  const seeMoreLinkSm = document.getElementById("see-more-bio-link-sm");
+  console.log("📖 Setting up see more links for uid:", uid);
   
-  // Setup desktop link if it exists
-  if (seeMoreLink) {
-    // When desktop link is clicked...
-    seeMoreLink.onclick = function(event) {
-      event.preventDefault(); // Stop normal link behavior
-      // Redirect to bio page with user ID
+  // Get all see more links
+  const allSeeMoreLinks = document.querySelectorAll('.see-more');
+  console.log("📖 Found see more links:", allSeeMoreLinks.length);
+  
+  allSeeMoreLinks.forEach((link, index) => {
+    console.log(`📖 Setting up link ${index + 1}:`, link.id || 'no-id');
+    
+    // Remove any existing handlers by cloning
+    const newLink = link.cloneNode(true);
+    link.parentNode.replaceChild(newLink, link);
+    
+    // Add the click handler
+    newLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      console.log("📖 See more clicked! Navigating to bio page...");
       window.location.href = `more-bio/?view=profile&tab=see-more&uid=${uid}`;
+    });
+    
+    console.log(`✅ See more link ${index + 1} handler added`);
+  });
+}
+
+// ============================================
+// PROFILE IMAGE NAVIGATION - FIXED
+// ============================================
+function setupProfileImageNavigation(uid) {
+  console.log("🖼️ Setting up profile image navigation for uid:", uid);
+  
+  // Get the CONTAINER divs, not the images themselves
+  const desktopBannerContainer = document.querySelector("#profile-banner-desktop .profile-banner");
+  const mobileBannerContainer = document.querySelector("#profile-banner-mobile");
+  
+  if (desktopBannerContainer) {
+    desktopBannerContainer.style.cursor = "pointer";
+    
+    // Remove any existing click handlers
+    const newDesktopBanner = desktopBannerContainer.cloneNode(true);
+    desktopBannerContainer.parentNode.replaceChild(newDesktopBanner, desktopBannerContainer);
+    
+    newDesktopBanner.onclick = function(e) {
+      // Only trigger if clicking the image or the container, not child elements
+      if (e.target.tagName === 'IMG' || e.target === newDesktopBanner) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("🖼️ Desktop profile image clicked, navigating...");
+        window.location.href = `profile-image/?view=profile-image&uid=${uid}`;
+      }
     };
+    console.log("✅ Desktop profile image click handler added");
+  } else {
+    console.warn("⚠️ Desktop profile banner not found");
   }
   
-  // Setup mobile link if it exists
-  if (seeMoreLinkSm) {
-    // When mobile link is clicked...
-    seeMoreLinkSm.onclick = function(event) {
-      event.preventDefault(); // Stop normal link behavior
-      // Redirect to bio page with user ID
-      window.location.href = `more-bio/?view=profile&tab=see-more&uid=${uid}`;
+  if (mobileBannerContainer) {
+    mobileBannerContainer.style.cursor = "pointer";
+    
+    // Remove any existing click handlers
+    const newMobileBanner = mobileBannerContainer.cloneNode(true);
+    mobileBannerContainer.parentNode.replaceChild(newMobileBanner, mobileBannerContainer);
+    
+    newMobileBanner.onclick = function(e) {
+      // Only trigger if clicking the image or the container, not child elements
+      if (e.target.tagName === 'IMG' || e.target === newMobileBanner) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("🖼️ Mobile profile image clicked, navigating...");
+        window.location.href = `profile-image/?view=profile-image&uid=${uid}`;
+      }
     };
+    console.log("✅ Mobile profile image click handler added");
+  } else {
+    console.warn("⚠️ Mobile profile banner not found");
   }
 }
 
 // ============================================
-// INITIALIZATION - WAIT FOR DOM TO LOAD
+// INITIALIZATION
 // ============================================
-
-// Wait for HTML page to fully load before running JavaScript
 document.addEventListener("DOMContentLoaded", () => {
   
-  // Get BOTH follow buttons (desktop and mobile versions)
   const followButton = document.getElementById("follow-button");
   const followButtonSm = document.getElementById("follow-button-sm");
   
-  // Warn if no follow buttons found (helpful for debugging)
   if (!followButton && !followButtonSm) {
     console.warn("No follow buttons found");
   }
@@ -102,47 +133,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // AUTHENTICATION STATE LISTENER
   // ============================================
-
-  // Firebase listener that runs when user logs in/out
   onAuthStateChanged(auth, async (user) => {
-    // If user is logged in...
     if (user) {
       console.log("User logged in:", user.uid);
-      viewerId = user.uid; // Store the logged-in user's ID
+      viewerId = user.uid;
 
-      // Get profile user ID from URL (like "?uid=abc123")
       const params = new URLSearchParams(window.location.search);
-      // If no "uid" in URL, use the viewer's own ID
       profileUserId = params.get("uid") || viewerId;
 
-      console.log("Viewer:", viewerId);     // Who's looking
-      console.log("Profile:", profileUserId); // Whose profile is showing
+      console.log("Viewer:", viewerId);
+      console.log("Profile:", profileUserId);
 
-      // Hide follow buttons if viewing OWN profile (can't follow yourself)
       if (viewerId === profileUserId) {
-        // Hide desktop follow button
         if (followButton) followButton.style.display = "none";
-        // Hide mobile follow button
         if (followButtonSm) followButtonSm.style.display = "none";
       } else {
-        // Show follow buttons for OTHER people's profiles
         if (followButton) followButton.style.display = "block";
         if (followButtonSm) followButtonSm.style.display = "block";
         
-        // Hide edit button (can't edit someone else's profile)
         const editProfileButton = document.getElementById("edit-profile-button");
         if (editProfileButton) editProfileButton.style.display = "none";
         
-        // Hide settings icon (can't access someone else's settings)
         const settingsIcon = document.getElementById("settings-icon");
         if (settingsIcon) settingsIcon.style.display = "none";
+
+        const settings = document.getElementById("settings-icon-sm");
+        if (settings) settings.style.display = "none";
         
-        // Show message button (can message other users)
         const editProfileMessage = document.getElementById("edit-profile-button-message");
         if (editProfileMessage) editProfileMessage.style.display = "block";
 
-        // Hide some navigation links when viewing others' profiles
-        // (This prevents users from seeing others' followers/following/upload stats)
+        const editProfileButtonSm = document.getElementById("edit-profile-sm");
+        if (editProfileButtonSm) editProfileButtonSm.style.display = "none";
+        
         if (followersDesktop) followersDesktop.style.display = "none";
         if (followingDesktop) followingDesktop.style.display = "none";
         if (followersMobile) followersMobile.style.display = "none";
@@ -150,26 +173,27 @@ document.addEventListener("DOMContentLoaded", () => {
         if (uploadMobile) uploadMobile.style.display = "none";
       }
       
-      // Show "Loading..." state
       showLoadingState();
 
-      // Setup clickable followers/following pages
       await followingPage(profileUserId);
       await followersPage(profileUserId);
       
-      // Load the user's profile data from Firebase
       await loadUserProfile(profileUserId);
+       loadUserPosts(profileUserId);
+      
+      // ✅ SETUP PROFILE IMAGE NAVIGATION AFTER PROFILE LOADS
+      setupProfileImageNavigation(profileUserId);
+      
+      // ✅ SETUP SEE MORE LINKS AFTER A SHORT DELAY
+      setTimeout(() => {
+        setupSeeMoreLinks(profileUserId);
+      }, 500);
 
-      // Setup "See More" links AFTER profile is loaded
-      setupSeeMoreLinks(profileUserId);
-
-      // Setup follow system ONLY if viewing someone else's profile
       if (viewerId !== profileUserId) {
         await initializeFollowSystem();
       }
       
     } else {
-      // No user logged in - redirect to login page
       window.location.href = "../login/?view=login";
     }
   });
@@ -177,77 +201,67 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // LOAD USER PROFILE FUNCTION
   // ============================================
-
-  // Function to load user data from Firebase
   async function loadUserProfile(uid) {
     try {
-      // Create a reference to the user's document in Firestore
-      // Path: "users/{userId}"
       const userRef = doc(db, "users", uid);
-      
-      // Get the actual document data (waits for Firebase response)
       const userSnap = await getDoc(userRef);
 
-      // If the user document exists in Firebase...
       if (userSnap.exists()) {
-        // Get all the data from the document
         const data = userSnap.data();
-        // console.log("✅ Profile data loaded:", data); // Debug line
 
-        // Update ALL username elements on the page
         usernameElements.forEach(el => {
-          el.textContent = data.username || "User"; // Use "User" if no username
+          el.textContent = data.username || "User";
         });
 
-        // Update ALL bio elements
         bioElements.forEach(el => {
-          el.textContent = data.bio || "No bio yet"; // Default if no bio
-          truncateBio(el); // Cut long bios with "..."
-          setTimeout(() => {
-            truncateAllBios(); // Do it again after a short delay
-          }, 100);
+          el.textContent = data.bio || "No bio yet";
+          truncateBio(el);
         });
+        
+        // Truncate all bios after a delay to ensure DOM is ready
+        setTimeout(() => {
+          truncateAllBios();
+          console.log("✂️ Bio truncation complete");
+        }, 200);
 
-        // Update ALL followers count elements
         followersElements.forEach(el => {
-          el.textContent = data.followersCount || 0; // Default to 0
+          el.textContent = data.followersCount || 0;
         });
 
-        // Update ALL following count elements
         followingElements.forEach(el => {
-          el.textContent = data.followingCount || 0; // Default to 0
+          el.textContent = data.followingCount || 0;
         });
 
-        // Update ALL likes count elements
         likes.forEach(el => {
-          el.textContent = data.likesCount || 0; // Default to 0
+          el.textContent = data.likesCount || 0;
         });
 
-        // Update browser tab title
+        let profileImageDesktop = document.getElementById("profileImgDesktop");
+        profileImageDesktop.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+
+        let profileImageMobile = document.getElementById("profileImgMobile");
+        profileImageMobile.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+
         document.title = `(${data.username}) | JOYIN` || "(User) | JOYIN";
 
-        // Hide loading state after 1 second
         setTimeout(() => {
           hideLoadingState();
         }, 1000);
         
       } else {
-        // If user doesn't exist in Firebase...
         console.log("❌ No profile found");
         showErrorState("Profile not found");
         message.style.color = "red";
         setTimeout(() => {
-          message.innerHTML = "Profile not found"; // Show error message
+          message.innerHTML = "Profile not found";
         }, 2000);
 
-        // Hide loading after showing error
         setTimeout(() => {
           hideLoadingState();
         }, 2000);
       }
       
     } catch (error) {
-      // If something goes wrong (network error, etc.)
       console.error("❌ Error loading profile:", error);
       showErrorState("Failed to load profile");
       message.style.color = "red";
@@ -264,8 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // LOADING STATE FUNCTIONS
   // ============================================
-
-  // Show "Loading..." text while fetching data
   function showLoadingState() {
     usernameElements.forEach(el => {
       el.textContent = "Loading...";
@@ -275,14 +287,12 @@ document.addEventListener("DOMContentLoaded", () => {
       el.textContent = "Loading profile...";
     });
     
-    // Add a "loading" class to the profile section
     const profileSection = document.querySelector(".profile-section");
     if (profileSection) {
       profileSection.classList.add("loading");
     }
   }
 
-  // Remove "Loading..." state
   function hideLoadingState() {
     const profileSection = document.querySelector(".profile-section");
     if (profileSection) {
@@ -290,7 +300,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Show error message in bio area
   function showErrorState(errorMessage) {
     bioElements.forEach(el => {
       el.textContent = errorMessage;
@@ -301,8 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // DYNAMIC LOADING STYLES
   // ============================================
-
-  // CSS that gets added to the page for loading state
   const loadingStyles = `
   .profile-section.loading {
       opacity: 0.7;
@@ -320,62 +327,71 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   `;
 
-  // Create a <style> tag and add it to the page
   const styleSheet = document.createElement("style");
   styleSheet.textContent = loadingStyles;
   document.head.appendChild(styleSheet);
 
   // ============================================
-  // BIO TEXT TRUNCATION FUNCTIONS
+  // BIO TEXT TRUNCATION FUNCTIONS - COMPLETELY FIXED
   // ============================================
-
-  // Cut long bios and add "..." after 120 characters
   function truncateBio(bioElement) {
       const charLimit = 120;
-      const fullText = bioElement.textContent;
-      const seeMoreLink = bioElement.nextElementSibling; // The "See More" link next to bio
+      const fullText = bioElement.textContent.trim();
       
-      // If there's a "See More" link next to the bio...
-      if (seeMoreLink && seeMoreLink.classList.contains('see-more-link')) {
-          // If bio is longer than limit...
+      // Find the next sibling that is a see-more link
+      let seeMoreLink = bioElement.nextElementSibling;
+      while (seeMoreLink && !seeMoreLink.classList.contains('see-more')) {
+        seeMoreLink = seeMoreLink.nextElementSibling;
+      }
+      
+      if (seeMoreLink) {
           if (fullText.length > charLimit) {
-              // Cut it and add "..."
-              bioElement.textContent = fullText.substring(0, charLimit) + '...';
-              seeMoreLink.style.display = 'inline'; // Show "See More" link
+              bioElement.textContent = fullText.substring(0, charLimit);
+              seeMoreLink.style.display = 'inline';
+              console.log("✂️ Bio truncated to", charLimit, "chars, see more shown");
           } else {
-              seeMoreLink.style.display = 'none'; // Hide "See More" link
+              seeMoreLink.style.display = 'none';
+              console.log("✂️ Bio is short (", fullText.length, "chars), see more hidden");
           }
+      } else {
+        console.warn("⚠️ See more link not found next to bio element");
       }
   }
 
-  // Same function for mobile/other bio elements
   function truncateAllBios() {
     const bioTexts = document.querySelectorAll('.bio-text-content');
+    console.log("✂️ Truncating all bios, found:", bioTexts.length);
     
-    bioTexts.forEach(bioText => {
-      const seeMoreLink = bioText.nextElementSibling;
+    bioTexts.forEach((bioText, index) => {
+      const fullBioText = bioText.textContent.trim();
+      const charLimit = 120;
       
-      if (seeMoreLink && seeMoreLink.classList.contains('see-more')) {
-        const fullBioText = bioText.textContent;
-        const charLimit = 50;
-        
+      // Find the next sibling that is a see-more link
+      let seeMoreLink = bioText.nextElementSibling;
+      while (seeMoreLink && !seeMoreLink.classList.contains('see-more')) {
+        seeMoreLink = seeMoreLink.nextElementSibling;
+      }
+      
+      if (seeMoreLink) {
         if (fullBioText.length > charLimit) {
-          bioText.textContent = fullBioText.substring(0, charLimit) + '...';
+          bioText.textContent = fullBioText.substring(0, charLimit);
           seeMoreLink.style.display = 'inline';
+          console.log(`✂️ Bio ${index + 1} truncated to ${charLimit} chars, see more shown`);
         } else {
           seeMoreLink.style.display = 'none';
+          console.log(`✂️ Bio ${index + 1} is short (${fullBioText.length} chars), see more hidden`);
         }
+      } else {
+        console.warn(`⚠️ See more link not found for bio ${index + 1}`);
       }
     });
   }
 
-}); // END OF DOMContentLoaded - Everything above runs when page loads
+});
 
 // ============================================
-// FOLLOW SYSTEM FUNCTIONS - UPDATED
+// FOLLOW SYSTEM FUNCTIONS
 // ============================================
-
-// Get all follow buttons on the page
 function getAllFollowButtons() {
   const buttons = [];
   const desktopButton = document.getElementById("follow-button");
@@ -387,45 +403,38 @@ function getAllFollowButtons() {
   return buttons;
 }
 
-// CHECK IF VIEWER ALREADY FOLLOWS PROFILE USER
 async function checkFollowStatus() {
-  // Need both IDs to check
   if (!viewerId || !profileUserId) {
     console.error("Cannot check follow status: IDs missing");
     return false;
   }
   
   try {
-    // Reference to: "users/{profileUserId}/followers/{viewerId}"
     const followRef = doc(db, "users", profileUserId, "followers", viewerId);
     const snap = await getDoc(followRef);
-    return snap.exists(); // true if following, false if not
+    return snap.exists();
   } catch (error) {
     console.error("Error checking follow status:", error);
     return false;
   }
 }
 
-// UPDATE BUTTON TEXT BASED ON FOLLOW STATUS
 async function updateFollowButton() {
   const followButtons = getAllFollowButtons();
   
-  if (followButtons.length === 0) return; // No buttons found
+  if (followButtons.length === 0) return;
   
   try {
-    // Check if currently following
     const isFollowing = await checkFollowStatus();
     
-    // Update each button
     followButtons.forEach(button => {
       button.textContent = isFollowing ? "Unfollow" : "Follow";
       
-      // Change button colors
       if (isFollowing) {
-        button.style.backgroundColor = "#333"; // Dark gray for "Unfollow"
+        button.style.backgroundColor = "#333";
         button.style.color = "#fff";
       } else {
-        button.style.backgroundColor = "#5b53f2"; // Purple for "Follow"
+        button.style.backgroundColor = "#5b53f2";
         button.style.color = "#fff";
       }
     });
@@ -434,11 +443,9 @@ async function updateFollowButton() {
   }
 }
 
-// INITIALIZE THE ENTIRE FOLLOW SYSTEM
 async function initializeFollowSystem() {
   const followButtons = getAllFollowButtons();
   
-  // Need buttons and user IDs to work
   if (followButtons.length === 0 || !viewerId || !profileUserId) {
     console.error("Cannot initialize follow system: Missing elements or IDs");
     return;
@@ -446,19 +453,14 @@ async function initializeFollowSystem() {
   
   console.log("Initializing follow system...");
   
-  // Set initial button state (Follow/Unfollow)
   await updateFollowButton();
   
-  // Setup click listeners for all buttons
   followButtons.forEach(button => {
-    // Remove old listeners first (prevent duplicates)
     button.removeEventListener("click", handleFollowClick);
-    // Add new listener
     button.addEventListener("click", handleFollowClick);
   });
 }
 
-// HANDLE FOLLOW BUTTON CLICK
 async function handleFollowClick() {
   const followButtons = getAllFollowButtons();
   
@@ -467,14 +469,13 @@ async function handleFollowClick() {
     return;
   }
   
-  // Disable all buttons during operation (prevent double clicks)
   followButtons.forEach(button => {
     button.disabled = true;
-    button.textContent = "..."; // Show loading dots
+    button.textContent = "...";
   });
   
   try {
-    await toggleFollow(); // Do the follow/unfollow action
+    await toggleFollow();
   } catch (error) {
     console.error("Follow error:", error);
     const message = document.querySelector(".block");
@@ -485,110 +486,78 @@ async function handleFollowClick() {
       }, 1500);
     }
     
-    // Restore button text if error occurs
     await updateFollowButton();
   } finally {
-    // Always re-enable buttons (even if error occurred)
     followButtons.forEach(button => {
       button.disabled = false;
     });
   }
 }
 
-// TOGGLE FOLLOW/UNFOLLOW - UPDATED FOR BIDIRECTIONAL TRACKING
 async function toggleFollow() {
   if (!viewerId || !profileUserId) {
     throw new Error("Missing viewerId or profileUserId");
   }
   
-  // References for BOTH directions:
-  // 1. User B's followers list (add/remove User A)
   const profileFollowersRef = doc(db, "users", profileUserId, "followers", viewerId);
-  
-  // 2. User A's following list (add/remove User B) - NEW for bidirectional
   const viewerFollowingRef = doc(db, "users", viewerId, "following", profileUserId);
-  
-  // References to update the count numbers
   const profileRef = doc(db, "users", profileUserId);
   const viewerRef = doc(db, "users", viewerId);
 
-  // Check if already following
   const alreadyFollowing = await getDoc(profileFollowersRef);
 
   if (alreadyFollowing.exists()) {
-    // UNFOLLOW - Remove from both collections
     console.log("Unfollowing user...");
     
-    // Remove from profile user's followers
     await deleteDoc(profileFollowersRef);
-    
-    // Remove from viewer's following
     await deleteDoc(viewerFollowingRef);
-    
-    // Decrease both counts by 1
     await updateDoc(profileRef, { followersCount: increment(-1) });
     await updateDoc(viewerRef, { followingCount: increment(-1) });
     
   } else {
-    // FOLLOW - Add to both collections
     console.log("Following user...");
     
-    // Add to profile user's followers
     await setDoc(profileFollowersRef, { 
-      followedAt: new Date().toISOString(), // Timestamp
+      followedAt: new Date().toISOString(),
       userId: viewerId
     });
     
-    // Add to viewer's following
     await setDoc(viewerFollowingRef, { 
       followedAt: new Date().toISOString(),
       userId: profileUserId
     });
     
-    // Increase both counts by 1
     await updateDoc(profileRef, { followersCount: increment(1) });
     await updateDoc(viewerRef, { followingCount: increment(1) });
   }
 
-  // Update button text (Follow/Unfollow)
   await updateFollowButton();
-  
-  // Update the count numbers on the page
   await refreshCounts();
-  
-  // Show a temporary success message
   showFollowMessage(!alreadyFollowing.exists());
 }
 
-// REFRESH COUNTS IN UI
 async function refreshCounts() {
   if (!viewerId || !profileUserId) return;
   
   try {
-    // Get fresh data for BOTH users
     const profileSnap = await getDoc(doc(db, "users", profileUserId));
     const viewerSnap = await getDoc(doc(db, "users", viewerId));
 
-    // Update profile user's counts
     if (profileSnap.exists()) {
       const profileData = profileSnap.data();
       
-      // Update ALL followers count elements
       followersElements.forEach(el => {
         el.textContent = profileData.followersCount || 0;
       });
       
-      // Update ALL following count elements
       followingElements.forEach(el => {
         el.textContent = profileData.followingCount || 0;
       });
     }
     
-    // If viewing OWN profile, update counts from viewer's data too
     if (viewerSnap.exists() && viewerId === profileUserId) {
       const viewerData = viewerSnap.data();
       
-      // Update both counts (same as above for own profile)
       followersElements.forEach(el => {
         el.textContent = viewerData.followersCount || 0;
       });
@@ -602,21 +571,14 @@ async function refreshCounts() {
   }
 }
 
-// ============================================
-// NEW FUNCTIONS FOR FOLLOW MANAGEMENT
-// ============================================
-
-// Show follow/unfollow success message
 function showFollowMessage(isFollowing) {
   let messageElement = document.querySelector(".follow-message");
   
-  // Create message element if it doesn't exist
   if (!messageElement) {
     messageElement = document.createElement("div");
     messageElement.className = "follow-message";
     messageElement.style.cssText = "text-align: center; font-size: 14px; margin-top: 5px; color: #5b53f2; display: none;";
     
-    // Try to attach it near the follow button
     const followButton = document.getElementById("follow-button");
     if (followButton && followButton.parentNode) {
       followButton.parentNode.appendChild(messageElement);
@@ -626,12 +588,10 @@ function showFollowMessage(isFollowing) {
     }
   }
   
-  // Set message text and color
   messageElement.textContent = isFollowing ? "Followed successfully!" : "Unfollowed";
   messageElement.style.color = isFollowing ? "#5b53f2" : "#333";
-  messageElement.style.display = "block"; // Show the message
+  messageElement.style.display = "block";
   
-  // Hide message after 2 seconds
   setTimeout(() => {
     if (messageElement) {
       messageElement.style.display = "none";
@@ -640,39 +600,32 @@ function showFollowMessage(isFollowing) {
 }
 
 // ============================================
-// Followers Page FUNCTIONS
+// FOLLOWERS/FOLLOWING PAGE FUNCTIONS
 // ============================================
-
-// Make followers count/link clickable
 async function followersPage(uid) {
     let desktopFollowers = document.getElementById("followers-desktop");
     let mobileFollowers = document.getElementById("followers-mobile");
     let followersCountDesktop = document.getElementById("followers-count-desktop");
     let followersCountMobile = document.getElementById("followers-count-mobile");
     
-    // Desktop followers link
     if (desktopFollowers) {
         desktopFollowers.onclick = function() {
-            // Redirect to followers list page
             window.location.href = `../followers-list/?view=followers&uid=${uid}`;
         };
     }
     
-    // Mobile followers link
     if (mobileFollowers) {
         mobileFollowers.onclick = function() {
             window.location.href = `../followers-list/?view=followers&uid=${uid}`;
         };
     }
 
-    // Desktop followers count number
     if (followersCountDesktop) {
         followersCountDesktop.onclick = function() {
             window.location.href = `../followers-list/?view=followers&uid=${uid}`;
         };
     }
 
-    // Mobile followers count number
     if (followersCountMobile) {
         followersCountMobile.onclick = function() {
             window.location.href = `../followers-list/?view=followers&uid=${uid}`;
@@ -680,38 +633,32 @@ async function followersPage(uid) {
     }
 }
 
-// ============================================
-// Following Page FUNCTIONS
-// ============================================
-
-// Make following count/link clickable
 async function followingPage(uid) {
     let desktopFollowing = document.getElementById("following-desktop");
     let followingCountDesktop = document.getElementById("following-count-desktop");
     let followingCountMobile = document.getElementById("following-count-mobile");
     
-    // Desktop following link
     if (desktopFollowing) {
         desktopFollowing.onclick = function() {
-            // Redirect to following list page
             window.location.href = `../following-list/?view=following&uid=${uid}`;
         };
     }
 
-    // Desktop following count number
     if (followingCountDesktop) {
         followingCountDesktop.onclick = function() {
             window.location.href = `../following-list/?view=following&uid=${uid}`;
         };
     }
 
-    // Mobile following count number
     if (followingCountMobile) {
         followingCountMobile.onclick = function() {
             window.location.href = `../following-list/?view=following&uid=${uid}`;
         };
     }
 }
+
+
+
 
 // ============================================
 // DEBUG HELPER - Check if everything is loaded
@@ -728,6 +675,290 @@ function checkSystemStatus() {
   console.log("==================");
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// POSTS LOADER WITH CLICK REDIRECT
+// ============================================
+
+const postsContainer = document.querySelector(".posts-container");
+const postSystem = document.querySelector(".post-system-container");
+let defaultImg = 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
+
+async function loadUserPosts(userId) {
+  postSystem.style.display = "none";
+  postsContainer.innerHTML = `<span><i class="fas fa-spinner fa-spin"></i></span> Loading posts...`;
+
+  try {
+    const postsRef = collection(db, "posts");
+    
+    const q = query(
+      postsRef,
+      where("userId", "==", userId),
+      orderBy("createdAt", "desc")
+    );
+    
+    const snapshot = await getDocs(q);
+    
+    postsContainer.innerHTML = "";
+    postSystem.style.display = "none";
+
+    // Empty state
+    if (snapshot.empty) {
+      postSystem.style.display = "none";
+      
+      if (viewerId === profileUserId) {
+        postsContainer.innerHTML = `
+          <div class="no-posts">
+            <i class="fas fa-camera-retro"></i>
+            <p>No posts yet. Be the first to post something!</p>
+            <button onclick="window.location.href='../upload/'">
+              <i class="fas fa-plus" style="font-size: 0.9rem; margin-right: 8px;"></i>Create Post
+            </button>
+          </div>
+        `;
+      } else {
+        postsContainer.innerHTML = `
+          <div class="no-posts">
+            <i class="fas fa-camera-retro"></i>
+            <p>No posts yet.</p>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // Load each post
+    snapshot.forEach((doc) => {
+      const post = doc.data();
+      const postId = doc.id; // Get post ID
+      const postDiv = document.createElement("div");
+      postDiv.className = "post-card";
+      postDiv.dataset.postId = postId; // Store post ID in data attribute
+      const timeAgo = getTimeAgo(post.createdAt);
+
+      postDiv.innerHTML = `
+        <div class="post-header">
+          <img 
+            src="${post.userProfilePic || defaultImg}" 
+            class="post-user-img"
+            onerror="this.src='${defaultImg}'"
+          >
+          <span class="post-username">${post.username || "User"}</span>
+          <span id="post-dtatus" style="font-size: 12px; color: rgb(88, 86, 86);">${timeAgo}</span>
+        </div>
+
+        
+        <div class="post-content" onclick="redirectToPost('${postId}')" style="cursor: pointer;">
+          <p class="post-text">${escapeHtml(post.text || '')}</p>
+          
+        </div>
+
+         <!-- ALWAYS show image div, but conditionally set src -->
+    ${post.imageUrl && post.imageUrl.trim() !== '' ? 
+  `<div class="post-image-container">
+    <img 
+      src="${post.imageUrl}"
+      class="post-main-image" 
+      onerror="this.onerror=null; this.src=''"
+      alt="Post image"
+    >
+  </div>` : 
+  ''
+}
+
+        <div style="padding: 12px 16px; border-top: 1px solid #424141ff;">
+          <button 
+            class="like-btn" 
+            onclick="event.stopPropagation(); handleLike('${postId}', this)"
+            style="background:none; border:none; color:#5b53f2; cursor:pointer;"
+          >
+            <i class="far fa-heart"></i> Like
+          </button>
+          <button 
+            class="view-btn" 
+            onclick="redirectToPost('${postId}')"
+            style="background:none; border:none; color:#fff; cursor:pointer; margin-left: 12px;"
+          >
+            <i class="fas fa-arrow-right"></i> View Full Post
+          </button>
+        </div>
+      `;
+
+      postsContainer.appendChild(postDiv);
+    });
+
+  } catch (error) {
+    console.error("Error loading posts:", error);
+    postsContainer.innerHTML = `
+      <div class="error-state">
+        <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ef4444; margin-bottom: 12px;"></i>
+        <p>Failed to load posts</p>
+        <button onclick="location.reload()" style="background: #5b53f2; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 12px;">
+          Try Again
+        </button>
+      </div>
+    `;
+  }
+}
+
+
+// ============================================
+// REDIRECT TO POST DETAILS PAGE
+// ============================================
+function redirectToPost(postId) {
+  console.log('Redirecting to post:', postId);
+  // Change this URL to match your post details page structure
+  window.location.href = `./more/?id=${postId}`;
+  
+  // Alternative options:
+  // window.location.href = `/post/${postId}`;
+  // window.location.href = `../post/?postId=${postId}`;
+  // window.location.href = `../view-post/?id=${postId}`;
+}
+
+// Make function global
+window.redirectToPost = redirectToPost;
+
+
+// ============================================
+// ESCAPE HTML TO PREVENT XSS
+// ============================================
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+
+// ============================================
+// STYLES FOR CLICKABLE POSTS
+// ============================================
+const postStyles = `
+<style>
+  .post-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(91, 83, 242, 0.2);
+  }
+  
+  .post-content {
+    transition: background 0.2s ease;
+  }
+  
+  .post-content:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .like-btn, .view-btn {
+    transition: all 0.2s ease;
+  }
+  
+  .like-btn:hover, .view-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .error-state, .no-posts {
+    text-align: center;
+    padding: 40px 20px;
+  }
+</style>
+`;
+
+// Add styles to page
+if (!document.getElementById('post-click-styles')) {
+  const styleElement = document.createElement('div');
+  styleElement.id = 'post-click-styles';
+  styleElement.innerHTML = postStyles;
+  document.head.appendChild(styleElement);
+}
+
+
+
+
+
+// Convert Firestore timestamp to "time ago" format
+// timestamp: The date/time when the post was created
+function getTimeAgo(timestamp) {
+    // If no timestamp exists, return "Just now"
+    if (!timestamp) return "Just now";
+    
+    // Create a Date object for right now
+    const now = new Date();
+    
+    // Convert Firestore timestamp to JavaScript Date object
+    // Firestore timestamps have a .toDate() method
+    // If it's already a Date object or string, create a new Date from it
+    const postDate = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    
+    // Calculate difference in seconds between now and post date
+    // Date objects subtracted give milliseconds, so divide by 1000
+    const seconds = Math.floor((now - postDate) / 1000);
+    
+    // Check different time ranges and return appropriate string
+    
+    // Less than 60 seconds ago
+    if (seconds < 60) return "Just now";
+    
+    // Less than 1 hour ago (3600 seconds = 60 × 60)
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    
+    // Less than 1 day ago (86400 seconds = 24 × 60 × 60)
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    
+    // Less than 1 week ago (604800 seconds = 7 × 24 × 60 × 60)
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+    
+    // More than 1 week ago - show the actual date
+    // toLocaleDateString(): Converts date to local format (e.g., "12/25/2023")
+    return postDate.toLocaleDateString();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Import at the TOP of your file (outside event listener)
+
+
+// Get the logout button
+const logoutBtn = document.getElementById("logout");
+
+// Add event listener
+logoutBtn.addEventListener("click", () => {
+  signOut(auth)
+    .then(() => {
+      console.log("✅ User logged out");
+      // Redirect after logout
+      window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("❌ Logout error:", error);
+      alert("Logout failed: " + error.message);
+    });
+});
 
 
 // Check current state

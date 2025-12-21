@@ -71,6 +71,9 @@ async function loadUserProfile(uid) {
         followingCountElement.textContent = data.followingCount || 0;
       }
 
+      let profileImg = document.getElementById("profileImage");
+      profileImg.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+
       // Hide loading state after successful load
       hideLoadingState();
       

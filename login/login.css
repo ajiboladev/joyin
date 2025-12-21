@@ -137,6 +137,38 @@ h1{
     }
 }
 
+@media (prefers-color-scheme: light){
+     body{
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    .container{
+        background-color: #1e1e1e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    input[type="text"], input[type="email"], input[type="password"]{
+        background-color: #2c2c2c;
+        border: 1px solid #444444;
+        color: #e0e0e0;
+    }
+    input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="password"]::placeholder{
+        color: #aaaaaa;
+    }
+    label{
+        color: #bbbbbb;
+    }
+    button{
+        background-color: #5B5EF2;
+        color: white;
+    }
+    button:hover{
+        background-color: #4a4edb;
+    }
+    a{
+        color: #8ab4f8;
+    }
+}
+
 /* === SCROLLBAR === */
         ::-webkit-scrollbar {
             width: 8px;

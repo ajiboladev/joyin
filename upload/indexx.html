@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<!-- 
+    JOYIN Social Media
+    Built with passion.
+    © 2025 JOYIN. All rights reserved.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post | JOYIN</title>
+    <link rel="stylesheet" href="./upload.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../pwa-install.js"></script>
+</head>
+<body>
+    <div class="upload-container">
+        <!-- Header -->
+        <div class="upload-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Create New Post</h1>
+        </div>
+
+        <!-- Post Type Selector -->
+        <div class="post-type-selector">
+            <button class="type-btn active" data-type="text-image" onclick="selectPostType('text-image')">
+                <i class="fas fa-font"></i> + <i class="fas fa-image"></i> Text & Image
+            </button>
+            <button class="type-btn" data-type="text-only" onclick="selectPostType('text-only')">
+                <i class="fas fa-font"></i> Text Only
+            </button>
+            <button class="type-btn" data-type="image-only" onclick="selectPostType('image-only')">
+                <i class="fas fa-image"></i> Image Only
+            </button>
+        </div>
+
+        <!-- Text Area -->
+        <div class="text-area-container" id="text-container">
+            <textarea class="post-textarea" 
+                      id="post-text" 
+                      placeholder="What's on your mind?"
+                      maxlength="500"
+                      oninput="updateCharCount()"></textarea>
+            <div class="char-counter" id="char-counter">
+                <span id="char-count">0</span>/500
+            </div>
+        </div>
+
+        <!-- Image Upload Area -->
+        <div class="image-upload-area active" id="image-upload-area">
+            <div class="upload-box" id="upload-box" onclick="document.getElementById('image-input').click()">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">Upload an Image</div>
+                <div class="upload-subtext">Click or drag & drop • JPG, PNG, GIF up to 5MB</div>
+            </div>
+
+            <input type="file" 
+                   id="image-input" 
+                   accept="image/*" 
+                   style="display: none;"
+                   onchange="handleImageUpload(event)">
+
+            <!-- Image Preview -->
+            <div class="image-preview" id="image-preview">
+                <img src="" alt="Preview" class="preview-image" id="preview-image">
+                <button class="remove-image" onclick="removeImage()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Post Preview -->
+        <div class="post-preview" id="post-preview">
+            <div class="preview-header">
+                <span>Preview</span>
+                <span id="preview-type">Text & Image</span>
+            </div>
+            <div class="preview-content">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop" 
+                         alt="Your Avatar" 
+                         class="preview-avatar">
+                    <div>
+                        <div style="font-weight: 500;">You</div>
+                        <div style="font-size: 12px; color: var(--subtext-color);">Just now</div>
+                    </div>
+                </div>
+                <div class="preview-text" id="preview-text">Your post will appear here...</div>
+                <div class="preview-image-container" id="preview-image-container">
+                    <!-- Image preview will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="upload-actions">
+            <button class="action-btn clear-btn" onclick="clearForm()">
+                Clear All
+            </button>
+            <button class="action-btn post-btn" id="post-btn" onclick="createPost()" disabled>
+                <i class="fas fa-paper-plane"></i> Post
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* 
+ *  JOYIN Social Media - Interactive Functions
+ *  This file powers JOYIN's features.
+ *  (c) 2025 JOYIN
+ */
+        // === STATE ===
+        let currentPostType = 'text-image';
+        let uploadedImage = null;
+        let imageUrl = '';
+
+        // === POST TYPE SELECTION ===
+        function selectPostType(type) {
+            currentPostType = type;
+            
+            // Update active button
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('active');
+            
+            // Show/hide text area
+            const textContainer = document.getElementById('text-container');
+            if (type === 'image-only') {
+                textContainer.style.display = 'none';
+            } else {
+                textContainer.style.display = 'block';
+            }
+            
+            // Show/hide image upload area
+            const imageArea = document.getElementById('image-upload-area');
+            if (type === 'text-only') {
+                imageArea.classList.remove('active');
+            } else {
+                imageArea.classList.add('active');
+            }
+            
+            // Update preview
+            updatePreview();
+            updatePostButton();
+        }
+
+        // === TEXT HANDLING ===
+        function updateCharCount() {
+            const textarea = document.getElementById('post-text');
+            const charCount = textarea.value.length;
+            const counter = document.getElementById('char-count');
+            const counterDiv = document.getElementById('char-counter');
+            
+            counter.textContent = charCount;
+            
+            if (charCount > 450) {
+                counterDiv.classList.add('warning');
+            } else {
+                counterDiv.classList.remove('warning');
+            }
+            
+            updatePreview();
+            updatePostButton();
+        }
+
+        // === IMAGE HANDLING ===
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit. Please choose a smaller image.');
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a valid image file (JPG, PNG, GIF, or WebP).');
+                return;
+            }
+            
+            uploadedImage = file;
+            
+            // Create object URL for preview
+            imageUrl = URL.createObjectURL(file);
+            
+            // Update UI
+            document.getElementById('upload-box').classList.add('has-image');
+            document.getElementById('upload-box').innerHTML = `
+                <div class="upload-text" style="color: var(--accent-color);">
+                    <i class="fas fa-check-circle"></i> Image Selected
+                </div>
+                <div class="upload-subtext">${file.name} • ${(file.size / 1024 / 1024).toFixed(2)}MB</div>
+                <div class="upload-subtext">Click to change</div>
+            `;
+            
+            // Show preview
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-image');
+            previewImg.src = imageUrl;
+            preview.classList.add('active');
+            
+            updatePreview();
+            updatePostButton();
+        }
+
+        function removeImage() {
+            uploadedImage = null;
+            imageUrl = '';
+            
+            // Reset upload box
+            const uploadBox = document.getElementById('upload-box');
+            uploadBox.classList.remove('has-image');
+            uploadBox.innerHTML = `
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">Upload an Image</div>
+                <div class="upload-subtext">Click or drag & drop • JPG, PNG, GIF up to 5MB</div>
+            `;
+            
+            // Hide preview
+            document.getElementById('image-preview').classList.remove('active');
+            
+            // Reset file input
+            document.getElementById('image-input').value = '';
+            
+            updatePreview();
+            updatePostButton();
+        }
+
+        // === DRAG & DROP ===
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadBox = document.getElementById('upload-box');
+            
+            uploadBox.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--accent-color)';
+                this.style.backgroundColor = 'rgba(91, 83, 242, 0.1)';
+            });
+            
+            uploadBox.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--border-color)';
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
+            });
+            
+            uploadBox.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--border-color)';
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
+                
+                if (e.dataTransfer.files.length) {
+                    const file = e.dataTransfer.files[0];
+                    const event = { target: { files: [file] } };
+                    handleImageUpload(event);
+                }
+            });
+        });
+
+        // === PREVIEW UPDATE ===
+        function updatePreview() {
+            const postText = document.getElementById('post-text').value;
+            const previewText = document.getElementById('preview-text');
+            const previewImageContainer = document.getElementById('preview-image-container');
+            const postPreview = document.getElementById('post-preview');
+            const previewType = document.getElementById('preview-type');
+            
+            // Update preview type label
+            previewType.textContent = {
+                'text-image': 'Text & Image',
+                'text-only': 'Text Only',
+                'image-only': 'Image Only'
+            }[currentPostType];
+            
+            // Update text preview
+            if (postText.trim() && currentPostType !== 'image-only') {
+                previewText.textContent = postText || 'Your post will appear here...';
+            } else if (currentPostType === 'image-only') {
+                previewText.textContent = '';
+            } else {
+                previewText.textContent = 'Your post will appear here...';
+            }
+            
+            // Update image preview
+            previewImageContainer.innerHTML = '';
+            if (imageUrl && currentPostType !== 'text-only') {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = 'Post image';
+                img.style.width = '100%';
+                img.style.maxHeight = '300px';
+                img.style.objectFit = 'contain';
+                img.style.borderRadius = '8px';
+                previewImageContainer.appendChild(img);
+            }
+            
+            // Show/hide preview based on content
+            const hasText = postText.trim().length > 0;
+            const hasImage = imageUrl.length > 0;
+            
+            if ((hasText && currentPostType !== 'image-only') || 
+                (hasImage && currentPostType !== 'text-only')) {
+                postPreview.classList.add('active');
+            } else {
+                postPreview.classList.remove('active');
+            }
+        }
+
+        // === POST BUTTON VALIDATION ===
+        function updatePostButton() {
+            const postText = document.getElementById('post-text').value;
+            const hasText = postText.trim().length > 0;
+            const hasImage = imageUrl.length > 0;
+            const postBtn = document.getElementById('post-btn');
+            
+            let isValid = false;
+            
+            switch(currentPostType) {
+                case 'text-image':
+                    isValid = hasText && hasImage;
+                    break;
+                case 'text-only':
+                    isValid = hasText;
+                    break;
+                case 'image-only':
+                    isValid = hasImage;
+                    break;
+            }
+            
+            postBtn.disabled = !isValid;
+        }
+
+        // === FORM ACTIONS ===
+        function clearForm() {
+            if (confirm('Clear all content? This cannot be undone.')) {
+                // Reset text
+                document.getElementById('post-text').value = '';
+                updateCharCount();
+                
+                // Reset image
+                removeImage();
+                
+                // Reset to default type
+                selectPostType('text-image');
+            }
+        }
+
+        function createPost() {
+            const postText = document.getElementById('post-text').value.trim();
+            
+            // Validate based on post type
+            switch(currentPostType) {
+                case 'text-image':
+                    if (!postText || !uploadedImage) {
+                        alert('Please add both text and an image.');
+                        return;
+                    }
+                    break;
+                case 'text-only':
+                    if (!postText) {
+                        alert('Please add some text.');
+                        return;
+                    }
+                    break;
+                case 'image-only':
+                    if (!uploadedImage) {
+                        alert('Please add an image.');
+                        return;
+                    }
+                    break;
+            }
+            
+            // In a real app, you would:
+            // 1. Upload image to server
+            // 2. Send post data to API
+            // 3. Redirect to home feed
+            
+            // For MVP simulation:
+            console.log('Creating post:', {
+                type: currentPostType,
+                text: postText,
+                image: uploadedImage ? uploadedImage.name : 'none',
+                timestamp: new Date().toISOString()
+            });
+            
+            // Show success message
+            alert('Post created successfully!');
+            
+            // Clear form
+            clearForm();
+            
+            // Redirect to home (in real app)
+            // window.location.href = 'home.html';
+        }
+
+        // === NAVIGATION ===
+        function goBack() {
+            const postText = document.getElementById('post-text').value;
+            const hasImage = imageUrl.length > 0;
+            
+            if (postText || hasImage) {
+                if (confirm('You have unsaved changes. Leave anyway?')) {
+                    window.history.back();
+                }
+            } else {
+                window.history.back();
+            }
+        }
+
+        // === KEYBOARD SHORTCUTS ===
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to post
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                const postBtn = document.getElementById('post-btn');
+                if (!postBtn.disabled) {
+                    createPost();
+                }
+            }
+            
+            // Escape to go back
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+
+        // === INITIALIZE ===
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCharCount();
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

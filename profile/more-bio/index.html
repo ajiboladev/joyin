@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me | User Name</title>
      <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+
+     <link rel="manifest" href="../../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../../pwa-install.js"></script>
     <style>
         /* 
  *  JOYIN Social Media
@@ -349,7 +353,7 @@
         <div class="bio-content">
             <!-- User Info -->
             <div class="user-info"  onclick=" window.location.href= '../profile-image/?view=profile-image'" style="cursor: pointer;">
-                <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile" class="avatar">
+                <img id="profileImage" src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile" class="avatar">
                 <div class="user-details">
                     <h2 id="user-name"></h2>
                     <p id="user-handle"></p>

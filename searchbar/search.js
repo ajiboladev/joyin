@@ -113,7 +113,7 @@ function createUserCard(userData, userId) {
     const shortBio = bioText.length > 100 ? bioText.substring(0, 100) + "..." : bioText;
     
     div.innerHTML = `
-        <img src="${avatarUrl}" alt="${userData.username}" class="user-avatar">
+        <img src="${userData.profilePic || avatarUrl}" alt="${userData.username}" class="user-avatar">
         <div class="user-info">
             <div class="user-name">${userData.username}</div>
             <div class="user-bio">${shortBio}</div>

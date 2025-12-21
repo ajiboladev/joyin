@@ -7,11 +7,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
     <title id="title">Profile | JOYIN</title>
     <link rel="stylesheet" href="./profile.css">
     <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../pwa-install.js"></script>
 </head>
 <body>
    
@@ -52,7 +56,7 @@
                                 <circle cx="11" cy="11" r="8"/>
                                 <path d="m21 21-4.35-4.35"/>
                             </svg></span>Search</a>
-                        <a  class="nav-link"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <a  class="nav-link" id="logout"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path d="M9 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/>
                                         <path d="M16 17l5-5-5-5"/>
                                         <path d="M21 12H9"/>
@@ -127,9 +131,9 @@
     <!-- Profile desktop tab -->
       <div class="block" style="text-align: center; padding-top: 10px; font-size: 13px;"></div>
     <section class="profile-section">
-        <div class="profile-header">
-            <div class="profile-banner" onclick=" window.location.href= 'profile-image/?view=profile-image'" style="cursor: pointer;">
-                <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
+        <div class="profile-header" id="profile-banner-desktop">
+            <div class="profile-banner"  style="cursor: pointer;">
+                <img id="profileImgDesktop" src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
             </div>
             <div class="profile-info">
                 <div><h1 id="username" class="username_s"></h1></div>
@@ -150,7 +154,7 @@
             </div>
            <div class="bio">
     <span id="bio-text-content" class="bio-text-content"></span>
-    <a class="see-more-link"  id="see-more-bio-link"
+    <a class="see-more"  id="see-more-bio-link-desktop"
        style="display:none; color: #007bff; cursor: pointer; text-decoration: none; margin-left: 5px;">
         ...see more
     </a>
@@ -162,7 +166,7 @@
 
     <!-- Profile SM Tab -->
     <section class="profile-sm-section">
-    <div class="settings"> 
+    <div class="settings" id="settings-icon-sm"> 
         <span class="settings-icon" onclick="window.location.href='../settings/?view=settings'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"/>
@@ -172,8 +176,8 @@
     </div>
     
     <div class="profile-header">
-        <div class="profile-banner" onclick=" window.location.href= 'profile-image/?view=profile-image'" style="cursor: pointer;">
-            <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
+        <div class="profile-banner" id="profile-banner-mobile" style="cursor: pointer;">
+            <img id="profileImgMobile" src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Profile Banner">
         </div>
     </div>
 
@@ -213,8 +217,8 @@
     <section class="text-image-post-system">
         <div class="post-system-container">
             <!-- <div class="post"> -->
-                <div class="post-header">
-                    <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="User avatar">
+                <!-- <div class="post-header">
+                    <img id="post-user-image" src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="User avatar">
                     <p id="post-username">Jane Smith</p>
                     <div id="post-status"></div>
                 </div>
@@ -224,7 +228,7 @@
                 </div>
                 
                 <span class="post-image-container">
-                    <img src="https://th.bing.com/th/id/OIP.ystiqvy5g4vBvCXWX5n6gQHaE8?w=294&h=196&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" alt="Post image">
+                    <img id="post-image" src="https://th.bing.com/th/id/OIP.ystiqvy5g4vBvCXWX5n6gQHaE8?w=294&h=196&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" alt="Post image">
                 </span>
                 
                 <div class="reaction">
@@ -234,7 +238,7 @@
                     <p id="reaction-count" class="reaction-count">0 likes</p>
                 </div>
                 
-                <!-- Add post actions -->
+                Add post actions
                 <div class="post-actions">
                     <button class="action-button like-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -258,7 +262,7 @@
                         </svg>
                         Share
                     </button>
-                </div>
+                </div> -->
             <!-- </div> -->
         </div>
     </section>

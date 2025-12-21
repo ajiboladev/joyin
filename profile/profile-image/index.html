@@ -1,16 +1,70 @@
 <!DOCTYPE html>
-<!-- 
-    JOYIN Social Media
-    Built with passion.
-    © 2025 JOYIN. All rights reserved.
--->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Photo</title>
-   <link rel="stylesheet" href="./profile-image.css">
-   <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+    <title>View Photo | JOYIN</title>
+    <!-- Add your CSS link -->
+    <link rel="stylesheet" href="./profile-image.css">
+    <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+
+    <link rel="manifest" href="../../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../../pwa-install.js"></script>
+    
+    <!-- ✅ ADD FIREBASE IMPORTS IN THE HEAD -->
+    <script type="module">
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { auth, db } from "../../firebase.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        // This will run when the page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log("✅ Photo viewer page loaded");
+            
+            // 1. Get the image element from HTML
+            const mainImage = document.getElementById('main-image');
+            
+            // 2. Get user ID from URL (example: view-photo.html?uid=abc123)
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('uid');
+            
+            if (!userId) {
+                console.error("❌ No user ID provided in URL");
+                mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                return;
+            }
+            
+            console.log("👤 Loading photo for user:", userId);
+            
+            try {
+                // 3. Fetch user data from Firestore
+                const userRef = doc(db, "users", userId);
+                const userSnap = await getDoc(userRef);
+                
+                if (userSnap.exists()) {
+                    const data = userSnap.data();
+                    console.log("📸 User data found:", data);
+                    
+                    // 4. ✅ THIS IS THE KEY LINE: Set the image src from Firebase data
+                    if (data.profilePic && data.profilePic.startsWith('https://')) {
+                        mainImage.src = data.profilePic;
+                        console.log("✅ Image src set to:", data.profilePic);
+                    } else {
+                        // Fallback to default image
+                        mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                        console.log("⚠️ No valid profilePic, using default");
+                    }
+                } else {
+                    console.log("❌ User document not found");
+                    mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                }
+            } catch (error) {
+                console.error("❌ Error loading user data:", error);
+                mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Close Button -->
@@ -22,12 +76,13 @@
     </button>
     
     <div class="container">
-        <!-- Image Display -->
+        <!-- ✅ IMAGE TAG IS HERE IN THE HTML -->
+        <!-- Note: src starts empty, will be filled by JavaScript above -->
         <div class="image-box">
-            <img src="" alt="Photo" class="main-image" id="main-image" onclick="toggleZoom()">
+            <img src="" alt="User's Profile Photo" class="main-image" id="main-image" onclick="toggleZoom()">
         </div>
         
-        <!-- Controls -->
+        <!-- Controls (same as before) -->
         <div class="controls">
             <button class="btn zoom-btn" onclick="toggleZoom()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -62,167 +117,70 @@
         
         <!-- Image Info -->
         <div class="image-info" id="image-info">
-            Click image to zoom • Press ESC to close
-        </div>
-        
-        <!-- Zoom Info -->
-        <div class="zoom-info" id="zoom-info">
-            Zoomed in
+            Loading photo...
         </div>
     </div>
 
+    <!-- ✅ YOUR ORIGINAL VIEWER FUNCTIONS -->
     <script>
-/* 
- *  JOYIN Social Media - Interactive Functions
- *  This file powers JOYIN's features.
- *  (c) 2025 JOYIN
- */
-
-        // Simple Image Viewer
-        
-        // Where to put your image URL:
-        // Option 1: Replace the URL below
-        // Option 2: Use URL parameter (see getImageUrl() function below)
-        
-        // YOUR IMAGE URL GOES HERE (Option 1):
-        const DEFAULT_IMAGE_URL = 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
-        
-        // DOM Elements
+        let isZoomed = false;
         const mainImage = document.getElementById('main-image');
-        const zoomInfo = document.getElementById('zoom-info');
         const imageInfo = document.getElementById('image-info');
         
-        // State
-        let isZoomed = false;
-        
-        // Get image URL from different sources
-        function getImageUrl() {
-            // Option 1: URL parameter (example: simple-image-viewer.html?image=YOUR_URL_HERE)
-            const urlParams = new URLSearchParams(window.location.search);
-            const imageParam = urlParams.get('image');
-            
-            // Option 2: Direct variable (edit DEFAULT_IMAGE_URL above)
-            
-            // Priority: URL parameter > Default URL
-            return imageParam || DEFAULT_IMAGE_URL;
-        }
-        
-        // Initialize
-        function init() {
-            // Load the image
-            const imageUrl = getImageUrl();
-            mainImage.src = imageUrl;
-            
-            // Update page title with image info
-            document.title = "View Photo";
-            
-            // Setup keyboard shortcuts
-            setupKeyboard();
-            
-            // Update image info when loaded
+        // Wait for the image to load, then update info
+        if (mainImage) {
             mainImage.onload = function() {
-                const sizeText = Math.round(this.naturalWidth) + '×' + Math.round(this.naturalHeight);
+                const sizeText = this.naturalWidth + '×' + this.naturalHeight;
                 imageInfo.innerHTML = `${sizeText} • Click to zoom • Press ESC to close`;
             };
-            
-            // Handle image error
-            mainImage.onerror = function() {
-                imageInfo.textContent = "Failed to load image. Make sure the URL is correct.";
-                console.error("Failed to load image:", imageUrl);
-            };
         }
         
-        // Toggle zoom
         function toggleZoom() {
-            const img = mainImage;
+            if (!mainImage) return;
             
             if (isZoomed) {
-                // Zoom out
-                img.classList.remove('zoomed');
-                zoomInfo.textContent = "Zoomed out";
+                mainImage.classList.remove('zoomed');
             } else {
-                // Zoom in
-                img.classList.add('zoomed');
-                zoomInfo.textContent = "Zoomed in";
+                mainImage.classList.add('zoomed');
             }
-            
-            // Show zoom info
-            zoomInfo.style.opacity = '1';
-            setTimeout(() => {
-                zoomInfo.style.opacity = '0';
-            }, 1500);
-            
             isZoomed = !isZoomed;
         }
         
-        // Download image
         function downloadImage() {
+            if (!mainImage || !mainImage.src) return;
+            
             const link = document.createElement('a');
             link.href = mainImage.src;
-            link.download = 'photo-' + Date.now() + '.jpg';
+            link.download = 'profile-photo-' + Date.now() + '.jpg';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Show feedback
-            zoomInfo.textContent = "Downloading...";
-            zoomInfo.style.opacity = '1';
-            setTimeout(() => {
-                zoomInfo.style.opacity = '0';
-            }, 1500);
         }
         
-        // Share image
         function shareImage() {
+            if (!mainImage || !mainImage.src) return;
+            
             if (navigator.share) {
-                // Use Web Share API if available
                 navigator.share({
-                    title: 'Check out this photo',
-                    text: 'Shared from my profile',
-                    url: window.location.href
+                    title: 'Profile Photo',
+                    text: 'Check out this profile photo from JOYIN',
+                    url: mainImage.src
                 });
             } else {
-                // Fallback: Copy URL to clipboard
-                navigator.clipboard.writeText(mainImage.src).then(() => {
-                    zoomInfo.textContent = "Image link copied!";
-                    zoomInfo.style.opacity = '1';
-                    setTimeout(() => {
-                        zoomInfo.style.opacity = '0';
-                    }, 1500);
-                });
+                navigator.clipboard.writeText(mainImage.src);
+                alert('Photo link copied to clipboard!');
             }
         }
         
-        // Close viewer
         function closeViewer() {
-            
-                window.history.back();
-            
+            window.history.back();
         }
         
         // Keyboard shortcuts
-        function setupKeyboard() {
-            document.addEventListener('keydown', function(event) {
-                switch(event.key) {
-                    case 'Escape':
-                        closeViewer();
-                        break;
-                    case 'z':
-                    case 'Z':
-                        toggleZoom();
-                        break;
-                    case 'd':
-                    case 'D':
-                        if (event.ctrlKey || event.metaKey) {
-                            downloadImage();
-                        }
-                        break;
-                }
-            });
-        }
-        
-        // Start when page loads
-        window.addEventListener('load', init);
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeViewer();
+            if (event.key === 'z' || event.key === 'Z') toggleZoom();
+        });
     </script>
 </body>
 </html>

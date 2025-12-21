@@ -1,8 +1,11 @@
-import { auth, db } from "../firebase.js";
+import { auth, db, storage } from "../firebase.js";
 import { doc, updateDoc, getDoc } 
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 import { onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+import { ref, uploadBytes, getDownloadURL } 
+  from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
 
 
 const usernameInput = document.getElementById("username");
@@ -166,3 +169,86 @@ bioInput.addEventListener("input", function() {
 // Initialize the save button state
 checkForChanges();
 
+
+
+
+
+//PROFILE PICTURE.
+
+// 1. Get the elements
+const cameraIcon = document.getElementById("click");
+const imageInput = document.getElementById("profileImage");
+const saveButton = document.getElementById("saveProfilePic");
+const avatarPreview = document.getElementById("avatar-preview");
+
+// 2. When camera icon is clicked, trigger the hidden file input
+cameraIcon.onclick = function () {
+  imageInput.click(); // This opens the file selection dialog
+};
+
+// 3. When a new image file is selected, show a preview immediately
+imageInput.addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Create a temporary URL to display the image
+  const imageURL = URL.createObjectURL(file);
+  avatarPreview.src = imageURL;
+  
+  // Optional: Show a small message
+  console.log("New image selected for preview:", file.name);
+});
+
+// 4. When "Save Changes" is clicked, upload to Firebase
+saveButton.addEventListener("click", async function() {
+  // Check if a new image was selected
+  const file = imageInput.files[0];
+  if (!file) {
+    console.log("No new image selected. Saving other profile info...");
+    // You would proceed to save username/bio here
+    return;
+  }
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Please log in to save changes.");
+    return;
+  }
+
+  try {
+    console.log("Starting image upload...");
+    
+    // 1. Create a storage reference
+    // Using a timestamp ensures a unique filename and prevents browser caching
+    const timestamp = Date.now();
+    const imageRef = ref(
+      storage,
+      `usersProfilePic/${user.uid}/profile_${timestamp}.jpg`
+    );
+
+    // 2. Upload image
+    console.log("Uploading file to Firebase Storage...");
+    await uploadBytes(imageRef, file);
+
+    // 3. Get the public URL of the uploaded image
+    console.log("Getting download URL...");
+    const imageURL = await getDownloadURL(imageRef);
+
+    // 4. Save URL in Firestore
+    console.log("Updating Firestore with new image URL...");
+    await updateDoc(doc(db, "users", user.uid), {
+      profilePic: imageURL,
+      updatedAt: new Date() // Good practice to track updates
+    });
+
+    console.log("Profile image updated successfully!");
+    alert("Profile image updated ✅");
+    
+    // Optional: Redirect or update UI
+    // window.location.reload(); // To show the new image everywhere
+
+  } catch (error) {
+    console.error("Error during upload:", error);
+    alert("Failed to update profile image. Error: " + error.message);
+  }
+});

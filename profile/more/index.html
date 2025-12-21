@@ -1,54 +1,558 @@
 <!DOCTYPE html>
-<!-- 
-    JOYIN Social Media
-    Built with passion.
-    © 2025 JOYIN. All rights reserved.
--->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>See-more | home | Joyin</title>
-    <link rel="stylesheet" href="./more.css">
-     <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+    <title>Post | JOYIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../joyin-favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(91, 83, 242, 0.1);
+            border-top-color: #5b53f2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .post-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            gap: 12px;
+        }
+
+        .user-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .post-time {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .post-content {
+            padding: 0 20px 20px;
+        }
+
+        .post-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .action-btn.liked {
+            color: #5b53f2;
+        }
+
+        .comments-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .comments-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .comment-input input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .comment-input input:focus {
+            outline: none;
+            border-color: #5b53f2;
+        }
+
+        .comment-input button {
+            background: #5b53f2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .comment-input button:hover {
+            background: #4a43d1;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 12px;
+        }
+
+        .comment-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-username {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-state i {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+    </style>
 </head>
 <body>
-    <div class="arrow-back" onclick="window.location.href ='../?view=home&tab=post&filter=popular'">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="19" y1="12" x2="5" y2="12"/>
-    <polyline points="12 19 5 12 12 5"/>
-</svg>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 style="font-size: 20px;">Post</h1>
+        </div>
+
+        <div id="post-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading post...</p>
+            </div>
+        </div>
     </div>
 
+    <script type="module">
+        import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, increment } 
+        from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { auth, db } from "../../firebase.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-    <section class="text-image-post-system">
-                <div class="post-system-container">
-                    <div class="post">
-                        <div class="post-header">
-                            <img src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
-                            <p id="post-username">owner</p>
-                            <div id="post-status"></div>
+        const defaultImg = 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
+        let currentUser = null;
+
+        // Get post ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        if (!postId) {
+            document.getElementById('post-container').innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Post not found</h2>
+                    <p style="color: rgba(255,255,255,0.6); margin: 12px 0;">This post doesn't exist or has been deleted.</p>
+                    <button onclick="window.history.back()" style="background: #5b53f2; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-top: 12px;">
+                        Go Back
+                    </button>
+                </div>
+            `;
+        }
+
+        // Wait for auth
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadPost();
+            } else {
+                window.location.href = '../login/?view=login';
+            }
+        });
+
+        async function loadPost() {
+            try {
+                const postRef = doc(db, "posts", postId);
+                const postSnap = await getDoc(postRef);
+
+                if (!postSnap.exists()) {
+                    showError("Post not found");
+                    return;
+                }
+
+                const post = postSnap.data();
+                displayPost(post);
+                await loadComments();
+
+            } catch (error) {
+                console.error("Error loading post:", error);
+                showError("Failed to load post");
+            }
+        }
+
+        function displayPost(post) {
+            const container = document.getElementById('post-container');
+            
+            container.innerHTML = `
+                <div class="post-detail">
+                    <div class="post-header">
+                        <img src="${post.userProfilePic || defaultImg}" 
+                             class="user-img" 
+                             onerror="this.src='${defaultImg}'"
+                             onclick="window.location.href='../profile/?uid=${post.userId}'">
+                        <div class="user-info">
+                            <div class="username" onclick="window.location.href='../profile/?uid=${post.userId}'">
+                                ${post.username || 'Unknown User'}
+                            </div>
+                            <div class="post-time">${formatDate(post.createdAt?.toDate())}</div>
                         </div>
-                        <h4 id="post-text">
-                            <span id="post-text-content-seemore">iores necessitatibus enim laudantium? Quaerat consectetur aperiam mollitia repellat qui placeat rem, delectus, perferendis impedit hic eum quod! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  </span>
-                        </h4>
+                    </div>
 
-                        
-                        
-                      <span class="post-image-container">
-                            <img src="https://th.bing.com/th/id/OIP.ystiqvy5g4vBvCXWX5n6gQHaE8?w=294&h=196&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" alt="">
-                      </span>
-                       <div class="reaction">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                    </svg>
-                    <p id="reaction-count" class="reaction-count">0 likes</p>
-                       </div>
+                    <div class="post-content">
+                        ${post.text ? `<p class="post-text">${escapeHtml(post.text)}</p>` : ''}
+                        ${post.imageUrl ? `<img src="${post.imageUrl}" class="post-image" onerror="this.src='${defaultImg}'">` : ''}
+                    </div>
+
+                    <div class="post-stats">
+                        <span>${post.likesCount || 0} likes</span>
+                        <span id="comments-count">${post.commentsCount || 0} comments</span>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn" id="like-btn" onclick="toggleLike()">
+                            <i class="far fa-heart"></i>
+                            <span>Like</span>
+                        </button>
+                        <button class="action-btn" onclick="document.getElementById('comment-input').focus()">
+                            <i class="far fa-comment"></i>
+                            <span>Comment</span>
+                        </button>
+                        <button class="action-btn" onclick="sharePost()">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </button>
                     </div>
                 </div>
 
-               
-            </section>
+                <div class="comments-section">
+                    <div class="comments-header">Comments</div>
+                    <div class="comment-input">
+                        <input type="text" id="comment-input" placeholder="Write a comment...">
+                        <button onclick="postComment()">Post</button>
+                    </div>
+                    <div class="comments-list" id="comments-list">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
+        async function loadComments() {
+            const commentsList = document.getElementById('comments-list');
+            
+            try {
+                const commentsRef = collection(db, "posts", postId, "comments");
+                const q = query(commentsRef, orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first to comment!</div>';
+                    return;
+                }
+
+                commentsList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const comment = doc.data();
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment';
+                    commentDiv.innerHTML = `
+                        <img src="${comment.userProfilePic || defaultImg}" 
+                             class="comment-img" 
+                             onerror="this.src='${defaultImg}'">
+                        <div class="comment-content">
+                            <div class="comment-username">${comment.username}</div>
+                            <div class="comment-text">${escapeHtml(comment.text)}</div>
+                            <div class="comment-time">${formatTimeAgo(comment.createdAt?.toDate())}</div>
+                        </div>
+                    `;
+                    commentsList.appendChild(commentDiv);
+                });
+
+            } catch (error) {
+                console.error("Error loading comments:", error);
+                commentsList.innerHTML = '<div class="no-comments">Failed to load comments</div>';
+            }
+        }
+
+        window.postComment = async function() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            try {
+                const commentsRef = collection(db, "posts", postId, "comments");
+                await addDoc(commentsRef, {
+                    text: text,
+                    userId: currentUser.uid,
+                    username: currentUser.displayName || 'User',
+                    userProfilePic: currentUser.photoURL || '',
+                    createdAt: new Date()
+                });
+
+                // Update comments count
+                await updateDoc(doc(db, "posts", postId), {
+                    commentsCount: increment(1)
+                });
+
+                input.value = '';
+                await loadComments();
+
+                // Update count display
+                const countElement = document.getElementById('comments-count');
+                const currentCount = parseInt(countElement.textContent);
+                countElement.textContent = `${currentCount + 1} comments`;
+
+            } catch (error) {
+                console.error("Error posting comment:", error);
+                alert("Failed to post comment");
+            }
+        };
+
+        window.toggleLike = async function() {
+            // Implement like functionality
+            const btn = document.getElementById('like-btn');
+            const icon = btn.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('liked');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('liked');
+            }
+        };
+
+        window.sharePost = async function() {
+            const url = window.location.href;
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({ url });
+                } catch (err) {
+                    console.log('Share cancelled');
+                }
+            } else {
+                navigator.clipboard.writeText(url);
+                alert('Link copied to clipboard!');
+            }
+        };
+
+        function formatDate(date) {
+            if (!date) return 'Just now';
+            return date.toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatTimeAgo(date) {
+            if (!date) return 'Just now';
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            
+            if (diffSec < 60) return 'Just now';
+            if (diffMin < 60) return `${diffMin}m ago`;
+            if (diffHour < 24) return `${diffHour}h ago`;
+            if (diffDay < 7) return `${diffDay}d ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showError(message) {
+            document.getElementById('post-container').innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>${message}</h2>
+                    <button onclick="window.history.back()" style="background: #5b53f2; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin-top: 12px;">
+                        Go Back
+                    </button>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
