@@ -218,3 +218,13 @@ button{
         .container {
             animation: fadeIn 0.5s ease;
         }
+
+        .password-note {
+    background-color: #fffbeb; /* Light amber background */
+    border: 1px solid #fbbf24;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 12px 0;
+    font-size: 0.9rem;
+    color: #92400e;
+}
