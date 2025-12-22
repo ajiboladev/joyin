@@ -409,7 +409,7 @@
             const commentsList = document.getElementById('comments-list');
             
             try {
-                const commentsRef = collection(db, "posts", postId, "comments");
+                // const commentsRef = collection(db, "posts", postId, "comments");
                 const q = query(commentsRef, orderBy("createdAt", "desc"));
                 const snapshot = await getDocs(q);
 
@@ -449,7 +449,7 @@
             if (!text) return;
 
             try {
-                const commentsRef = collection(db, "posts", postId, "comments");
+                // const commentsRef = collection(db, "posts", postId, "comments");
                 await addDoc(commentsRef, {
                     text: text,
                     userId: currentUser.uid,

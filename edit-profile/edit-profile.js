@@ -39,6 +39,10 @@ async function loadExistingProfile() {
       // Populate input fields with existing data
       usernameInput.value = originalUsername;
       bioInput.innerHTML = originalBio;
+
+      //profile image
+      const avatarPreview = document.getElementById("avatar-preview");
+      avatarPreview.src = userData.profilePic || "https://tse1.mm.bing .net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
       
       // Clear loading message
       message.innerHTML = "";
@@ -245,10 +249,11 @@ saveButton.addEventListener("click", async function() {
     alert("Profile image updated ✅");
     
     // Optional: Redirect or update UI
-    // window.location.reload(); // To show the new image everywhere
+    window.history.back(); // To show the new image everywhere
 
   } catch (error) {
     console.error("Error during upload:", error);
     alert("Failed to update profile image. Error: " + error.message);
   }
 });
+

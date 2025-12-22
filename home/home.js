@@ -591,7 +591,8 @@ function handleShare(postId, text) {
         navigator.share({
             title: 'Check out this post on JOYIN',  // Share title
             text: text || 'Interesting post',       // Text to share
-            url: `${window.location.origin}/post/?id=${postId}`  // Link to post
+            // url: `${window.location.origin}/post/?id=${postId}`  // Link to post
+            url: `./more/?tab=shared_post&id=${postId}`
         });
     } else {
         // Fallback for browsers that don't support Web Share API

@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // BIO TEXT TRUNCATION FUNCTIONS - COMPLETELY FIXED
   // ============================================
   function truncateBio(bioElement) {
-      const charLimit = 120;
+      const charLimit = 1244;
       const fullText = bioElement.textContent.trim();
       
       // Find the next sibling that is a see-more link
