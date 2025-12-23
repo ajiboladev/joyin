@@ -576,3 +576,109 @@ a {
     max-height: 500px;
     object-fit: cover;
 }
+
+/* FEEDBACK WIDGET STYLES */
+.feedback-widget {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    opacity: 1;
+    transform: translateY(20px) scale(0.95);
+}
+
+.feedback-widget.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.feedback-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+}
+
+.feedback-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.feedback-button:active {
+    transform: translateY(-1px);
+}
+
+.feedback-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.feedback-text {
+    white-space: nowrap;
+}
+
+.close-button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feedback-widget:hover .close-button {
+    opacity: 1;
+}
+
+.close-button:hover {
+    background: #dc2626;
+}
+
+/* Hidden state */
+.hidden {
+    display: none !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .feedback-widget {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .feedback-button {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+    
+    .feedback-text {
+        display: none; /* Hide text on mobile, show only icon */
+    }
+    
+    .feedback-button {
+        padding: 14px;
+        border-radius: 50%;
+    }
+}

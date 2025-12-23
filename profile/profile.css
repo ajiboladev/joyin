@@ -1113,3 +1113,330 @@ main {
 .no-posts button:active {
     transform: translateY(0);
 }
+
+
+
+/* ====== NEW TIMED FEEDBACK PROMPT ====== */
+.social-prompt-wrapper {
+    position: fixed;
+    bottom: 50px;
+    right: 25px;
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+
+.social-prompt-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.social-prompt-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+}
+
+.social-prompt-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+}
+
+.prompt-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.prompt-text {
+    white-space: nowrap;
+}
+
+.prompt-close-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.social-prompt-wrapper:hover .prompt-close-btn {
+    opacity: 1;
+}
+
+/* ====== NEW PERMANENT FEEDBACK PORTAL ====== */
+.feedback-portal-wrapper {
+    position: fixed;
+    bottom: 50px;
+    left: 25px;
+    z-index: 999;
+}
+
+.portal-trigger-btn {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s ease;
+}
+
+.portal-trigger-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(79, 70, 229, 0.4);
+}
+
+.portal-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Modal Styles */
+.portal-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.portal-modal-overlay[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-backlayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-card {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    animation: cardSlideUp 0.4s ease;
+}
+
+@keyframes cardSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #2a2a2a;
+    color: #999;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card-close-btn:hover {
+    background: #3a3a3a;
+    color: white;
+}
+
+.card-body {
+    padding: 32px;
+    text-align: center;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.card-icon svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+}
+
+.option-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.25s ease;
+    width: 100%;
+}
+
+.option-btn:hover {
+    transform: translateY(-2px);
+    border-color: #4f46e5;
+}
+
+.primary-option {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+    border-color: #4f46e5;
+}
+
+.option-icon {
+    width: 22px;
+    height: 22px;
+    color: #4f46e5;
+    flex-shrink: 0;
+}
+
+.secondary-option .option-icon {
+    color: #10b981;
+}
+
+.option-text {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.option-text strong {
+    display: block;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.option-text small {
+    display: block;
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.option-arrow {
+    width: 18px;
+    height: 18px;
+    color: #666;
+}
+
+.option-btn:hover .option-arrow {
+    color: white;
+    transform: translateX(3px);
+}
+
+/* Hidden utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .social-prompt-wrapper,
+    .feedback-portal-wrapper {
+        bottom: 80px !important; /* Above mobile nav */
+    }
+    
+    .social-prompt-btn,
+    .portal-trigger-btn {
+        padding: 14px;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .prompt-text,
+    .portal-text {
+        display: none;
+    }
+    
+    .modal-card {
+        width: 95%;
+        border-radius: 16px;
+    }
+    
+    .card-body {
+        padding: 24px;
+    }
+}

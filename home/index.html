@@ -149,6 +149,126 @@
 </section>
 
 
+<!-- Feedback Button Container -->
+<div id="feedbackWidget" class="feedback-widget hidden">
+    <button id="feedbackButton" class="feedback-button">
+        <svg class="feedback-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+        </svg>
+        <span class="feedback-text">Submit Feedback</span>
+    </button>
+    <button id="closeFeedback" class="close-button" aria-label="Close feedback button">
+        ×
+    </button>
+</div>
+
+<script>
+    // Feedback Widget Manager
+class FeedbackWidget {
+    constructor() {
+        // Configuration
+        this.STORAGE_KEY = 'feedback_clicked';
+        this.DELAY_MS = 30000; // 30 seconds
+        this.FORM_URL = 'https://forms.gle/7TNkUGPYogvXsqwc7';
+        
+        // Elements
+        this.widget = document.getElementById('feedbackWidget');
+        this.button = document.getElementById('feedbackButton');
+        this.closeButton = document.getElementById('closeFeedback');
+        
+        // State
+        this.hasInteracted = localStorage.getItem(this.STORAGE_KEY) === 'true';
+        
+        this.init();
+    }
+    
+    init() {
+        // Don't show if already interacted
+        if (this.hasInteracted) {
+            console.log('Feedback widget: User has already interacted, not showing.');
+            return;
+        }
+        
+        // Start the timer to show widget
+        setTimeout(() => this.showWidget(), this.DELAY_MS);
+        
+        // Setup event listeners
+        this.setupEvents();
+    }
+    
+    setupEvents() {
+        // Open feedback form
+        this.button.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.handleFeedbackClick();
+        });
+        
+        // Close widget without opening form
+        this.closeButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.handleClose();
+        });
+    }
+    
+    showWidget() {
+        // Remove hidden class and add visible class with a slight delay
+        this.widget.classList.remove('hidden');
+        
+        // Trigger animation after a tiny delay
+        setTimeout(() => {
+            this.widget.classList.add('visible');
+            
+            // Auto-hide after 60 seconds if not clicked
+            setTimeout(() => {
+                if (this.widget.classList.contains('visible')) {
+                    this.handleClose();
+                }
+            }, 60000); // 60 seconds
+        }, 50);
+    }
+    
+    handleFeedbackClick() {
+        // Mark as interacted in localStorage
+        localStorage.setItem(this.STORAGE_KEY, 'true');
+        
+        // Open form in new tab
+        window.open(this.FORM_URL, '_blank', 'noopener,noreferrer');
+        
+        // Hide widget with animation
+        this.hideWidget();
+        
+        console.log('Feedback widget: User clicked, form opened.');
+    }
+    
+    handleClose() {
+        // Mark as interacted (they dismissed it)
+        localStorage.setItem(this.STORAGE_KEY, 'true');
+        
+        // Hide widget
+        this.hideWidget();
+        
+        console.log('Feedback widget: User dismissed, not showing again.');
+    }
+    
+    hideWidget() {
+        // Remove visible class for fade-out animation
+        this.widget.classList.remove('visible');
+        
+        // After animation completes, add hidden class
+        setTimeout(() => {
+            this.widget.classList.add('hidden');
+        }, 500); // Match CSS transition duration
+    }
+}
+
+// Initialize when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new FeedbackWidget();
+});
+</script>
+
+
 
 
 
