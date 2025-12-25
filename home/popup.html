@@ -1,212 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-    
+  <!-- Trigger Button -->
+<!-- <button id="openBtn">Open Popup</button>
 
-    <!-- 1. The Trigger Button -->
-<button id="openPopup" class="btn">Show Popup</button>
-
-<!-- 2. The Modal HTML -->
-<div id="simpleModal" class="modal">
-  <div class="modal-backdrop"></div> <!-- Dark overlay -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>Popup Title</h3>
-      <button class="close-btn">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p>This is your popup content!</p>
-    </div>
-    <div class="modal-footer">
-      <button class="cancel-btn">Cancel</button>
-      <button class="confirm-btn">Confirm</button>
-    </div>
+Popup Overlay
+<div id="popupOverlay" class="overlay">
+  <div class="popup-box">
+    <h2>Minimal Popup</h2>
+    <p>This is a simple, clean modal for 2025.</p>
+    <button id="closeBtn">Close</button>
   </div>
 </div>
-<script>
-    // 4. Modal JavaScript
-const openBtn = document.getElementById('openPopup');
-const modal = document.getElementById('simpleModal');
-const closeBtn = modal.querySelector('.close-btn');
-const backdrop = modal.querySelector('.modal-backdrop');
-
-// Open modal
-openBtn.addEventListener('click', () => {
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden'; // Prevent scrolling
-});
-
-// Close modal (3 ways)
-closeBtn.addEventListener('click', closeModal);
-backdrop.addEventListener('click', closeModal);
-
-// Close with Escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('active')) {
-    closeModal();
-  }
-});
-
-function closeModal() {
-  modal.classList.remove('active');
-  document.body.style.overflow = ''; // Restore scrolling
-}
-</script>
 <style>
-    /* 3. Modal CSS */
-.modal {
+  /* Hidden by default */
+.overlay {
+  display: none; 
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none; /* Hidden by default */
-  align-items: center;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px); /* Modern blur effect */
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
-.modal.active {
-  display: flex; /* Show when active class added */
-}
-
-.modal-backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
+/* Minimalist box style */
+.popup-box {
   background: white;
+  padding: 2rem;
   border-radius: 12px;
-  padding: 20px;
-  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   max-width: 400px;
-  position: relative;
-  z-index: 1001;
-  animation: fadeIn 0.3s ease;
+  width: 90%;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Class to show the popup */
+.overlay.active {
+  display: flex;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
 </style>
 
+<script>
+  const openBtn = document.getElementById('openBtn');
+const closeBtn = document.getElementById('closeBtn');
+const overlay = document.getElementById('popupOverlay');
 
+// Open popup
+openBtn.onclick = () => {
+  overlay.classList.add('active');
+};
+
+// Close popup
+closeBtn.onclick = () => {
+  overlay.classList.remove('active');
+};
+
+// Optional: Close when clicking outside the box
+window.onclick = (event) => {
+  if (event.target === overlay) {
+    overlay.classList.remove('active');
+  }
+};
+
+</script> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <main>
-    <div class="toast">Message sent successfully!</div>
-    <style>
-        .toast {
+  <button id="triggerToast">Show Notification</button>
+
+<div id="toast" class="toast-notification">
+  <div class="toast-content">
+    <span>✅ Success! Your changes are saved.</span>
+    <button id="closeToast" class="toast-close">&times;</button>
+  </div>
+</div>
+<style>
+  .toast-notification {
   position: fixed;
   bottom: 20px;
-  right: 20px;
-  background: #10b981;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
+  right: -350px; /* Start off-screen */
+  background: #ffffff;
+  border-left: 5px solid #4CAF50;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  padding: 16px 20px;
+  border-radius: 8px;
+  transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 9999;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+.toast-notification.show {
+  right: 20px; /* Slide into view */
 }
 
-@keyframes fadeOut {
-  to { opacity: 0; }
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: sans-serif;
 }
-    </style>
-    <script>
-        function showConfirm(message, onConfirm) {
-  const modal = document.createElement('div');
-  modal.className = 'modal active';
-  modal.innerHTML = `
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
-      <p>${message}</p>
-      <div class="modal-actions">
-        <button class="btn-cancel">Cancel</button>
-        <button class="btn-confirm">OK</button>
+
+.toast-close {
+  background: none; border: none; font-size: 20px; cursor: pointer; color: #888;
+}
+
+</style>
+<script>
+  const toast = document.getElementById('toast');
+const trigger = document.getElementById('triggerToast');
+const closeBtn = document.getElementById('closeToast');
+
+trigger.onclick = () => {
+  toast.classList.add('show');
+  
+  // Auto-hide after 4 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4000);
+};
+
+closeBtn.onclick = () => {
+  toast.classList.remove('show');
+};
+
+</script>
+</main> -->
+
+
+
+
+
+
+
+
+<!-- 
+<main>
+  <div class="fab-wrapper" id="fabWrapper">
+  The content that will be revealed
+  <div class="fab-content">
+    <h3>Quick Contact</h3>
+    <p>Have a question? We're here 24/7.</p>
+    <input type="email" placeholder="Your Email">
+    <button class="send-btn">Send</button>
+  </div>
+  
+  The trigger button
+  <button class="fab-trigger" id="fabTrigger">+</button>
+</div>
+  <style>
+    .fab-wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  background: #000; /* Minimalist Black */
+  color: white;
+  border-radius: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  font-family: sans-serif;
+}
+
+/* Style when the "popup" is expanded */
+.fab-wrapper.expanded {
+  width: 300px;
+  height: 220px;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.fab-trigger {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 56px; height: 56px;
+  background: none; border: none; color: white;
+  font-size: 24px; cursor: pointer;
+  transition: transform 0.3s;
+}
+
+/* Rotate the plus to an X when open */
+.fab-wrapper.expanded .fab-trigger {
+  transform: rotate(135deg);
+}
+
+.fab-content {
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.fab-wrapper.expanded .fab-content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Minimal Input Styling */
+.fab-content input {
+  width: 100%; padding: 8px; margin-top: 10px; border: none; border-radius: 4px;
+}
+
+  </style>
+
+  <script>
+    const fabWrapper = document.getElementById('fabWrapper');
+const fabTrigger = document.getElementById('fabTrigger');
+
+fabTrigger.onclick = () => {
+  fabWrapper.classList.toggle('expanded');
+};
+
+  </script>
+</main> -->
+
+
+<!-- 
+<main>
+  Trigger Button
+<button id="showCardBtn" class="main-btn">Check Update</button>
+
+The Corner Card
+<div id="glassCard" class="glass-card">
+  <div class="card-header">
+    <span class="icon">✨</span>
+    <button id="closeCard" class="close-x">&times;</button>
+  </div>
+  <div class="card-body">
+    <h3>New Feature!</h3>
+    <p>We've updated our dashboard for 2025. Explore the new dark mode.</p>
+    <button class="action-btn">Try it now</button>
+  </div>
+</div>
+<style>
+  :root {
+  --glass: rgba(255, 255, 255, 0.7);
+  --border: rgba(255, 255, 255, 0.3);
+}
+
+/* Modern Pill Button */
+.main-btn {
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: none;
+  background: #000;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.main-btn:active { transform: scale(0.95); }
+
+/* The Glass Card */
+.glass-card {
+  position: fixed;
+  bottom: -300px; /* Start hidden below */
+  right: 20px;
+  width: 320px;
+  background: var(--glass);
+  backdrop-filter: blur(15px); /* Frosted Glass Effect */
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  transition: bottom 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  font-family: 'Inter', sans-serif;
+  z-index: 9999;
+}
+
+/* Class to slide in */
+.glass-card.active {
+  bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.icon { font-size: 24px; }
+
+.close-x {
+  background: none; border: none; font-size: 24px; cursor: pointer; color: #666;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #007AFF; /* iOS Blue */
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+</style>
+<script>
+  const card = document.getElementById('glassCard');
+const openBtn = document.getElementById('showCardBtn');
+const closeBtn = document.getElementById('closeCard');
+
+openBtn.onclick = () => {
+  card.classList.add('active');
+};
+
+closeBtn.onclick = () => {
+  card.classList.remove('active');
+};
+
+</script>
+</main> -->
+
+
+
+
+
+
+
+
+<!-- <main>
+  <button id="openSheet" class="brutal-btn">Share Post</button>
+
+<div id="bottomSheet" class="sheet-overlay">
+  <div class="sheet-content">
+    <div class="drag-handle"></div>
+    <div class="sheet-body">
+      <h3>🚀 Spread the word</h3>
+      <div class="share-grid">
+        <div class="share-item">Story</div>
+        <div class="share-item">Direct</div>
+        <div class="share-item">Copy Link</div>
       </div>
+      <button id="closeSheet" class="cancel-btn">Dismiss</button>
     </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  modal.querySelector('.btn-cancel').addEventListener('click', () => {
-    document.body.removeChild(modal);
-  });
-  
-  modal.querySelector('.btn-confirm').addEventListener('click', () => {
-    onConfirm();
-    document.body.removeChild(modal);
-  });
+  </div>
+</div>
+
+<style>
+  /* Neubrutalist Button */
+.brutal-btn {
+  padding: 15px 30px;
+  background: #FFDE00; /* Neon Yellow */
+  border: 3px solid #000;
+  box-shadow: 5px 5px 0px #000;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.brutal-btn:active { box-shadow: 0px 0px 0px #000; transform: translate(5px, 5px); }
+
+/* Overlay Background */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none; /* Hidden */
+  align-items: flex-end;
+  z-index: 1000;
 }
 
-// Usage:
-showConfirm('Are you sure you want to delete this post?', () => {
-  console.log('Post deleted!');
-});
-    </script>
-</main>
+/* The Bottom Sheet */
+.sheet-content {
+  width: 100%;
+  background: #fff;
+  border-top: 4px solid #000;
+  border-radius: 30px 30px 0 0;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.sheet-overlay.active { display: flex; }
+.sheet-overlay.active .sheet-content { transform: translateY(0); }
+
+/* Decorative Handle */
+.drag-handle {
+  width: 50px; height: 6px; background: #ddd;
+  border-radius: 10px; margin: 0 auto 20px;
+}
+
+/* Grid Layout */
+.share-grid { display: flex; gap: 15px; margin: 20px 0; }
+.share-item {
+  flex: 1; padding: 20px; border: 2px solid #000;
+  border-radius: 15px; text-align: center; font-weight: 700;
+}
+
+</style>
+
+<script>
+  const overlay = document.getElementById('bottomSheet');
+const openBtn = document.getElementById('openSheet');
+const closeBtn = document.getElementById('closeSheet');
+
+openBtn.onclick = () => {
+  overlay.style.display = 'flex';
+  setTimeout(() => overlay.classList.add('active'), 1);
+};
+
+const close = () => {
+  overlay.classList.remove('active');
+  setTimeout(() => overlay.style.display = 'none', 400);
+};
+
+closeBtn.onclick = close;
+overlay.onclick = (e) => { if(e.target === overlay) close(); };
+
+</script>
+</main> -->
+
+
+
+
+
+
+<!-- <main>
+  The Triggering Pill
+<div id="smartPill" class="pill-container">
+  <div class="pill-preview">
+    <span class="status-dot"></span>
+    <span class="pill-text">1 New Update</span>
+  </div>
+  
+  <div class="pill-expanded-content">
+    <h4>System Optimized</h4>
+    <p>We've boosted your load speeds by 20%.</p>
+    <div class="pill-actions">
+      <button class="pill-btn primary">View Details</button>
+      <button id="closePill" class="pill-btn secondary">Dismiss</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pill-container {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  max-width: 160px;
+  max-height: 44px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Expanded State */
+.pill-container.open {
+  max-width: 320px;
+  max-height: 200px;
+  border-radius: 20px;
+  padding: 24px;
+  cursor: default;
+}
+
+.pill-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  background: #00ff88; /* Cyber Green */
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.pill-expanded-content {
+  opacity: 0;
+  margin-top: 15px;
+  transition: opacity 0.3s ease;
+}
+
+.pill-container.open .pill-expanded-content {
+  opacity: 1;
+}
+
+.pill-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary { background: #fff; color: #000; margin-right: 8px; }
+.secondary { background: rgba(255,255,255,0.1); color: #fff; }
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+}
+
+</style>
+
+<script>
+  const pill = document.getElementById('smartPill');
+const closePill = document.getElementById('closePill');
+
+// Open the pill
+pill.onclick = () => {
+  pill.classList.add('open');
+};
+
+// Close the pill (and stop it from re-opening)
+closePill.onclick = (e) => {
+  e.stopPropagation(); 
+  pill.classList.remove('open');
+};
+
+</script>
+</main> -->
+
+
 
 
 <main>
-    <button class="like-btn" data-post-id="123">❤️ Like</button>
-<div id="toastContainer"></div>
-<script>
-    // Function to show toast
-function showToast(message, type = 'info') {
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.textContent = message;
-  
-  const container = document.getElementById('toastContainer');
-  container.appendChild(toast);
-  
-  // Auto-remove after 3 seconds
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    setTimeout(() => {
-      if (toast.parentNode) {
-        toast.parentNode.removeChild(toast);
-      }
-    }, 300);
-  }, 3000);
+  <!-- Trigger (Usually CMD+K or a button) -->
+<button id="openPalette" class="trigger-btn">Press <span>K</span> to search...</button>
+
+<div id="paletteOverlay" class="palette-overlay">
+  <div class="palette-box">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="paletteInput" placeholder="Type a command or search..." autofocus>
+    </div>
+    
+    <div class="palette-suggestions">
+      <div class="suggestion-item"><span>🏠</span> Go to Dashboard</div>
+      <div class="suggestion-item"><span>👤</span> View Profile</div>
+      <div class="suggestion-item"><span>⚙️</span> Settings</div>
+    </div>
+    
+    <div class="palette-footer">
+      <span>↑↓ to navigate</span>
+      <span>esc to close</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  padding-top: 15vh; /* Sits in the top-third of the screen */
+  z-index: 10000;
 }
 
-// Usage on like button
-document.querySelector('.like-btn').addEventListener('click', function() {
-  const postId = this.dataset.postId;
-  // Your like logic here...
-  showToast('Post liked!', 'success');
+.palette-box {
+  width: 100%;
+  max-width: 600px;
+  background: #1c1c1e;
+  border: 1px solid #333;
+  border-radius: 16px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid #333;
+}
+
+#paletteInput {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  margin-left: 12px;
+  width: 100%;
+  outline: none;
+}
+
+.palette-suggestions {
+  padding: 10px;
+}
+
+.suggestion-item {
+  padding: 12px 15px;
+  border-radius: 10px;
+  color: #ccc;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  transition: 0.2s;
+}
+
+.suggestion-item:hover {
+  background: #2c2c2e;
+  color: white;
+}
+
+.palette-footer {
+  padding: 10px 20px;
+  background: #141416;
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  gap: 20px;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+</style>
+
+<script>
+  const overlay = document.getElementById('paletteOverlay');
+const input = document.getElementById('paletteInput');
+
+// Open on button click
+document.getElementById('openPalette').onclick = () => {
+  overlay.style.display = 'flex';
+  input.focus();
+};
+
+// Open on CMD+K or CTRL+K
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    overlay.style.display = 'flex';
+    input.focus();
+  }
+  if (e.key === 'Escape') {
+    overlay.style.display = 'none';
+  }
 });
+
+// Close on outside click
+overlay.onclick = (e) => {
+  if (e.target === overlay) overlay.style.display = 'none';
+};
+
 </script>
-Modal - A popup that sits on top of page content (requires user interaction)
-
-Dialog - Similar to modal, often for forms or confirmations
-
-Toast/Notification - Small temporary message (disappears automatically)
-
-Tooltip - Appears on hover for extra info
 </main>
 </body>
 </html>

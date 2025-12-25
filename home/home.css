@@ -581,7 +581,7 @@ a {
 .feedback-widget {
     position: fixed;
     bottom: 25px;
-    right: 25px;
+    left: 25px;
     z-index: 1000;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     opacity: 1;
@@ -664,8 +664,8 @@ a {
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .feedback-widget {
-        bottom: 15px;
-        right: 15px;
+        bottom: 85px;
+        left: 312px;
     }
     
     .feedback-button {

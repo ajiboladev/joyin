@@ -46,7 +46,7 @@ async function loadUserProfile(uid) {
 
     if (userSnap.exists()) {
       const data = userSnap.data();
-      console.log("✅ Profile data loaded:", data);
+      // console.log("✅ Profile data loaded:", data);
 
       // Update UI elements
       if (userNameElement) {

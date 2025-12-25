@@ -164,12 +164,11 @@
 </div>
 
 <script>
-    // Feedback Widget Manager
+// Feedback Widget Manager WITHOUT LocalStorage
 class FeedbackWidget {
     constructor() {
         // Configuration
-        this.STORAGE_KEY = 'feedback_clicked';
-        this.DELAY_MS = 30000; // 30 seconds
+        this.DELAY_MS = 7000; // 5 seconds (for testing)
         this.FORM_URL = 'https://forms.gle/7TNkUGPYogvXsqwc7';
         
         // Elements
@@ -177,19 +176,11 @@ class FeedbackWidget {
         this.button = document.getElementById('feedbackButton');
         this.closeButton = document.getElementById('closeFeedback');
         
-        // State
-        this.hasInteracted = localStorage.getItem(this.STORAGE_KEY) === 'true';
-        
+        // Initialize immediately
         this.init();
     }
     
     init() {
-        // Don't show if already interacted
-        if (this.hasInteracted) {
-            console.log('Feedback widget: User has already interacted, not showing.');
-            return;
-        }
-        
         // Start the timer to show widget
         setTimeout(() => this.showWidget(), this.DELAY_MS);
         
@@ -219,36 +210,30 @@ class FeedbackWidget {
         setTimeout(() => {
             this.widget.classList.add('visible');
             
-            // Auto-hide after 60 seconds if not clicked
-            setTimeout(() => {
-                if (this.widget.classList.contains('visible')) {
-                    this.handleClose();
-                }
-            }, 60000); // 60 seconds
+            // Optional: Auto-hide after 60 seconds
+            // setTimeout(() => {
+            //     if (this.widget.classList.contains('visible')) {
+            //         this.handleClose();
+            //     }
+            // }, 60000); // 60 seconds
         }, 50);
     }
     
     handleFeedbackClick() {
-        // Mark as interacted in localStorage
-        localStorage.setItem(this.STORAGE_KEY, 'true');
-        
         // Open form in new tab
         window.open(this.FORM_URL, '_blank', 'noopener,noreferrer');
         
         // Hide widget with animation
         this.hideWidget();
         
-        console.log('Feedback widget: User clicked, form opened.');
+        console.log('Feedback widget: Form opened.');
     }
     
     handleClose() {
-        // Mark as interacted (they dismissed it)
-        localStorage.setItem(this.STORAGE_KEY, 'true');
-        
         // Hide widget
         this.hideWidget();
         
-        console.log('Feedback widget: User dismissed, not showing again.');
+        console.log('Feedback widget: User dismissed.');
     }
     
     hideWidget() {

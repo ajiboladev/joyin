@@ -14,57 +14,60 @@
     
     <!-- ✅ ADD FIREBASE IMPORTS IN THE HEAD -->
     <script type="module">
-        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-        import { auth, db } from "../../firebase.js";
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+    import { auth, db } from "../../firebase.js";
 
-        // This will run when the page loads
-        document.addEventListener('DOMContentLoaded', async () => {
-            console.log("✅ Photo viewer page loaded");
+    document.addEventListener('DOMContentLoaded', async () => {
+        console.log("✅ Photo viewer page loaded");
+        
+        // Get the image element and make it globally accessible
+        const mainImage = window.mainImage = document.getElementById('main-image');
+        const imageInfo = window.imageInfo = document.getElementById('image-info');
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('uid');
+        
+        if (!userId) {
+            console.error("❌ No user ID provided in URL");
+            mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+            imageInfo.textContent = "No user specified";
+            return;
+        }
+        
+        console.log("👤 Loading photo for user:", userId);
+        
+        try {
+            const userRef = doc(db, "users", userId);
+            const userSnap = await getDoc(userRef);
             
-            // 1. Get the image element from HTML
-            const mainImage = document.getElementById('main-image');
-            
-            // 2. Get user ID from URL (example: view-photo.html?uid=abc123)
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get('uid');
-            
-            if (!userId) {
-                console.error("❌ No user ID provided in URL");
-                mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
-                return;
-            }
-            
-            console.log("👤 Loading photo for user:", userId);
-            
-            try {
-                // 3. Fetch user data from Firestore
-                const userRef = doc(db, "users", userId);
-                const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                // console.log("📸 User data found:", data);
                 
-                if (userSnap.exists()) {
-                    const data = userSnap.data();
-                    console.log("📸 User data found:", data);
-                    
-                    // 4. ✅ THIS IS THE KEY LINE: Set the image src from Firebase data
-                    if (data.profilePic && data.profilePic.startsWith('https://')) {
-                        mainImage.src = data.profilePic;
-                        console.log("✅ Image src set to:", data.profilePic);
-                    } else {
-                        // Fallback to default image
-                        mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
-                        console.log("⚠️ No valid profilePic, using default");
-                    }
+                if (data.profilePic && data.profilePic.startsWith('https://')) {
+                    mainImage.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";;
+                    console.log("✅ Image src set to:", data.profilePic);
                 } else {
-                    console.log("❌ User document not found");
-                    mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                    mainImage.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                    console.log("⚠️ No valid profilePic, using default");
                 }
-            } catch (error) {
-                console.error("❌ Error loading user data:", error);
+                
+                // Update info with username if available
+                if (data.username) {
+                    imageInfo.innerHTML = `@${data.username}'s profile photo • Click to zoom`;
+                }
+            } else {
+                console.log("❌ User document not found");
                 mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+                imageInfo.textContent = "User not found";
             }
-        });
-    </script>
+        } catch (error) {
+            console.error("❌ Error loading user data:", error);
+            mainImage.src = "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
+            imageInfo.textContent = "Error loading photo";
+        }
+    });
+</script>
 </head>
 <body>
     <!-- Close Button -->
@@ -123,64 +126,100 @@
 
     <!-- ✅ YOUR ORIGINAL VIEWER FUNCTIONS -->
     <script>
-        let isZoomed = false;
-        const mainImage = document.getElementById('main-image');
-        const imageInfo = document.getElementById('image-info');
-        
-        // Wait for the image to load, then update info
-        if (mainImage) {
-            mainImage.onload = function() {
+    // Variables - these will be set by the module
+    let isZoomed = false;
+    
+    // Image load handler
+    if (window.mainImage) {
+        window.mainImage.onload = function() {
+            if (window.imageInfo && this.naturalWidth) {
                 const sizeText = this.naturalWidth + '×' + this.naturalHeight;
-                imageInfo.innerHTML = `${sizeText} • Click to zoom • Press ESC to close`;
-            };
-        }
-        
-        function toggleZoom() {
-            if (!mainImage) return;
-            
-            if (isZoomed) {
-                mainImage.classList.remove('zoomed');
-            } else {
-                mainImage.classList.add('zoomed');
+                const currentText = window.imageInfo.textContent;
+                window.imageInfo.innerHTML = `${currentText} • ${sizeText} • Press ESC to close`;
             }
-            isZoomed = !isZoomed;
+        };
+    }
+    
+    function toggleZoom() {
+        if (!window.mainImage) return;
+        
+        if (isZoomed) {
+            window.mainImage.classList.remove('zoomed');
+        } else {
+            window.mainImage.classList.add('zoomed');
+        }
+        isZoomed = !isZoomed;
+    }
+    
+    function downloadImage() {
+        if (!window.mainImage || !window.mainImage.src) {
+            showNotification('No image to download');
+            return;
         }
         
-        function downloadImage() {
-            if (!mainImage || !mainImage.src) return;
-            
-            const link = document.createElement('a');
-            link.href = mainImage.src;
-            link.download = 'profile-photo-' + Date.now() + '.jpg';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        const link = document.createElement('a');
+        link.href = window.mainImage.src;
+        link.download = 'joyin-profile-' + Date.now() + '.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('Download started!');
+    }
+    
+    // Share function remains the same (uses window.location.origin)
+    async function shareImage() {
+        if (!window.mainImage || !window.mainImage.src) {
+            showNotification('No image to share');
+            return;
         }
         
-        function shareImage() {
-            if (!mainImage || !mainImage.src) return;
-            
-            if (navigator.share) {
-                navigator.share({
+        try {
+            if (navigator.share && window.isSecureContext) {
+                const currentUid = new URLSearchParams(window.location.search).get('uid');
+                const shareUrl = `${window.location.origin}/profile/profile-image/?uid=${currentUid}`;
+                
+                await navigator.share({
                     title: 'Profile Photo',
                     text: 'Check out this profile photo from JOYIN',
-                    url: mainImage.src
+                    url: shareUrl
                 });
+                
+                console.log('Share successful');
             } else {
-                navigator.clipboard.writeText(mainImage.src);
-                alert('Photo link copied to clipboard!');
+                fallbackShare();
+            }
+        } catch (error) {
+            console.error('Share failed:', error);
+            if (error.name !== 'AbortError') {
+                fallbackShare();
             }
         }
+    }
+    
+    function fallbackShare() {
+        const currentUid = new URLSearchParams(window.location.search).get('uid');
+        const shareUrl = `${window.location.origin}/profile/profile-image/?uid=${currentUid}`;
         
-        function closeViewer() {
-            window.history.back();
-        }
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') closeViewer();
-            if (event.key === 'z' || event.key === 'Z') toggleZoom();
-        });
-    </script>
+        navigator.clipboard.writeText(shareUrl)
+            .then(() => showNotification('Profile link copied!'))
+            .catch(() => prompt('Copy this link:', shareUrl));
+    }
+    
+    function showNotification(message) {
+        // Your existing notification code...
+    }
+    
+    function closeViewer() {
+        window.history.back();
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') closeViewer();
+        if (event.key === 'z' || event.key === 'Z') toggleZoom();
+        if (event.key === 'd' || event.key === 'D') downloadImage();
+    });
+</script>
 </body>
 </html>
