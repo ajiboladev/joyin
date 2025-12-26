@@ -141,6 +141,8 @@ signupBtn.addEventListener("click", () => {
           followersCount: 0,
           followingCount: 0,
           likesCount: "",
+          role : "user",
+          softBan: Boolean(false),
           username_lowercase: username.toLowerCase(),
           createdAt: serverTimestamp(),
         });

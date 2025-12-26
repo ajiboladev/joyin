@@ -179,6 +179,15 @@ document.addEventListener("DOMContentLoaded", () => {
       await followersPage(profileUserId);
       
       await loadUserProfile(profileUserId);
+
+      // ✅ Account temporary ban
+        const isBanned = await softBan(profileUserId);
+        if (isBanned) {
+            console.log("🛑 Stopping further execution - user is banned");
+            return; // Stop here, don't load posts or profile
+        }
+
+
        loadUserPosts(profileUserId);
       
       // ✅ SETUP PROFILE IMAGE NAVIGATION AFTER PROFILE LOADS
@@ -697,9 +706,109 @@ const postsContainer = document.querySelector(".posts-container");
 const postSystem = document.querySelector(".post-system-container");
 let defaultImg = 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
 
+
+// ============================================
+// BAN SYSTEM 
+// ============================================
+
+async function softBan(uid) {
+    try {
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            const data = userSnap.data();
+            
+            // Check if user is banned
+            if (data.softBan === true || data.softBan === "true") {
+                console.log("🚨 User is banned, showing info card");
+                
+                // Clear the posts area
+                const postsArea =  postsContainer;//document.querySelector(".post-system-container");
+                if (postsArea) {
+                    postsArea.innerHTML = createInfoCard();
+                }
+                
+                // Also clear any other posts container
+                const otherPostsContainer = document.querySelector(".posts-container");
+                if (otherPostsContainer) {
+                    otherPostsContainer.innerHTML = createInfoCard();
+                }
+                
+                return true;
+            }
+        }
+    } catch (error) {
+        console.error("Error checking ban:", error);
+    }
+    return false;
+}
+
+// Function to create the info card - SIMPLIFIED VERSION
+function createInfoCard() {
+    // Add CSS if not already added
+    const styleId = 'info-card-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            .info-card {
+                background: #1a1a1a;
+                border-radius: 16px;
+                padding: 24px;
+                margin: 20px auto;
+                max-width: 500px;
+                border: 1px solid #333;
+                text-align: center;
+                color: white;
+                animation: fadeIn 0.5s ease;
+            }
+            
+            .info-icon {
+                font-size: 48px;
+                margin-bottom: 16px;
+                color: #5b53f2;
+            }
+            
+            .info-title {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 12px;
+                color: #5b53f2;
+            }
+            
+            .info-message {
+                font-size: 15px;
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.5;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Create the card HTML
+    return `
+        <div class="info-card">
+            <div class="info-icon">🔒</div>
+            <h2 class="info-title">Account Restricted</h2>
+            <p class="info-message">
+                This account has been temporarily suspended.
+            </p>
+        </div>
+    `;
+}
+
+
+
 async function loadUserPosts(userId) {
   postSystem.style.display = "none";
   postsContainer.innerHTML = `<span><i class="fas fa-spinner fa-spin"></i></span> Loading posts...`;
+  
 
   try {
     const postsRef = collection(db, "posts");
@@ -748,6 +857,8 @@ async function loadUserPosts(userId) {
       postDiv.className = "post-card";
       postDiv.dataset.postId = postId; // Store post ID in data attribute
       const timeAgo = getTimeAgo(post.createdAt);
+
+      
 
       postDiv.innerHTML = `
         <div class="post-header">

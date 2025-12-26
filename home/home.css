@@ -16,6 +16,17 @@ body{
     width: 100%;
     max-width: 100%;
 }
+/* Ensure scrolling works on all mobile browsers */
+html, body {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ban-screen {
+    min-height: 100vh;
+    overflow-y: scroll;
+}
 a {
     text-decoration: none;
     color: inherit; 

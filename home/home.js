@@ -25,6 +25,14 @@ onAuthStateChanged(auth, async (user) => {
     console.log("Viewer:", viewerId);
     console.log("Profile:", profileUserId);
 
+     // Check if user is banned BEFORE doing anything else
+    const isBanned = await softBan(profileUserId);
+    
+    if (isBanned) {
+        console.log("🛑 User is banned, stopping all other functions");
+        return; // STOP HERE - don't load other functions
+    }
+
     await followingPage(profileUserId);
     await followersPage(profileUserId);
      loadUserName(profileUserId);
@@ -36,6 +44,324 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "../login/?view=login";
   }
 });
+
+
+// ============================================
+// Soft Ban FUNCTIONS - WITH JOYIN HEADER
+// ============================================
+
+async function softBan(uid) {
+    try {
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            const data = userSnap.data();
+            
+            if (data.softBan === true || data.softBan === "true") {
+                createBanScreen({
+                    username: data.username || 'User',
+                    banReason: data.banReason || 'Violation of community guidelines',
+                    banStartDate: data.banStartDate || data.createdAt || new Date(),
+                    adminContact: data.adminContact || 'joyinofficialnetwork@gmail.com'
+                });
+                return true;
+            }
+        }
+    } catch (error) {
+        console.error("Error checking ban:", error);
+    }
+    return false;
+}
+
+function createBanScreen(banInfo) {
+    console.log("🎨 Creating ban screen...");
+    
+    // Clear entire page
+    document.body.innerHTML = '';
+    
+    // Add CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Ban Screen */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: white;
+            min-height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .ban-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* JOYIN Header */
+        .joyin-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .joyin-logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #5b53f2;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(91, 83, 242, 0.3);
+        }
+        
+        /* Main content */
+        .ban-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .ban-card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #333;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        
+        .ban-icon {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #5b53f2; /* Changed to #5b53f2 */
+            filter: drop-shadow(0 0 10px rgba(91, 83, 242, 0.3));
+        }
+        
+        .ban-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+            color: #5b53f2; /* Changed to #5b53f2 */
+        }
+        
+        .ban-subtitle {
+            font-size: 15px;
+            color: #aaa;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .ban-details {
+            background: rgba(91, 83, 242, 0.05); /* Subtle #5b53f2 tint */
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 24px;
+            border-left: 4px solid #5b53f2; /* Changed to #5b53f2 */
+        }
+        
+        .ban-info-item {
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ban-info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .info-label {
+            display: block;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            display: block;
+            font-size: 15px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .ban-message {
+            background: rgba(91, 83, 242, 0.1); /* Changed to #5b53f2 tint */
+            border: 1px solid rgba(91, 83, 242, 0.2); /* Changed to #5b53f2 */
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .logout-btn {
+            background: #5b53f2; /* Changed to #5b53f2 */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 16px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #6a63f4; /* Slightly lighter #5b53f2 */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(91, 83, 242, 0.3);
+        }
+        
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+        
+        .contact-info {
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+        }
+        
+        .contact-link {
+            color: #5b53f2; /* Changed to #5b53f2 */
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .joyin-header {
+                padding: 16px;
+            }
+            
+            .joyin-logo {
+                font-size: 28px;
+            }
+            
+            .ban-content {
+                padding: 16px;
+            }
+            
+            .ban-card {
+                padding: 20px;
+            }
+            
+            .ban-title {
+                font-size: 20px;
+            }
+            
+            .ban-icon {
+                font-size: 50px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .joyin-logo {
+                font-size: 24px;
+            }
+            
+            .ban-card {
+                padding: 16px;
+            }
+            
+            .ban-title {
+                font-size: 18px;
+            }
+            
+            .ban-subtitle {
+                font-size: 14px;
+            }
+        }
+    `;
+    
+    document.head.appendChild(style);
+    
+    // Format date
+    let formattedDate = "Recently";
+    try {
+        const dateObj = banInfo.banStartDate?.toDate ? 
+                       banInfo.banStartDate.toDate() : 
+                       new Date(banInfo.banStartDate);
+        formattedDate = dateObj.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    } catch (e) {}
+    
+    // Create HTML with JOYIN header
+    document.body.innerHTML = `
+        <div class="ban-container">
+            <!-- JOYIN Header -->
+            <div class="joyin-header">
+                <div class="joyin-logo">JOYIN</div>
+            </div>
+            
+            <!-- Ban Content -->
+            <div class="ban-content">
+                <div class="ban-card">
+                    <div class="ban-icon">🚫</div>
+                    <h1 class="ban-title">Account Restricted</h1>
+                    <p class="ban-subtitle">Your account has been temporarily suspended</p>
+                    
+                    <div class="ban-details">
+                        <div class="ban-info-item">
+                            <span class="info-label">Username</span>
+                            <span class="info-value">@${banInfo.username}</span>
+                        </div>
+                        <div class="ban-info-item">
+                            <span class="info-label">Restriction Reason</span>
+                            <span class="info-value">${banInfo.banReason}</span>
+                        </div>
+                        <div class="ban-info-item">
+                            <span class="info-label">Restriction Started</span>
+                            <span class="info-value">${formattedDate}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ban-message">
+                        ⚠️ You cannot post, comment, or interact with other users during this restriction period.
+                    </div>
+                    
+                    <button class="logout-btn" id="manualLogoutBtn">
+                        Log Out
+                    </button>
+                    
+                    <div class="contact-info">
+                        If you believe this is a mistake, contact us:
+                        <a href="mailto:${banInfo.adminContact}" class="contact-link">
+                            ${banInfo.adminContact}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Logout handler
+    document.getElementById('manualLogoutBtn').addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            window.location.href = "../../login/?view=login";
+        } catch (error) {
+            window.location.href = "../../login/?view=login";
+        }
+    });
+}
+
+
 
 // ============================================
 // Followers Page FUNCTIONS
@@ -99,10 +425,6 @@ async function loadUserName(uid) {
         
     }
 }
-
-
-
-
 
 
 
@@ -646,6 +968,13 @@ console.log("✅ Home feed system loaded!");
 
 
 
+
+
+
+
+
+
+
 //LOG OUT
 // Import at the TOP of your file (outside event listener)
 
@@ -666,3 +995,23 @@ logoutBtn.addEventListener("click", () => {
       alert("Logout failed: " + error.message);
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
