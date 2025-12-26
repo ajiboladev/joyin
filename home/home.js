@@ -354,9 +354,9 @@ function createBanScreen(banInfo) {
     document.getElementById('manualLogoutBtn').addEventListener('click', async () => {
         try {
             await signOut(auth);
-            window.location.href = "../../login/?view=login";
+            window.location.href = "/";
         } catch (error) {
-            window.location.href = "../../login/?view=login";
+            window.location.href = "/";
         }
     });
 }
@@ -995,23 +995,3 @@ logoutBtn.addEventListener("click", () => {
       alert("Logout failed: " + error.message);
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

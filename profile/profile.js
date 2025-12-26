@@ -175,19 +175,17 @@ document.addEventListener("DOMContentLoaded", () => {
       
       showLoadingState();
 
-      await followingPage(profileUserId);
-      await followersPage(profileUserId);
-      
-      await loadUserProfile(profileUserId);
-
-      // ✅ Account temporary ban
+       // ✅ Account temporary ban
         const isBanned = await softBan(profileUserId);
         if (isBanned) {
             console.log("🛑 Stopping further execution - user is banned");
             return; // Stop here, don't load posts or profile
         }
 
-
+      await followingPage(profileUserId);
+      await followersPage(profileUserId);
+      
+      await loadUserProfile(profileUserId);
        loadUserPosts(profileUserId);
       
       // ✅ SETUP PROFILE IMAGE NAVIGATION AFTER PROFILE LOADS
