@@ -12,7 +12,7 @@ body{
     transition: 0.3s all ease-in-out;
     color: white;
     overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-wrap: break-word;
     width: 100%;
     max-width: 100%;
