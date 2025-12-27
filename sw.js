@@ -10,7 +10,13 @@ const OFFLINE_URL = '/offline.html';
 // Essential files to cache
 const PRECACHE_URLS = [
   '/',
+  '/home/',
+  '/profile/',
+  '/edit-profile/',
   '/offline.html',
+  '/upload/',
+  '/searchbar/',
+  '/settings/',
   '/manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
