@@ -1,47 +1,47 @@
 // ============================================
-// JOYIN Service Worker - FIXED OFFLINE SUPPORT
-// Version 1.0.1
+// JOYIN Service Worker - AUTO-UPDATE VERSION
+// UPDATES DEPLOY INSTANTLY WITHOUT CLEARING CACHE
 // ============================================
 
-const CACHE_NAME = 'joyin-v1.0.0';
+const CACHE_VERSION = 'v1.0.0'; // 👈 INCREMENT THIS FOR EACH UPDATE
+const CACHE_NAME = `joyin-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
-// Essential files to cache immediately
+// Essential files to cache
 const PRECACHE_URLS = [
   '/',
-  '/offline.html',  // ← CRITICAL: Must be cached!
+  '/offline.html',
   '/manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
 // ============================================
-// INSTALL - Cache offline page FIRST
+// INSTALL - Cache essentials
 // ============================================
 self.addEventListener('install', (event) => {
-  console.log('🔧 [SW] Installing...');
+  console.log(`🔧 [SW ${CACHE_VERSION}] Installing...`);
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('📦 [SW] Caching offline page and essentials');
-        // Cache offline.html FIRST before anything else
+        console.log(`📦 [SW ${CACHE_VERSION}] Caching essentials`);
         return cache.addAll(PRECACHE_URLS);
       })
       .then(() => {
-        console.log('✅ [SW] Offline page cached successfully');
-        return self.skipWaiting(); // Activate immediately
+        console.log(`✅ [SW ${CACHE_VERSION}] Installation complete`);
+        return self.skipWaiting(); // Activate new SW immediately
       })
       .catch((error) => {
-        console.error('❌ [SW] Failed to cache offline page:', error);
+        console.error(`❌ [SW ${CACHE_VERSION}] Installation failed:`, error);
       })
   );
 });
 
 // ============================================
-// ACTIVATE - Take control immediately
+// ACTIVATE - Delete old caches immediately
 // ============================================
 self.addEventListener('activate', (event) => {
-  console.log('🚀 [SW] Activating...');
+  console.log(`🚀 [SW ${CACHE_VERSION}] Activating...`);
   
   event.waitUntil(
     caches.keys()
@@ -49,37 +49,46 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== CACHE_NAME) {
-              console.log('🗑️ [SW] Deleting old cache:', cacheName);
+              console.log(`🗑️ [SW] Deleting old cache: ${cacheName}`);
               return caches.delete(cacheName);
             }
           })
         );
       })
       .then(() => {
-        console.log('✅ [SW] Activation complete');
-        return self.clients.claim(); // Take control of all pages
+        console.log(`✅ [SW ${CACHE_VERSION}] Activated, old caches cleared`);
+        return self.clients.claim(); // Take control immediately
+      })
+      .then(() => {
+        // Notify all clients to reload
+        return self.clients.matchAll().then((clients) => {
+          clients.forEach((client) => {
+            client.postMessage({
+              type: 'SW_UPDATED',
+              version: CACHE_VERSION
+            });
+          });
+        });
       })
   );
 });
 
 // ============================================
-// FETCH - Handle requests with offline fallback
+// FETCH - NETWORK-FIRST for HTML/JS/CSS
 // ============================================
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   
   // Skip non-GET requests
-  if (request.method !== 'GET') {
-    return;
-  }
+  if (request.method !== 'GET') return;
   
-  // Skip cross-origin requests (except CDN)
+  // Skip cross-origin (except CDN)
   if (url.origin !== location.origin && !url.href.includes('cdnjs.cloudflare.com')) {
     return;
   }
   
-  // Skip Firebase/API requests - let them fail naturally
+  // Skip Firebase/API
   if (url.pathname.includes('firestore') || 
       url.pathname.includes('firebase') ||
       url.pathname.includes('googleapis') ||
@@ -88,14 +97,16 @@ self.addEventListener('fetch', (event) => {
   }
   
   // ============================================
-  // NAVIGATION REQUESTS (HTML Pages)
+  // NETWORK-FIRST for HTML/JS/CSS (always fresh)
   // ============================================
-  if (request.mode === 'navigate') {
+  if (request.mode === 'navigate' || 
+      request.destination === 'script' ||
+      request.destination === 'style') {
+    
     event.respondWith(
-      // Try network first
       fetch(request)
         .then((response) => {
-          // If successful, cache the page
+          // Always update cache with fresh content
           if (response.ok) {
             const responseClone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
@@ -104,30 +115,21 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch((error) => {
-          // Network failed - user is offline
-          console.log('🔴 [SW] Network failed, showing offline page');
-          
-          // Try to serve cached version first
+        .catch(() => {
+          // Only use cache if network fails
           return caches.match(request)
             .then((cachedResponse) => {
               if (cachedResponse) {
-                console.log('✅ [SW] Serving cached page:', request.url);
+                console.log(`📦 [SW] Serving cached (offline): ${request.url}`);
                 return cachedResponse;
               }
               
-              // No cached version - show offline page
-              console.log('📄 [SW] Serving offline.html');
-              return caches.match(OFFLINE_URL)
-                .then((offlinePage) => {
-                  if (offlinePage) {
-                    return offlinePage;
-                  }
-                  
-                  // Fallback if offline.html not cached (shouldn't happen)
-                  console.error('❌ [SW] offline.html not in cache!');
-                  return createFallbackResponse();
-                });
+              // Show offline page
+              if (request.mode === 'navigate') {
+                return caches.match(OFFLINE_URL) || createFallbackResponse();
+              }
+              
+              throw new Error('No cache available');
             });
         })
     );
@@ -135,21 +137,17 @@ self.addEventListener('fetch', (event) => {
   }
   
   // ============================================
-  // OTHER REQUESTS (CSS, JS, Images, etc.)
+  // CACHE-FIRST for images/fonts (they don't change)
   // ============================================
   event.respondWith(
-    // Try cache first for speed
     caches.match(request)
       .then((cachedResponse) => {
         if (cachedResponse) {
-          // Return cached version immediately
           return cachedResponse;
         }
         
-        // Not in cache - fetch from network
         return fetch(request)
           .then((response) => {
-            // Cache successful responses
             if (response.ok && request.url.startsWith('http')) {
               const responseClone = response.clone();
               caches.open(CACHE_NAME).then((cache) => {
@@ -158,23 +156,18 @@ self.addEventListener('fetch', (event) => {
             }
             return response;
           })
-          .catch((error) => {
-            console.log('🔴 [SW] Failed to fetch:', request.url);
-            
-            // For images, return placeholder
+          .catch(() => {
             if (request.destination === 'image') {
               return createPlaceholderImage();
             }
-            
-            // For other resources, just fail
-            throw error;
+            throw new Error('Fetch failed');
           });
       })
   );
 });
 
 // ============================================
-// CREATE FALLBACK HTML (if offline.html missing)
+// FALLBACK HTML
 // ============================================
 function createFallbackResponse() {
   const html = `
@@ -186,7 +179,7 @@ function createFallbackResponse() {
       <title>Offline - JOYIN</title>
       <style>
         body {
-          font-family: Arial, sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           background: #000;
           color: #fff;
           display: flex;
@@ -197,18 +190,9 @@ function createFallbackResponse() {
           text-align: center;
           padding: 20px;
         }
-        .container {
-          max-width: 400px;
-        }
-        h1 {
-          color: #5b53f2;
-          margin-bottom: 16px;
-        }
-        p {
-          color: rgba(255,255,255,0.7);
-          line-height: 1.6;
-          margin-bottom: 24px;
-        }
+        .container { max-width: 400px; }
+        h1 { color: #5b53f2; margin-bottom: 16px; }
+        p { color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 24px; }
         button {
           background: #5b53f2;
           color: white;
@@ -219,29 +203,18 @@ function createFallbackResponse() {
           font-size: 16px;
           font-weight: 600;
         }
-        button:hover {
-          background: #4a43d1;
-        }
-        .icon {
-          font-size: 64px;
-          margin-bottom: 24px;
-          opacity: 0.5;
-        }
+        .icon { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="icon">📡</div>
         <h1>You're Offline</h1>
-        <p>No internet connection found. Check your connection and try again.</p>
+        <p>No internet connection. Check your connection and try again.</p>
         <button onclick="location.reload()">Try Again</button>
       </div>
-      
       <script>
-        // Auto-reload when back online
-        window.addEventListener('online', () => {
-          location.reload();
-        });
+        window.addEventListener('online', () => location.reload());
       </script>
     </body>
     </html>
@@ -256,10 +229,9 @@ function createFallbackResponse() {
 }
 
 // ============================================
-// CREATE PLACEHOLDER IMAGE
+// PLACEHOLDER IMAGE
 // ============================================
 function createPlaceholderImage() {
-  // SVG placeholder with JOYIN branding
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
       <rect fill="#000000" width="400" height="400"/>
@@ -279,10 +251,10 @@ function createPlaceholderImage() {
 }
 
 // ============================================
-// MESSAGE EVENT - For cache updates
+// MESSAGE HANDLER
 // ============================================
 self.addEventListener('message', (event) => {
-  console.log('💬 [SW] Message received:', event.data);
+  console.log('💬 [SW] Message:', event.data);
   
   if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
@@ -290,21 +262,11 @@ self.addEventListener('message', (event) => {
   
   if (event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(
-      caches.keys().then((cacheNames) => {
-        return Promise.all(
-          cacheNames.map((cacheName) => caches.delete(cacheName))
-        );
-      })
-    );
-  }
-  
-  if (event.data.type === 'CACHE_URLS') {
-    event.waitUntil(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.addAll(event.data.urls);
+      caches.keys().then((names) => {
+        return Promise.all(names.map((name) => caches.delete(name)));
       })
     );
   }
 });
 
-console.log('✅ [SW] Service Worker loaded successfully');
+console.log(`✅ [SW ${CACHE_VERSION}] Loaded successfully`);

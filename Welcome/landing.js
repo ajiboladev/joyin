@@ -146,14 +146,14 @@ function setupEventListeners() {
     });
     
     // Quick signup form
-    document.getElementById('quickSignupForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        showLoading();
-        // Simulate signup process
-        setTimeout(() => {
-            redirectToApp();
-        }, 1500);
-    });
+    // document.getElementById('quickSignupForm').addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     showLoading();
+    //     // Simulate signup process
+    //     setTimeout(() => {
+    //         redirectToApp();
+    //     }, 1500);
+    // });
     
     // Social buttons
     document.querySelectorAll('.social-btn').forEach(btn => {

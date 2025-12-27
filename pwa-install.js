@@ -1,12 +1,13 @@
 // ============================================
-// JOYIN PWA Installation Script - FIXED
+// JOYIN PWA - AUTO-UPDATE VERSION
 // ============================================
 
 let deferredPrompt;
 let installButton;
+let swRegistration;
 
 // ============================================
-// CHECK IF ALREADY INSTALLED
+// CHECK IF INSTALLED
 // ============================================
 function isAppInstalled() {
   return window.matchMedia('(display-mode: standalone)').matches ||
@@ -15,7 +16,7 @@ function isAppInstalled() {
 }
 
 // ============================================
-// SERVICE WORKER REGISTRATION
+// SERVICE WORKER - AUTO-UPDATE
 // ============================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -23,33 +24,152 @@ if ('serviceWorker' in navigator) {
       .register('/sw.js')
       .then((registration) => {
         console.log('✅ [PWA] Service Worker registered');
+        swRegistration = registration;
         
-        // Check for updates every hour
+        // Check for updates every 5 minutes
         setInterval(() => {
+          console.log('🔄 [PWA] Checking for updates...');
           registration.update();
-        }, 3600000);
+        }, 300000);
+        
+        // Listen for updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          console.log('🆕 [PWA] New version detected!');
+          
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version ready - show update prompt
+              showUpdatePrompt();
+            }
+          });
+        });
       })
       .catch((error) => {
-        console.error('❌ [PWA] Service Worker registration failed:', error);
+        console.error('❌ [PWA] Service Worker failed:', error);
       });
+    
+    // Listen for messages from service worker
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data.type === 'SW_UPDATED') {
+        console.log(`🎉 [PWA] Updated to ${event.data.version}`);
+        showUpdateSuccessMessage(event.data.version);
+      }
+    });
   });
 }
 
 // ============================================
-// SHOW INSTALL BUTTON
+// SHOW UPDATE PROMPT
+// ============================================
+function showUpdatePrompt() {
+  const updateBanner = document.createElement('div');
+  updateBanner.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        <div>
+          <strong>New version available!</strong>
+          <p style="margin: 4px 0 0 0; font-size: 13px; opacity: 0.9;">Reload to get the latest features</p>
+        </div>
+      </div>
+      <button id="reload-btn" style="
+        background: white;
+        color: #5b53f2;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+      ">
+        Reload
+      </button>
+    </div>
+  `;
+  updateBanner.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #5b53f2;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(91, 83, 242, 0.5);
+    z-index: 10000;
+    animation: slideInDown 0.5s ease;
+    max-width: 90%;
+    width: 400px;
+  `;
+  
+  document.body.appendChild(updateBanner);
+  
+  // Reload when clicked
+  document.getElementById('reload-btn').addEventListener('click', () => {
+    window.location.reload();
+  });
+  
+  // Auto-reload after 10 seconds
+  setTimeout(() => {
+    window.location.reload();
+  }, 30000);
+}
+
+// ============================================
+// UPDATE SUCCESS MESSAGE
+// ============================================
+function showUpdateSuccessMessage(version) {
+  const successMsg = document.createElement('div');
+  successMsg.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <div>
+        <strong>Updated to ${version}</strong>
+        <p style="margin: 4px 0 0 0; font-size: 13px;">You're on the latest version!</p>
+      </div>
+    </div>
+  `;
+  successMsg.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #10b981;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    z-index: 10000;
+    animation: slideInDown 0.5s ease;
+  `;
+  
+  document.body.appendChild(successMsg);
+  
+  setTimeout(() => {
+    successMsg.style.animation = 'slideOutUp 0.5s ease';
+    setTimeout(() => successMsg.remove(), 500);
+  }, 4000);
+}
+
+// ============================================
+// INSTALL BUTTON
 // ============================================
 function showInstallButton() {
-  // Don't show if already installed
   if (isAppInstalled()) {
-    console.log('📱 [PWA] App already installed, hiding button');
+    console.log('📱 [PWA] Already installed');
     return;
   }
   
-  // Check if button already exists
   installButton = document.getElementById('pwa-install-button');
   
   if (!installButton) {
-    // Create install button
     installButton = document.createElement('button');
     installButton.id = 'pwa-install-button';
     installButton.innerHTML = `
@@ -81,7 +201,6 @@ function showInstallButton() {
       animation: slideInUp 0.5s ease;
     `;
     
-    // Hover effects
     installButton.addEventListener('mouseenter', () => {
       installButton.style.transform = 'translateY(-2px)';
       installButton.style.boxShadow = '0 6px 16px rgba(91, 83, 242, 0.5)';
@@ -93,16 +212,12 @@ function showInstallButton() {
     });
     
     installButton.addEventListener('click', handleInstallClick);
-    
     document.body.appendChild(installButton);
   }
   
   installButton.style.display = 'flex';
 }
 
-// ============================================
-// HIDE INSTALL BUTTON PERMANENTLY
-// ============================================
 function hideInstallButton() {
   if (installButton) {
     installButton.style.animation = 'slideOutDown 0.5s ease';
@@ -113,92 +228,30 @@ function hideInstallButton() {
   }
 }
 
-// ============================================
-// HANDLE INSTALL CLICK
-// ============================================
 async function handleInstallClick() {
-  if (!deferredPrompt) {
-    console.warn('⚠️ [PWA] Install prompt not available');
-    return;
-  }
+  if (!deferredPrompt) return;
   
-  // Hide the button temporarily
   installButton.style.opacity = '0.5';
   installButton.style.pointerEvents = 'none';
   
-  // Show the install prompt
   deferredPrompt.prompt();
-  
-  // Wait for the user's response
   const { outcome } = await deferredPrompt.userChoice;
-  console.log(`📱 [PWA] User response: ${outcome}`);
   
   if (outcome === 'accepted') {
-    console.log('✅ [PWA] User accepted the install');
-    hideInstallButton(); // Remove button permanently
+    console.log('✅ [PWA] Install accepted');
+    hideInstallButton();
     showInstallSuccessMessage();
   } else {
-    console.log('❌ [PWA] User dismissed the install');
-    // Restore button
     installButton.style.opacity = '1';
     installButton.style.pointerEvents = 'auto';
   }
   
-  // Clear the prompt
   deferredPrompt = null;
 }
 
-// ============================================
-// CAPTURE INSTALL PROMPT
-// ============================================
-window.addEventListener('beforeinstallprompt', (e) => {
-  console.log('📱 [PWA] Install prompt available');
-  
-  // Prevent the mini-infobar
-  e.preventDefault();
-  
-  // Store the event
-  deferredPrompt = e;
-  
-  // Show install button if not already installed
-  if (!isAppInstalled()) {
-    showInstallButton();
-  }
-});
-
-// ============================================
-// APP INSTALLED EVENT
-// ============================================
-window.addEventListener('appinstalled', () => {
-  console.log('🎉 [PWA] App installed successfully');
-  
-  // Hide install button permanently
-  hideInstallButton();
-  
-  // Show success message
-  showInstallSuccessMessage();
-  
-  // Clear the prompt
-  deferredPrompt = null;
-});
-
-// ============================================
-// CHECK ON PAGE LOAD
-// ============================================
-window.addEventListener('load', () => {
-  if (isAppInstalled()) {
-    console.log('📱 [PWA] Running as installed app');
-    document.body.classList.add('pwa-mode');
-    hideInstallButton(); // Make sure button is hidden
-  }
-});
-
-// ============================================
-// SHOW SUCCESS MESSAGE
-// ============================================
 function showInstallSuccessMessage() {
-  const successMessage = document.createElement('div');
-  successMessage.innerHTML = `
+  const msg = document.createElement('div');
+  msg.innerHTML = `
     <div style="display: flex; align-items: center; gap: 12px;">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -210,7 +263,7 @@ function showInstallSuccessMessage() {
       </div>
     </div>
   `;
-  successMessage.style.cssText = `
+  msg.style.cssText = `
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -223,18 +276,39 @@ function showInstallSuccessMessage() {
     animation: slideInUp 0.5s ease;
   `;
   
-  document.body.appendChild(successMessage);
-  
+  document.body.appendChild(msg);
   setTimeout(() => {
-    successMessage.style.animation = 'slideOutDown 0.5s ease';
-    setTimeout(() => {
-      successMessage.remove();
-    }, 500);
+    msg.style.animation = 'slideOutDown 0.5s ease';
+    setTimeout(() => msg.remove(), 500);
   }, 5000);
 }
 
 // ============================================
-// OFFLINE/ONLINE DETECTION
+// EVENT LISTENERS
+// ============================================
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!isAppInstalled()) showInstallButton();
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('🎉 [PWA] Installed');
+  hideInstallButton();
+  showInstallSuccessMessage();
+  deferredPrompt = null;
+});
+
+window.addEventListener('load', () => {
+  if (isAppInstalled()) {
+    console.log('📱 [PWA] Running as installed app');
+    document.body.classList.add('pwa-mode');
+    hideInstallButton();
+  }
+});
+
+// ============================================
+// ONLINE/OFFLINE DETECTION
 // ============================================
 window.addEventListener('online', () => {
   console.log('🟢 [PWA] Back online');
@@ -242,17 +316,17 @@ window.addEventListener('online', () => {
 });
 
 window.addEventListener('offline', () => {
-  console.log('🔴 [PWA] You are offline');
+  console.log('🔴 [PWA] Offline');
   showConnectionStatus('offline');
 });
 
 function showConnectionStatus(status) {
-  const statusBanner = document.createElement('div');
-  statusBanner.innerHTML = status === 'online' 
+  const banner = document.createElement('div');
+  banner.innerHTML = status === 'online' 
     ? '🟢 You are back online' 
     : '🔴 You are offline';
   
-  statusBanner.style.cssText = `
+  banner.style.cssText = `
     position: fixed;
     top: 20px;
     left: 50%;
@@ -267,13 +341,11 @@ function showConnectionStatus(status) {
     animation: slideInDown 0.5s ease;
   `;
   
-  document.body.appendChild(statusBanner);
+  document.body.appendChild(banner);
   
   setTimeout(() => {
-    statusBanner.style.animation = 'slideOutUp 0.5s ease';
-    setTimeout(() => {
-      statusBanner.remove();
-    }, 500);
+    banner.style.animation = 'slideOutUp 0.5s ease';
+    setTimeout(() => banner.remove(), 500);
   }, 3000);
 }
 
@@ -283,47 +355,20 @@ function showConnectionStatus(status) {
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideInUp {
-    from {
-      transform: translateY(100px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-  
   @keyframes slideOutDown {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(100px);
-      opacity: 0;
-    }
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(100px); opacity: 0; }
   }
-  
   @keyframes slideInDown {
-    from {
-      transform: translateX(-50%) translateY(-100px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
   }
-  
   @keyframes slideOutUp {
-    from {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(-50%) translateY(-100px);
-      opacity: 0;
-    }
+    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+    to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
   }
 `;
 document.head.appendChild(style);

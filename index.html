@@ -22,8 +22,6 @@
     <meta name="msapplication-TileColor" content="#5b53f2">
     <meta name="msapplication-navbutton-color" content="#5b53f2">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
     
     <!-- Favicons -->
     <!-- <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
@@ -71,9 +69,11 @@
 <meta name="theme-color" content="#5b53f2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 
+<!-- Add this for iOS -->
+<link rel="apple-touch-icon" href="/icons/android/android-launchericon-192-192.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#5b53f2">
+<!-- ONLY THIS ONE SCRIPT - pwa-install.js handles EVERYTHING -->
 <script src="/pwa-install.js"></script>
 
 
@@ -360,10 +360,9 @@
         });
     </script>
 
-     <!-- PWA Installation Script -->
-    <script src="/pwa-install.js"></script>
+     <!-- PWA Installation Script-->
     
-    <!-- Register Service Worker -->
+    <!-- Register Service Worker 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -376,7 +375,7 @@
                     });
             });
         }
-    </script>
+    </script> -->
 </body>
 </html>
 
