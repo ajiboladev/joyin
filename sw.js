@@ -3,7 +3,7 @@
 // Version 1.0.1
 // ============================================
 
-const CACHE_NAME = 'joyin-v1.0.1';
+const CACHE_NAME = 'joyin-v1.0.0';
 const OFFLINE_URL = '/offline.html';
 
 // Essential files to cache immediately

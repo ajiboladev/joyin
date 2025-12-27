@@ -144,6 +144,7 @@ signupBtn.addEventListener("click", () => {
           role : "user",
           softBan: Boolean(false),
           username_lowercase: username.toLowerCase(),
+          banStartDate:"",
           createdAt: serverTimestamp(),
         });
         

@@ -1,8 +1,9 @@
 {
   "name": "JOYIN - The social app that's always fresh",
   "short_name": "JOYIN",
+  "version": "1.0.0",
   "description": "The social app that's always fresh",
-  "start_url": "/?source=pwa",
+  "start_url": "/?source=pwa&v1.0.0",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#5b53f2",
