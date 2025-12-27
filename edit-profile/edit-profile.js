@@ -42,7 +42,7 @@ async function loadExistingProfile() {
 
       //profile image
       const avatarPreview = document.getElementById("avatar-preview");
-      avatarPreview.src = userData.profilePic || 'https://tse1.mm.bing .net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
+      avatarPreview.src = userData.profilePic || 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3';
       
       // Clear loading message
       message.innerHTML = "";
