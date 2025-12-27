@@ -3,6 +3,13 @@
  *  Custom CSS for JOYIN
  *  (c) 2025 JOYIN. All rights reserved.
  */
+ /* Disable text selection */
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body{
     font-family: Arial, sans-serif;
     background-color: black;

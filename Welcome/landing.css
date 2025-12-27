@@ -25,6 +25,13 @@
     
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+/* Disable text selection */
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 
 * {
     margin: 0;
