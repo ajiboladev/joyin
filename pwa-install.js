@@ -155,7 +155,7 @@ function showUpdateSuccessMessage(version) {
   setTimeout(() => {
     successMsg.style.animation = 'slideOutUp 0.5s ease';
     setTimeout(() => successMsg.remove(), 500);
-  }, 4000);
+  }, 5000);
 }
 
 // ============================================
