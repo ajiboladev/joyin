@@ -23,7 +23,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
       .then((registration) => {
-        
+
         // console.log('✅ [PWA] Service Worker registered');
         swRegistration = registration;
         
@@ -117,7 +117,7 @@ function showUpdatePrompt() {
   // Auto-reload after 10 seconds
   setTimeout(() => {
     window.location.reload();
-  }, 30000);
+  }, 50000);
 }
 
 // ============================================
@@ -156,7 +156,7 @@ function showUpdateSuccessMessage(version) {
   setTimeout(() => {
     successMsg.style.animation = 'slideOutUp 0.5s ease';
     setTimeout(() => successMsg.remove(), 500);
-  }, 7000);
+  }, 10000);
 }
 
 // ============================================

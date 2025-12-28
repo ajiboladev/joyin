@@ -192,7 +192,7 @@ async function searchUsers() {
         const usersRef = collection(db, "users");
         const snapshot = await getDocs(usersRef);
         
-        console.log("Total users in database:", snapshot.size);
+        // console.log("Total users in database:", snapshot.size);
         
         const users = [];
         
@@ -240,7 +240,7 @@ async function searchUsers() {
             }
         });
         
-        console.log("Total matches found:", users.length);
+        // console.log("Total matches found:", users.length);
         
         // Hide loading
         loadingState.style.display = "none";
@@ -506,4 +506,4 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-console.log("✅ Search script loaded. Press F12 for debug mode.");
+// console.log("✅ Search script loaded. Press F12 for debug mode.");

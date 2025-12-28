@@ -135,7 +135,8 @@ async function loadPostDetail(postId) {
         const fullPostId = docSnap.id;
         
         console.log("✅ Post loaded successfully");
-        console.log("Post data:", post);
+        
+        // console.log("Post data:", post);
         
         // Hide the loading spinner
         loadingElement.style.display = 'none';
