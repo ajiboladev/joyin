@@ -861,7 +861,7 @@ async function loadUserPosts(userId) {
 
       
 
-      postDiv.textContent = `
+      postDiv.innerHTML= `
         <div class="post-header">
           <img 
             src="${post.userProfilePic || defaultImg}" 
