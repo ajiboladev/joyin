@@ -245,7 +245,7 @@ function redirectToApp(page = '') {
         } else {
             window.location.href = '../home/?view=home';
         }
-    }, 2000);
+    }, 8000);
 }
 
 // Auto-advance for demo purposes (optional)
