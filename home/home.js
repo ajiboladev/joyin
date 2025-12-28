@@ -536,7 +536,9 @@ async function loadPosts() {
     // If anything goes wrong, the 'catch' block will handle it
     try {
         // Log to console so we know the function started
-        console.log("📥 Loading posts from Firestore...");
+
+
+        // console.log("📥 Loading posts from Firestore...");
         
         // Create a database query - this is like writing a request to the database
         // query(): Creates a search request
@@ -561,7 +563,9 @@ async function loadPosts() {
             // snapshot.size: How many documents (posts) we received
             
             // Log how many posts we got (using template literal for dynamic text)
-            console.log(`📊 Got ${snapshot.size} posts`);
+
+            
+            // console.log(`📊 Got ${snapshot.size} posts`);
             
             // Call another function to display these posts on the page
             displayPosts(snapshot);
@@ -621,7 +625,9 @@ function displayPosts(snapshot) {
         const postId = doc.id;
         
         // Log which post we're processing (for debugging)
-        console.log("📝 Processing post:", postId);
+
+
+        // console.log("📝 Processing post:", postId);
         
         // Create an HTML element for this post
         // We'll look at the createPostElement function next

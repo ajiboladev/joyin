@@ -25,7 +25,8 @@ const db = getFirestore(app);   // For storing posts, profiles, comments
 const storage = getStorage(app); // For uploading profile pics and post images
 
 // 5. Console log for confirmation
-console.log("🔥 JOYIN Firebase is LIVE! Project:", firebaseConfig.projectId);
+
+// console.log("🔥 JOYIN Firebase is LIVE! Project:", firebaseConfig.projectId);
 
 // 6. Export the SERVICES, not just the 'app'
 export { auth, db, storage };

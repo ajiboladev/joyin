@@ -260,7 +260,8 @@ function createPlaceholderImage() {
 // MESSAGE HANDLER
 // ============================================
 self.addEventListener('message', (event) => {
-  console.log('💬 [SW] Message:', event.data);
+
+  // console.log('💬 [SW] Message:', event.data);
   
   if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
@@ -275,4 +276,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log(`✅ [SW ${CACHE_VERSION}] Loaded successfully`);
+// console.log(`✅ [SW ${CACHE_VERSION}] Loaded successfully`);

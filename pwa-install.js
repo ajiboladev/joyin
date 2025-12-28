@@ -23,7 +23,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
       .then((registration) => {
-        console.log('✅ [PWA] Service Worker registered');
+        
+        // console.log('✅ [PWA] Service Worker registered');
         swRegistration = registration;
         
         // Check for updates every 5 minutes
@@ -155,7 +156,7 @@ function showUpdateSuccessMessage(version) {
   setTimeout(() => {
     successMsg.style.animation = 'slideOutUp 0.5s ease';
     setTimeout(() => successMsg.remove(), 500);
-  }, 5000);
+  }, 7000);
 }
 
 // ============================================
