@@ -680,7 +680,7 @@ function createPostElement(post, postId) {
     
     // Now build the HTML content for the post
     // We use template literals (backticks `) to easily insert variables
-    postDiv.innerHTML = `
+    postDiv.textContent = `
         <!-- POST HEADER: User information -->
         <div class="post-header" onclick="window.location.href='../profile/?view=profile&uid=${post.userId}'">
             <!-- User profile picture with fallback to default image -->

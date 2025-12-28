@@ -830,7 +830,7 @@ async function loadUserPosts(userId) {
       postSystem.style.display = "none";
       
       if (viewerId === profileUserId) {
-        postsContainer.innerHTML = `
+        postsContainer.textContent = `
           <div class="no-posts">
             <i class="fas fa-camera-retro"></i>
             <p>No posts yet. Be the first to post something!</p>
@@ -861,7 +861,7 @@ async function loadUserPosts(userId) {
 
       
 
-      postDiv.innerHTML = `
+      postDiv.textContent = `
         <div class="post-header">
           <img 
             src="${post.userProfilePic || defaultImg}" 
