@@ -505,6 +505,12 @@ async function handleFollowClick() {
 }
 
 async function toggleFollow() {
+
+  console.log("=== FOLLOW DEBUG ===");
+console.log("viewerId:", viewerId);
+console.log("profileUserId:", profileUserId);  
+console.log("auth.currentUser.uid:", auth.currentUser?.uid);
+console.log("Match?", viewerId === auth.currentUser?.uid);
   if (!viewerId || !profileUserId) {
     throw new Error("Missing viewerId or profileUserId");
   }

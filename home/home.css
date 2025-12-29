@@ -594,7 +594,7 @@ a {
     object-fit: cover;
 }
 
-/* FEEDBACK WIDGET STYLES */
+/* FEEDBACK WIDGET STYLES
 .feedback-widget {
     position: fixed;
     bottom: 25px;
@@ -673,12 +673,12 @@ a {
     background: #dc2626;
 }
 
-/* Hidden state */
+Hidden state
 .hidden {
     display: none !important;
 }
 
-/* Mobile responsiveness */
+Mobile responsiveness
 @media (max-width: 768px) {
     .feedback-widget {
         bottom: 85px;
@@ -691,11 +691,11 @@ a {
     }
     
     .feedback-text {
-        display: none; /* Hide text on mobile, show only icon */
+        display: none; Hide text on mobile, show only icon 
     }
     
     .feedback-button {
         padding: 14px;
         border-radius: 50%;
     }
-}
+} */

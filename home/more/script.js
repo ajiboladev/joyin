@@ -470,7 +470,7 @@ function sharePost(postId, text) {
         // Use native share dialog (looks best on phones)
         navigator.share({
             title: 'Check out this post on JOYIN',
-            text: text || 'Interesting post on JOYIN',
+            // text: text || 'Interesting post on JOYIN',
             url: shareUrl
         }).then(() => {
             console.log("Post shared successfully");

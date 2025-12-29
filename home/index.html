@@ -148,9 +148,239 @@
     </div>
 </section>
 
+<!-- Add this right before </body> in your main page -->
+<div id="floating-updates-btn">
+  <button id="updates-btn">
+    <span class="btn-icon"><i class="fas fa-bell"></i></span>
+    <span class="btn-text">Updates</span>
+    <span class="notification-dot" id="notification-dot"></span>
+  </button>
+</div>
+
+<style>
+  /* ===== FLOATING UPDATES BUTTON ===== */
+  #floating-updates-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000;
+  }
+  
+  #updates-btn {
+    background: linear-gradient(135deg, #5b53f2 0%, #6a63f4 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(91, 83, 242, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  #updates-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(91, 83, 242, 0.4);
+    background: linear-gradient(135deg, #6a63f4 0%, #7a73f5 100%);
+  }
+  
+  #updates-btn:active {
+    transform: translateY(0);
+  }
+  
+  .btn-icon {
+    font-size: 20px;
+  }
+  
+  .btn-text {
+    font-size: 15px;
+  }
+  
+  /* Notification dot */
+  .notification-dot {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 14px;
+    height: 14px;
+    background: #ff4757;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    display: none;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  /* ===== MOBILE & TABLET ===== */
+  @media (max-width: 1024px) {
+    #floating-updates-btn {
+      bottom: 25px;
+      left: 25px;
+    }
+    
+    #updates-btn {
+      padding: 14px;
+      border-radius: 50%;
+      font-size: 12px;
+      color: rgba(212, 208, 208, 0.769);
+      width: 60px;
+      height: 60px;
+      justify-content: center;
+    }
+    
+    .btn-text {
+      display: none; /* Hide text on mobile/tablet */
+    }
+    
+    .btn-icon {
+      font-size: 24px;
+    }
+    
+    .notification-dot {
+      width: 18px;
+      height: 18px;
+      top: -8px;
+      right: -8px;
+      border: 3px solid #000000;
+    }
+  }
+  
+  /* ===== VERY SMALL MOBILE ===== */
+  @media (max-width: 480px) {
+    #floating-updates-btn {
+      bottom: 75px;
+      left: 80%;
+    }
+    
+    #updates-btn {
+      width: 56px;
+      height: 56px;
+      padding: 14px;
+    }
+    
+    .notification-dot {
+      width: 16px;
+      height: 16px;
+      top: -6px;
+      right: -6px;
+    }
+  }
+  
+  /* ===== DESKTOP LARGE ===== */
+  @media (min-width: 1025px) {
+    #floating-updates-btn {
+      bottom: 40px;
+      left: 40px;
+    }
+  }
+</style>
+
+<script type="module">
+  import { auth, db } from '../firebase.js';
+  import { 
+    doc, getDoc, updateDoc, serverTimestamp,
+    collection, query, where, orderBy, limit, getDocs
+  } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  
+  // Initialize the floating button
+  function initFloatingButton() {
+    const btn = document.getElementById('updates-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        window.location.href = '../updates/'; // Change this to your updates page path
+      });
+    }
+  }
+  
+  // Check for new updates
+  async function checkForNewUpdates() {
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+      
+      // Get user's last seen time
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      
+      let lastSeen = new Date(0);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        if (userData.lastSeenUpdates) {
+          lastSeen = userData.lastSeenUpdates.toDate();
+        }
+      }
+      
+      // Get latest important update
+      const updatesRef = collection(db, "updates");
+      const q = query(
+        updatesRef,
+        where("priority", "==", "important" || "normal"),
+        where("isActive", "==", true),
+        orderBy("createdAt", "desc"),
+        limit(1)
+      );
+      
+      const snapshot = await getDocs(q);
+      
+      const dot = document.getElementById('notification-dot');
+      if (!dot) return;
+      
+      if (!snapshot.empty) {
+        const latestUpdate = snapshot.docs[0].data();
+        const latestTime = latestUpdate.createdAt.toDate();
+        
+        if (latestTime > lastSeen) {
+          // Show red dot with animation
+          dot.style.display = 'block';
+          dot.style.animation = 'pulse 1.5s infinite';
+        } else {
+          dot.style.display = 'none';
+        }
+      } else {
+        dot.style.display = 'none';
+      }
+      
+    } catch (error) {
+      console.error("Error checking updates:", error);
+    }
+  }
+  
+  // Initialize when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    initFloatingButton();
+    
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Check immediately
+        checkForNewUpdates();
+        
+        // Check every 2 minutes
+        setInterval(checkForNewUpdates, 120000);
+        
+        // Also check when user comes back to tab
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) {
+            checkForNewUpdates();
+          }
+        });
+      }
+    });
+  });
+</script>
+
 
 <!-- Feedback Button Container -->
-<div id="feedbackWidget" class="feedback-widget hidden">
+<!-- <div id="feedbackWidget" class="feedback-widget hidden">
     <button id="feedbackButton" class="feedback-button">
         <svg class="feedback-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -161,9 +391,9 @@
     <button id="closeFeedback" class="close-button" aria-label="Close feedback button">
         ×
     </button>
-</div>
+</div> -->
 
-<script>
+<!-- <script>
 // Feedback Widget Manager WITHOUT LocalStorage
 class FeedbackWidget {
     constructor() {
@@ -253,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
+ -->
 
 
 

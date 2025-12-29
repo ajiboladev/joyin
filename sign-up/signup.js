@@ -145,7 +145,8 @@ signupBtn.addEventListener("click", () => {
           softBan: Boolean(false),
           username_lowercase: username.toLowerCase(),
           banStartDate:"",
-          createdAt: serverTimestamp(),
+          lastSeenUpdates: new Date(), // ← ADD THIS LINE
+          createdAt: serverTimestamp()
         });
         
         // Success! Update message

@@ -1,0 +1,369 @@
+/* user/style.css - All user page styles */
+:root {
+  --joyin-purple: #5b53f2;
+  --joyin-purple-light: #6a63f4;
+  --background: #000000;
+  --card-bg: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --border: #333333;
+  --success: #2ed573;
+  --warning: #ffa502;
+  --error: #ff4757;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ===== UPDATES BUTTON (FLOATING) ===== */
+#updates-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: var(--joyin-purple);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(91, 83, 242, 0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+#updates-btn:hover {
+  background: var(--joyin-purple-light);
+  transform: translateY(-2px);
+}
+
+#updates-btn .bell {
+  font-size: 20px;
+}
+
+.notification-dot {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
+  background: var(--error);
+  border-radius: 50%;
+  border: 2px solid var(--card-bg);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #updates-btn {
+    bottom: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+  }
+  
+  #updates-btn span {
+    display: none;
+  }
+  
+  #updates-btn .bell {
+    font-size: 24px;
+  }
+}
+
+/* ===== UPDATES PAGE STYLES ===== */
+.updates-header {
+  background: var(--card-bg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--joyin-purple);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.back-btn:hover {
+  background: rgba(91, 83, 242, 0.1);
+}
+
+.updates-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  padding: 18px 0;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+  color: var(--joyin-purple);
+  border-bottom-color: var(--joyin-purple);
+}
+
+/* Updates List */
+.updates-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 100px;
+}
+
+.update-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.update-card:hover {
+  border-color: var(--joyin-purple);
+  transform: translateY(-2px);
+}
+
+.update-card.new::after {
+  content: "NEW";
+  background: var(--joyin-purple);
+  color: white;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.update-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.update-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.update-preview {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.update-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.read-btn {
+  background: rgba(91, 83, 242, 0.1);
+  color: var(--joyin-purple);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  padding: 15px 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 14px;
+  background: rgba(91, 83, 242, 0.1);
+  border: 1px solid rgba(91, 83, 242, 0.2);
+  color: var(--joyin-purple);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  background: rgba(91, 83, 242, 0.2);
+}
+
+/* ===== FULL UPDATE VIEW ===== */
+.update-full {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.update-header-full {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.update-icon-large {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.update-title-full {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.update-meta {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.update-content-full {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  line-height: 1.7;
+}
+
+.update-content-full p {
+  margin-bottom: 20px;
+}
+
+/* ===== BUG REPORT & FEEDBACK ===== */
+.form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--card-bg);
+  border-radius: 12px;
+}
+
+.form-title {
+  font-size: 24px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.form-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--joyin-purple);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background: var(--joyin-purple-light);
+}

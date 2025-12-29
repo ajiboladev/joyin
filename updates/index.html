@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates | JOYIN</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="updates-header">
+        <button class="back-btn" onclick="goBack()">← Back</button>
+        <h1>Updates</h1>
+        <div style="width: 80px;"></div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" id="whats-new-tab-btn">🎉 What's New</button>
+        <button class="tab" id="notices-tab-btn">📢 Notices</button>
+    </div>
+
+    <!-- Content -->
+    <main class="updates-container">
+        <!-- What's New Tab -->
+        <div id="whats-new-tab" class="tab-content active">
+            <div id="whats-new-list" class="updates-list">
+                <div class="loading-state" id="whats-new-loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Notices Tab -->
+        <div id="notices-tab" class="tab-content" style="display: none;">
+            <div id="notices-list" class="updates-list">
+                <div class="loading-state" id="notices-loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">📭</div>
+            <h3>No updates yet</h3>
+            <p>We'll notify you when we have something new!</p>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <!-- <button class="nav-btn" onclick="window.location.href='bug-report.html'">🐛 Report Bug</button> -->
+        <button class="nav-btn" onclick="window.open('https://forms.gle/7TNkUGPYogvXsqwc7', '_blank')">💬 Feedback(@google-form)</button>
+    </nav>
+
+    <!-- Load script -->
+    <script type="module" src="script.js"></script>
+    
+    <script>
+        let currentTab = 'whats_new'; // Default tab
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Tab switching - uses event listeners instead of onclick
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for auth to be ready
+            setTimeout(initTabs, 500);
+        });
+        
+        function initTabs() {
+            // Setup tab buttons
+            document.getElementById('whats-new-tab-btn').addEventListener('click', function() {
+                switchTab('whats_new');
+            });
+            
+            document.getElementById('notices-tab-btn').addEventListener('click', function() {
+                switchTab('notice');
+            });
+            
+            // Load initial tab
+            switchTab('whats_new');
+        }
+        
+        function switchTab(tabType) {
+            // Update active tab button
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            if (tabType === 'whats_new') {
+                document.getElementById('whats-new-tab-btn').classList.add('active');
+                document.getElementById('whats-new-tab').style.display = 'block';
+                document.getElementById('notices-tab').style.display = 'none';
+            } else {
+                document.getElementById('notices-tab-btn').classList.add('active');
+                document.getElementById('notices-tab').style.display = 'block';
+                document.getElementById('whats-new-tab').style.display = 'none';
+            }
+            
+            currentTab = tabType;
+            
+            // Load updates for this tab
+            if (window.loadUpdates) {
+                window.loadUpdates(tabType === 'whats_new' ? 'whats_new' : 'notice');
+            } else {
+                console.error("loadUpdates function not available");
+                // Try again in a moment
+                setTimeout(() => {
+                    if (window.loadUpdates) {
+                        window.loadUpdates(tabType === 'whats_new' ? 'whats_new' : 'notice');
+                    }
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
