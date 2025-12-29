@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Offline - JOYIN</title>
     <meta name="theme-color" content="#5b53f2">
 
@@ -18,6 +18,11 @@
             padding: 0;
             box-sizing: border-box;
         }
+        * {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
