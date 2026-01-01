@@ -176,14 +176,18 @@ checkForChanges();
 
 
 
-
-//PROFILE PICTURE.
+// ============================================
+// PROFILE PICTURE UPLOAD WITH LOADING STATES
+// ============================================
 
 // 1. Get the elements
 const cameraIcon = document.getElementById("click");
 const imageInput = document.getElementById("profileImage");
 const saveButton = document.getElementById("saveProfilePic");
 const avatarPreview = document.getElementById("avatar-preview");
+
+// Store original button text so we can restore it later
+const ORIGINAL_BUTTON_TEXT = saveButton.textContent || "Save Changes";
 
 // 2. When camera icon is clicked, trigger the hidden file input
 cameraIcon.onclick = function () {
@@ -195,12 +199,28 @@ imageInput.addEventListener('change', function(event) {
   const file = event.target.files[0];
   if (!file) return;
   
+  // Validate file type (only allow images)
+  if (!file.type.startsWith('image/')) {
+    showErrorMessage("Please select an image file (JPG, PNG, etc.)");
+    imageInput.value = ""; // Clear the invalid selection
+    return;
+  }
+  
+  // Validate file size (max 5MB)
+  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  if (file.size > maxSize) {
+    showErrorMessage("Image size must be less than 5MB");
+    imageInput.value = ""; // Clear the invalid selection
+    return;
+  }
+  
   // Create a temporary URL to display the image
   const imageURL = URL.createObjectURL(file);
   avatarPreview.src = imageURL;
   
-  // Optional: Show a small message
-  console.log("New image selected for preview:", file.name);
+  // Show success feedback
+  console.log("✅ New image selected for preview:", file.name);
+  showSuccessMessage("Image selected! Click 'Save Changes' to upload.");
 });
 
 // 4. When "Save Changes" is clicked, upload to Firebase
@@ -209,51 +229,267 @@ saveButton.addEventListener("click", async function() {
   const file = imageInput.files[0];
   if (!file) {
     console.log("No new image selected. Saving other profile info...");
-    // You would proceed to save username/bio here
+    showInfoMessage("No new image selected. Please choose an image first.");
     return;
   }
-
+  
   const user = auth.currentUser;
   if (!user) {
-    alert("Please log in to save changes.");
+    showErrorMessage("Please log in to save changes.");
     return;
   }
-
+  
   try {
-    console.log("Starting image upload...");
+    console.log("🚀 Starting image upload...");
     
-    // 1. Create a storage reference
+    // STEP 1: Change button to loading state
+    setButtonLoading(true);
+    
+    // STEP 2: Create a storage reference
     // Using a timestamp ensures a unique filename and prevents browser caching
     const timestamp = Date.now();
     const imageRef = ref(
       storage,
       `usersProfilePic/${user.uid}/profile_${timestamp}.jpg`
     );
-
-    // 2. Upload image
-    console.log("Uploading file to Firebase Storage...");
+    
+    // STEP 3: Upload image to Firebase Storage
+    console.log("📤 Uploading file to Firebase Storage...");
+    updateButtonText("Uploading...");
     await uploadBytes(imageRef, file);
-
-    // 3. Get the public URL of the uploaded image
-    console.log("Getting download URL...");
+    
+    // STEP 4: Get the public URL of the uploaded image
+    console.log("🔗 Getting download URL...");
+    updateButtonText("Processing...");
     const imageURL = await getDownloadURL(imageRef);
-
-    // 4. Save URL in Firestore
-    console.log("Updating Firestore with new image URL...");
+    
+    // STEP 5: Save URL in Firestore
+    console.log("💾 Updating Firestore with new image URL...");
+    updateButtonText("Saving...");
     await updateDoc(doc(db, "users", user.uid), {
       profilePic: imageURL,
       updatedAt: new Date() // Good practice to track updates
     });
-
-    console.log("Profile image updated successfully!");
-    alert("Profile image updated ✅");
     
-    // Optional: Redirect or update UI
-    window.history.back(); // To show the new image everywhere
-
+    // STEP 6: Success! Show completion state
+    console.log("✅ Profile image updated successfully!");
+    updateButtonText("Saved ✓");
+    showSuccessMessage("Profile image updated successfully!");
+    
+    // STEP 7: Wait 1.5 seconds, then restore button and redirect
+    setTimeout(() => {
+      setButtonLoading(false); // Restore button to normal state
+      window.location.reload(); // Refresh to show the new image everywhere
+    }, 1500);
+    
   } catch (error) {
-    console.error("Error during upload:", error);
-    alert("Failed to update profile image. Error: " + error.message);
+    // STEP 8: Error handling
+    console.error("❌ Error during upload:", error);
+    
+    // Show user-friendly error messages based on error type
+    let errorMessage = "Failed to update profile image.";
+    
+    if (error.code === 'storage/unauthorized') {
+      errorMessage = "Permission denied. Please check your login status.";
+    } else if (error.code === 'storage/canceled') {
+      errorMessage = "Upload was cancelled.";
+    } else if (error.code === 'storage/unknown') {
+      errorMessage = "An unknown error occurred. Please try again.";
+    } else if (error.message) {
+      errorMessage = `Error: ${error.message}`;
+    }
+    
+    // Update button to show error state
+    updateButtonText("Failed ✗");
+    showErrorMessage(errorMessage);
+    
+    // Wait 2 seconds, then restore button to normal
+    setTimeout(() => {
+      setButtonLoading(false);
+    }, 2000);
   }
 });
 
+// ============================================
+// HELPER FUNCTIONS FOR BUTTON STATES
+// ============================================
+
+/**
+ * Set button to loading or normal state
+ * @param {boolean} isLoading - true = loading, false = normal
+ */
+function setButtonLoading(isLoading) {
+  if (isLoading) {
+    // Disable button during upload
+    saveButton.disabled = true;
+    saveButton.style.opacity = "0.7";
+    saveButton.style.cursor = "not-allowed";
+    saveButton.style.background = "#888"; // Gray color during loading
+    
+    // Add spinning icon (if you have Font Awesome)
+    saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  } else {
+    // Restore button to normal state
+    saveButton.disabled = false;
+    saveButton.style.opacity = "1";
+    saveButton.style.cursor = "pointer";
+    saveButton.style.background = ""; // Restore original color
+    saveButton.textContent = ORIGINAL_BUTTON_TEXT;
+  }
+}
+
+/**
+ * Update button text during different stages
+ * @param {string} text - The text to display
+ */
+function updateButtonText(text) {
+  saveButton.textContent = text;
+}
+
+// ============================================
+// HELPER FUNCTIONS FOR USER FEEDBACK MESSAGES
+// ============================================
+
+/**
+ * Show success message to user
+ * @param {string} message - Success message
+ */
+function showSuccessMessage(message) {
+  // Remove any existing messages first
+  removeAllMessages();
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.id = 'feedback-message';
+  messageDiv.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+  `;
+  messageDiv.innerHTML = `
+    <i class="fas fa-check-circle"></i> ${message}
+  `;
+  document.body.appendChild(messageDiv);
+  
+  // Auto-remove after 4 seconds
+  setTimeout(() => {
+    messageDiv.remove();
+  }, 4000);
+}
+
+/**
+ * Show error message to user
+ * @param {string} message - Error message
+ */
+function showErrorMessage(message) {
+  // Remove any existing messages first
+  removeAllMessages();
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.id = 'feedback-message';
+  messageDiv.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #f44336;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+  `;
+  messageDiv.innerHTML = `
+    <i class="fas fa-exclamation-circle"></i> ${message}
+  `;
+  document.body.appendChild(messageDiv);
+  
+  // Auto-remove after 5 seconds (longer for errors so user can read)
+  setTimeout(() => {
+    messageDiv.remove();
+  }, 5000);
+}
+
+/**
+ * Show info message to user
+ * @param {string} message - Info message
+ */
+function showInfoMessage(message) {
+  // Remove any existing messages first
+  removeAllMessages();
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.id = 'feedback-message';
+  messageDiv.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2196F3;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+  `;
+  messageDiv.innerHTML = `
+    <i class="fas fa-info-circle"></i> ${message}
+  `;
+  document.body.appendChild(messageDiv);
+  
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    messageDiv.remove();
+  }, 3000);
+}
+
+/**
+ * Remove all existing feedback messages
+ */
+function removeAllMessages() {
+  const existingMessage = document.getElementById('feedback-message');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+}
+
+// ============================================
+// ADD CSS ANIMATION FOR MESSAGES (Run once)
+// ============================================
+if (!document.querySelector('style[data-feedback-animation]')) {
+  const style = document.createElement('style');
+  style.setAttribute('data-feedback-animation', 'true');
+  style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .fa-spin {
+      animation: spin 1s linear infinite;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+console.log("✅ Improved profile picture upload system loaded!");

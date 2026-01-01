@@ -874,13 +874,13 @@ async function loadUserPosts(userId) {
             class="post-user-img"
             onerror="this.src='${defaultImg}'"
           >
-          <span class="post-username">${post.username || "User"}</span>
+          <span class="post-username"></span>
           <span id="post-dtatus" style="font-size: 12px; color: rgb(88, 86, 86);">${timeAgo}</span>
         </div>
 
         
         <div class="post-content" onclick="redirectToPost('${postId}')" style="cursor: pointer;">
-          <p class="post-text">${escapeHtml(post.text || '')}</p>
+          <p class="post-text"></p>
           
         </div>
 
@@ -914,10 +914,16 @@ async function loadUserPosts(userId) {
           </button>
         </div>
       `;
+      
 
       postsContainer.appendChild(postDiv);
+
+      postDiv.querySelector('.post-username').textContent = post.username || "User";
+    postDiv.querySelector('.post-text').textContent = post.text || "";
+
     });
 
+    
   } catch (error) {
     console.error("Error loading posts:", error);
     postsContainer.innerHTML = `

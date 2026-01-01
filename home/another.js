@@ -4,10 +4,10 @@
  *  (c) 2025 JOYIN
  */
 
-import { doc, getDoc, collection, orderBy, query, onSnapshot, getDocs, limit, startAfter, getCountFromServer } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { doc, getDoc, collection, orderBy, query, onSnapshot, getDocs, limit, startAfter } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 import { auth, db } from "../../firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 let viewerId = null;
 let profileUserId = null;
@@ -16,36 +16,20 @@ let profileUserId = null;
 // INFINITE SCROLL VARIABLES
 // ============================================
 
-// This controls how many posts to load at once
-// Setting it to 10 means: Load 10 posts, then another 10, then another 10...
+// How many posts to load at once
 const POSTS_PER_BATCH = 10;
 
-// This stores the LAST post from the previous batch
-// Example: If we loaded posts 1-10, this stores post #10
-// Then we use it to get posts 11-20 next time
+// Store the last document we loaded (needed to get next batch)
 let lastVisiblePost = null;
 
-// This prevents loading posts multiple times at once
-// It's like a traffic light: RED (true) = stop, GREEN (false) = go
+// Track if we're currently loading posts (prevents duplicate requests)
 let isLoadingPosts = false;
 
-// This tells us if there are more posts to load
-// TRUE = keep scrolling, more posts available
-// FALSE = stop, we've loaded everything
+// Track if there are more posts to load
 let hasMorePosts = true;
 
-// This is a SET (list) of all post IDs we've already shown
-// It prevents showing the same post twice
-// Example: If post "abc123" is in here, skip it
+// Store all loaded posts to avoid duplicates
 let loadedPostIds = new Set();
-
-// NEW: Track total posts in database
-// This tells us how many posts exist in total
-let totalPostsInDatabase = 0;
-
-// NEW: Track how many posts we've successfully loaded and displayed
-// This tells us how many posts are currently showing on screen
-let totalPostsLoaded = 0;
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -426,7 +410,7 @@ async function loadUserName(uid) {
        if (userSnap.exists()) {
             const data = userSnap.data();
 
-            document.getElementById("profile-username").textContent = data.username || "No profile added yet;";
+            document.getElementById("profile-username").innerHTML = data.username || "No profile added yet;";
 
             let profileImg = document.getElementById("profileImage");
             profileImg.src = data.profilePic || "https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3";
@@ -440,34 +424,26 @@ async function loadUserName(uid) {
 // INFINITE SCROLL - POSTS LOADING SYSTEM
 // =================================================================
 
-// Find the HTML element where we'll put all the posts
-// This is the container that holds all post cards
 const postsContainer = document.getElementById("posts");
-
-// Variable to store info about the logged-in user
 let currentUser = null;
 
-// Wait for the entire webpage to finish loading before running our code
-// This prevents errors from trying to access elements that don't exist yet
+// Wait for page to load completely
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🏠 Home page loading...");
     
-    // Listen for authentication state changes (login/logout)
-    // This runs automatically whenever someone logs in or out
+    // Listen for authentication state changes
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Someone IS logged in
             console.log("✅ User logged in:", user.uid);
-            currentUser = user; // Save user info for later use
+            currentUser = user;
             
-            // Load the FIRST batch of posts (initial 10)
+            // Load the FIRST batch of posts (initial 20)
             loadInitialPosts();
             
-            // Set up the scroll listener to detect when user scrolls near bottom
+            // Set up the scroll listener for infinite scroll
             setupInfiniteScroll();
             
         } else {
-            // Nobody is logged in - redirect to login page
             console.log("❌ No user logged in, redirecting...");
             window.location.href = "../login/?view=login";
         }
@@ -475,283 +451,163 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =================================================================
-// GET TOTAL POSTS COUNT FROM DATABASE
+// LOAD INITIAL POSTS (First 20)
 // =================================================================
-// This function counts how many posts exist in the database
-// We use this to know if there are more posts to load
-
-async function getTotalPostsCount() {
-    try {
-        // Create a query to count all posts in the database
-        const postsQuery = query(collection(db, "posts"));
-        
-        // Get the count from Firestore
-        const snapshot = await getCountFromServer(postsQuery);
-        
-        // Return the total count
-        const count = snapshot.data().count;
-        console.log(`📊 Total posts in database: ${count}`);
-        return count;
-        
-    } catch (error) {
-        console.error("Error getting posts count:", error);
-        return 0; // Return 0 if there's an error
-    }
-}
-
-// =================================================================
-// LOAD INITIAL POSTS (First 10 posts)
-// =================================================================
-// This function runs when the page first opens
-// It loads the first batch of posts so users see something immediately
 
 async function loadInitialPosts() {
     try {
         console.log("📥 Loading initial posts from Firestore...");
         
-        // STEP 1: Reset all variables to starting values
-        // This is like clearing the table before serving new food
-        isLoadingPosts = true;           // Set traffic light to RED (loading)
-        lastVisiblePost = null;          // Reset bookmark to start from beginning
-        hasMorePosts = true;             // Assume there are more posts
-        loadedPostIds.clear();           // Clear the list of posts we've shown
-        totalPostsLoaded = 0;            // Reset loaded posts counter
-        postsContainer.innerHTML = "";   // Remove any existing posts from screen
+        // Reset everything when loading initial posts
+        isLoadingPosts = true;
+        lastVisiblePost = null;
+        hasMorePosts = true;
+        loadedPostIds.clear();
+        postsContainer.innerHTML = ""; // Clear existing posts
         
-        // Show initial loading spinner
-        showInitialLoadingIndicator();
-        
-        // STEP 1.5: Get total posts count from database
-        // This tells us how many posts exist in total
-        totalPostsInDatabase = await getTotalPostsCount();
-        console.log(`📊 Database has ${totalPostsInDatabase} total posts`);
-        
-        // STEP 2: Create a database query
-        // This is like writing a request: "Give me 10 newest posts"
+        // Create a query to get the FIRST 20 posts
+        // orderBy("createdAt", "desc") = Sort by newest first
+        // limit(POSTS_PER_BATCH) = Only get 20 posts
         const q = query(
-            collection(db, "posts"),         // Look in the "posts" collection
-            orderBy("createdAt", "desc"),    // Sort by newest first (desc = descending)
-            limit(POSTS_PER_BATCH)           // Only get 10 posts (POSTS_PER_BATCH = 10)
+            collection(db, "posts"),
+            orderBy("createdAt", "desc"),
+            limit(POSTS_PER_BATCH)
         );
         
-        // STEP 3: Actually fetch the posts from Firebase
-        // getDocs = "Get Documents" - retrieves the posts once
+        // Get the posts from Firestore (one-time fetch, not real-time)
         const snapshot = await getDocs(q);
         
         console.log(`📊 Got ${snapshot.size} initial posts`);
         
-        // STEP 4: Check if there are NO posts at all in the database
+        // If no posts exist at all
         if (snapshot.empty) {
-            // Database is empty - show a message
-            hideInitialLoadingIndicator();
             postsContainer.innerHTML = `
                 <div class="no-posts">
                     <p>No posts yet. Be the first to post something!</p>
                     <button onclick="window.location.href='../upload/'">Create Post</button>
                 </div>
             `;
-            hasMorePosts = false;      // No more posts to load
-            isLoadingPosts = false;    // Set traffic light to GREEN
-            return;                     // Stop here
+            hasMorePosts = false;
+            isLoadingPosts = false;
+            return;
         }
         
-        // STEP 5: Save the LAST post as a bookmark
-        // snapshot.docs = array of all posts we got
-        // [snapshot.docs.length - 1] = get the LAST item in the array
-        // Example: If we got posts 1-10, save post #10
+        // If we got fewer posts than we asked for, there are no more posts
+        if (snapshot.size < POSTS_PER_BATCH) {
+            hasMorePosts = false;
+            console.log("✅ All posts loaded (less than 20 posts total)");
+        }
+        
+        // Save the last document so we know where to start next batch
         lastVisiblePost = snapshot.docs[snapshot.docs.length - 1];
         
-        // STEP 6: Display all the posts on the screen
-        hideInitialLoadingIndicator();
+        // Display all the posts we just loaded
         displayPosts(snapshot);
         
-        // STEP 7: Check if we've loaded all posts
-        // Compare: posts we've loaded vs total posts in database
-        console.log(`📊 Loaded ${totalPostsLoaded} out of ${totalPostsInDatabase} posts`);
-        
-        if (totalPostsLoaded >= totalPostsInDatabase) {
-            // We've loaded everything!
-            hasMorePosts = false;
-            console.log("✅ All posts loaded (initial load complete)");
-        } else {
-            // There are more posts to load
-            hasMorePosts = true;
-            console.log(`✅ More posts available (${totalPostsInDatabase - totalPostsLoaded} remaining)`);
-        }
-        
-        // STEP 8: Loading complete - set traffic light to GREEN
         isLoadingPosts = false;
         
     } catch (error) {
-        // If ANYTHING goes wrong, show an error message
         console.error("Error loading initial posts:", error);
-        hideInitialLoadingIndicator();
-        showErrorMessage("Failed to load posts. Please check your connection and refresh.");
-        isLoadingPosts = false;    // Make sure to unlock loading
+        showErrorMessage("Failed to load posts. Please refresh.");
+        isLoadingPosts = false;
     }
 }
 
 // =================================================================
-// LOAD MORE POSTS (Next 10 posts)
+// LOAD MORE POSTS (Next 20)
 // =================================================================
-// This function runs when user scrolls near the bottom
-// It loads the NEXT batch of 10 posts
 
 async function loadMorePosts() {
-    // STEP 1: Safety checks - don't load if any of these are true
-    if (isLoadingPosts) {
-        // Already loading posts - wait for current load to finish
-        console.log("⏸️ Already loading posts, please wait...");
+    // Safety checks - don't load if:
+    // 1. Already loading posts
+    // 2. No more posts available
+    // 3. Don't have a reference to the last post
+    if (isLoadingPosts || !hasMorePosts || !lastVisiblePost) {
+        console.log("⏸️ Not loading more posts:", { isLoadingPosts, hasMorePosts, hasLastPost: !!lastVisiblePost });
         return;
     }
     
-    if (!lastVisiblePost) {
-        // Don't have a bookmark - can't load next batch
-        console.log("⏸️ No bookmark for next batch");
-        return;
-    }
-    
-    // STEP 2: Check if we've loaded all posts from database
-    console.log(`📊 Checking: Loaded ${totalPostsLoaded} / Total ${totalPostsInDatabase}`);
-    
-    if (totalPostsLoaded >= totalPostsInDatabase) {
-        // We've loaded everything - show "No more posts" message
-        console.log("✅ All posts have been loaded from database");
-        hasMorePosts = false;
-        showEndMessage();
-        return;
-    }
-    
-    // STEP 3: If we reach here, there ARE more posts in database
-    // But we haven't loaded them yet, so show loading indicator
     try {
-        // Set loading state
-        isLoadingPosts = true;                    // Traffic light to RED
+        isLoadingPosts = true;
         console.log("📥 Loading more posts...");
         
-        // Show loading spinner at bottom of page
-        // This will keep spinning until posts load OR we confirm no more posts
+        // Show a loading indicator at the bottom
         showLoadingIndicator();
         
-        // STEP 4: Create query for NEXT batch of posts
-        // This is the KEY to infinite scroll!
+        // Create query for NEXT batch of posts
+        // startAfter(lastVisiblePost) = Start after the last post we loaded
+        // This ensures we don't get duplicate posts
         const q = query(
-            collection(db, "posts"),              // Look in "posts" collection
-            orderBy("createdAt", "desc"),         // Sort by newest first
-            startAfter(lastVisiblePost),          // 🔑 START AFTER the last post we loaded
-            limit(POSTS_PER_BATCH)                // Get next 10 posts
+            collection(db, "posts"),
+            orderBy("createdAt", "desc"),
+            startAfter(lastVisiblePost),  // KEY: Start after last post
+            limit(POSTS_PER_BATCH)
         );
         
-        // Example of how startAfter works:
-        // First load: Got posts 1-10, bookmark = post #10
-        // Second load: startAfter(post #10) → Get posts 11-20, bookmark = post #20
-        // Third load: startAfter(post #20) → Get posts 21-30, bookmark = post #30
-        
-        // STEP 5: Fetch the posts from Firebase
         const snapshot = await getDocs(q);
         
-        console.log(`📊 Got ${snapshot.size} more posts`);
+        // console.log(`📊 Got ${snapshot.size} more posts`);
         
-        // STEP 6: Check if Firebase returned NO posts
-        // This should not happen if our count is correct, but check anyway
+        // If we got no posts, we've reached the end
         if (snapshot.empty) {
-            hasMorePosts = false;                 // Mark as finished
-            console.log("✅ No more posts returned from query");
-            hideLoadingIndicator();               // Remove loading spinner
-            showEndMessage();                     // Show "You've reached the end!"
-            isLoadingPosts = false;               // Traffic light to GREEN
-            return;                                // Stop here
+            hasMorePosts = false;
+            console.log("✅ All posts loaded (no more posts)");
+            hideLoadingIndicator();
+            showEndMessage();
+            isLoadingPosts = false;
+            return;
         }
         
-        // STEP 7: Update the bookmark to the NEW last post
-        // Example: Just loaded posts 11-20, so bookmark is now post #20
+        // If we got fewer posts than requested, this is the last batch
+        if (snapshot.size < POSTS_PER_BATCH) {
+            hasMorePosts = false;
+            console.log("✅ All posts loaded (last batch)");
+        }
+        
+        // Update lastVisiblePost for the next batch
         lastVisiblePost = snapshot.docs[snapshot.docs.length - 1];
         
-        // STEP 8: Display the new posts on screen (ADD to existing, don't replace)
-        displayPosts(snapshot, true);             // true = append mode
+        // Display the new posts (append them, don't replace)
+        displayPosts(snapshot, true); // true = append mode
         
-        // STEP 9: Clean up
-        hideLoadingIndicator();                   // Remove loading spinner
+        hideLoadingIndicator();
         
-        // STEP 10: Check again if we've loaded all posts
-        console.log(`📊 Now loaded ${totalPostsLoaded} out of ${totalPostsInDatabase} posts`);
-        
-        if (totalPostsLoaded >= totalPostsInDatabase) {
-            // We've loaded everything!
-            hasMorePosts = false;
-            console.log("✅ All posts now loaded");
-            showEndMessage();                     // Show "You've reached the end!"
-        } else {
-            // Still more posts to load
-            hasMorePosts = true;
-            console.log(`✅ More posts available (${totalPostsInDatabase - totalPostsLoaded} remaining)`);
+        // Show end message AFTER displaying the last posts
+        if (!hasMorePosts) {
+            showEndMessage();
         }
         
-        isLoadingPosts = false;                   // Traffic light to GREEN
+        isLoadingPosts = false;
         
     } catch (error) {
-        // If loading fails (network error, etc.)
         console.error("Error loading more posts:", error);
-        
-        // DON'T hide the loading indicator
-        // Keep showing "Try to reload the page" because posts still exist in database
-        // The user can scroll again or refresh to retry
-        
-        console.log("⚠️ Load failed but posts remain in database - keeping loading indicator");
-        
-        isLoadingPosts = false;                   // Traffic light to GREEN (allow retry)
+        hideLoadingIndicator();
+        isLoadingPosts = false;
     }
 }
 
 // =================================================================
 // SETUP INFINITE SCROLL DETECTION
 // =================================================================
-// This function sets up a listener that watches when user scrolls
-// When user gets close to bottom, it automatically loads more posts
 
 function setupInfiniteScroll() {
-    // Add a scroll event listener to the window
-    // This runs EVERY TIME the user scrolls (even a tiny bit)
+    // Listen for scroll events on the window
     window.addEventListener('scroll', () => {
-        // STEP 1: Quick check - don't do anything if already loading
-        if (isLoadingPosts) {
-            return;
-        }
+        // Don't do anything if already loading or no more posts
+        if (isLoadingPosts || !hasMorePosts) return;
         
-        // STEP 2: Check if there are more posts to load
-        // Compare loaded vs total in database
-        if (totalPostsLoaded >= totalPostsInDatabase) {
-            // All posts loaded - don't trigger loading
-            return;
-        }
-        
-        // STEP 3: Calculate scroll position
-        // Think of this like measuring how far down the page you are
-        
-        // How far user has scrolled from the top (in pixels)
-        const scrollY = window.scrollY;
-        
-        // Height of the visible window (what user can see)
-        const windowHeight = window.innerHeight;
-        
-        // Total height of the entire page
+        // Calculate how close we are to the bottom
+        // scrollY = How far user has scrolled down
+        // innerHeight = Height of the visible window
+        // document.body.offsetHeight = Total height of the page
+        const scrollPosition = window.scrollY + window.innerHeight;
         const pageHeight = document.body.offsetHeight;
         
-        // Current position = how far scrolled + visible area
-        // Example: Scrolled 1000px, window is 800px tall = position is 1800px
-        const scrollPosition = scrollY + windowHeight;
-        
-        // STEP 4: Check if user is near the bottom
-        // If current position is within 300px of the bottom, load more
-        // 
-        // Example calculation:
-        // Page height: 2000px
-        // Trigger point: 2000 - 300 = 1700px
-        // User position: 1750px
-        // 1750 >= 1700 ? YES → Load more posts!
+        // If we're within 300px of the bottom, load more posts
+        // You can adjust this number - smaller = loads sooner
         if (scrollPosition >= pageHeight - 300) {
-            console.log("🎯 Near bottom - loading more posts");
-            loadMorePosts();  // Trigger loading of next batch
+            // console.log("🎯 Near bottom - loading more posts");
+            loadMorePosts();
         }
     });
 }
@@ -759,112 +615,76 @@ function setupInfiniteScroll() {
 // =================================================================
 // DISPLAY POSTS ON THE PAGE
 // =================================================================
-// This function takes the raw post data from Firebase
-// and converts it into HTML elements that users can see
 
 function displayPosts(snapshot, appendMode = false) {
-    // appendMode = false: Clear everything and show new posts (initial load)
-    // appendMode = true: Add to existing posts (loading more)
+    // appendMode = false: Clear and show new posts (initial load)
+    // appendMode = true: Add posts to existing ones (load more)
     
-    // STEP 1: If NOT appending, clear the container
     if (!appendMode) {
-        postsContainer.innerHTML = "";  // Remove all existing posts
+        postsContainer.innerHTML = "";
     }
     
-    // STEP 2: Check if snapshot is empty (no posts received)
     if (snapshot.empty && !appendMode) {
-        // Show "no posts" message
         postsContainer.innerHTML = `
             <div class="no-posts">
                 <p>No posts yet. Be the first to post something!</p>
                 <button onclick="window.location.href='../upload/'">Create Post</button>
             </div>
         `;
-        return;  // Stop here
+        return;
     }
     
-    // STEP 3: Loop through each post document in the snapshot
-    // forEach = "For each item, do this..."
     snapshot.forEach((doc) => {
-        // Get the post data (username, text, image, etc.)
         const post = doc.data();
-        
-        // Get the unique ID of this post
         const postId = doc.id;
         
-        // STEP 4: Check if we've already shown this post
-        // loadedPostIds.has(postId) = "Is this ID in our list?"
+        // Skip if we've already displayed this post (prevent duplicates)
         if (loadedPostIds.has(postId)) {
-            console.log("⏭️ Skipping duplicate post:", postId);
-            return;  // Skip this post, move to next one
+            // console.log("⏭️ Skipping duplicate post:", postId);
+            return;
         }
         
-        // STEP 5: Mark this post as "already shown"
-        // Add its ID to our tracking list
+        // Mark this post as loaded
         loadedPostIds.add(postId);
         
-        // STEP 6: Increment the total posts loaded counter
-        totalPostsLoaded++;
+        // console.log("📝 Processing post:", postId);
         
-        console.log(`📝 Processing post: ${postId} (${totalPostsLoaded}/${totalPostsInDatabase})`);
-        
-        // STEP 7: Create the HTML element for this post
         const postElement = createPostElement(post, postId);
-        
-        // STEP 8: Add the post element to the posts container
-        // appendChild = "Add this as the last child"
-        // So new posts appear at the bottom
         postsContainer.appendChild(postElement);
     });
     
-    // STEP 9: Set up click handlers for "see more" links
     setupSeeMoreLinks();
 }
 
 // =================================================================
-// CREATE POST ELEMENT
+// CREATE POST ELEMENT (Same as before)
 // =================================================================
-// This function builds the complete HTML structure for ONE post
-// It takes the post data and returns a complete, styled post card
 
 function createPostElement(post, postId) {
-    // STEP 1: Create a new div element (container for the post)
     const postDiv = document.createElement("div");
-    postDiv.className = "post";              // Add CSS class for styling
-    postDiv.dataset.postId = postId;         // Store post ID in the element
+    postDiv.className = "post";
+    postDiv.dataset.postId = postId;
     
-    // STEP 2: Calculate time ago (e.g., "2 hours ago")
     const timeAgo = getTimeAgo(post.createdAt);
+    const text = post.text || "";
+    const needsSeeMore = text.length > 150;
+    const displayText = needsSeeMore ? text.substring(0, 150) + "...seemore" : text;
     
-    // STEP 3: Get the post text and handle long text
-    const text = post.text || "";                          // Get text, or empty string if none
-    const needsSeeMore = text.length > 150;                // Is text longer than 150 characters?
-    
-    // If text is long, show first 150 chars + "...seemore"
-    // If text is short, show all of it
-    const displayText = needsSeeMore ? text.substring(0, 150) + "..." : text;
-    
-    // STEP 4: Build the complete HTML for the post
-    // Using template literals (backticks) to easily insert variables
-    // NOTE: Username and text are added via textContent after for security
     postDiv.innerHTML = `
-        <!-- POST HEADER: Shows user profile pic, username, and time -->
         <div class="post-header" onclick="window.location.href='../profile/?view=profile&uid=${post.userId}'">
             <img src="${post.userProfilePic || 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'}" 
-                 alt="Profile picture">
-            <p class="post-username"></p>
+                 alt="${post.username}'s profile picture">
+            <p class="post-username">${post.username || "User"}</p>
             <div class="post-status" style="font-size: 12px; color: rgb(88, 86, 86);">${timeAgo}</div>
         </div>
         
-        <!-- POST TEXT: Shows the post content -->
         <h4 class="post-text-content">
-            <span class="post-text" style="font-size: 15px; color: rgba(197, 194, 194, 1);"></span>
+            <span class="post-text" style="font-size: 15px; color: rgba(197, 194, 194, 1);">${displayText}</span>
             ${needsSeeMore ? 
                 `<a class="see-more-link" data-post-id="${postId}" style="color: #007bff; cursor: pointer;">...see more</a>` 
                 : ''}
         </h4>
         
-        <!-- POST IMAGE: Shows image if post has one -->
         ${post.imageUrl && post.imageUrl.trim() !== '' ? 
             `<div class="post-image-container">
                 <img 
@@ -877,7 +697,6 @@ function createPostElement(post, postId) {
             ''
         }  
         
-        <!-- LIKE COUNT: Shows how many likes -->
         <div class="reaction">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b53f2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
@@ -885,7 +704,6 @@ function createPostElement(post, postId) {
             <p class="reaction-count">${post.likeCount || 0} ${post.likeCount === 1 ? 'like' : 'likes'}</p>
         </div>
         
-        <!-- ACTION BUTTONS: Like, Comment, Share -->
         <div class="post-actions">
             <button class="action-button like-btn" data-post-id="${postId}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -914,15 +732,7 @@ function createPostElement(post, postId) {
         </div>
     `;
     
-    // STEP 5: Safely add username and text using textContent (prevents XSS attacks)
-    // textContent treats everything as plain text, not HTML
-    postDiv.querySelector('.post-username').textContent = post.username || "User";
-    postDiv.querySelector('.post-text').textContent = displayText;
-    
-    // STEP 6: Add event listeners to the buttons (make them clickable)
     setupPostInteractions(postDiv, post, postId);
-    
-    // STEP 7: Return the complete post element
     return postDiv;
 }
 
@@ -930,96 +740,43 @@ function createPostElement(post, postId) {
 // LOADING INDICATORS
 // =================================================================
 
-// Show initial loading spinner when page first loads
-function showInitialLoadingIndicator() {
-    postsContainer.innerHTML = `
-        <div id="initial-loading-indicator" style="text-align: center; padding: 50px 20px;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 50px; color: #5b53f2;"></i>
-            <p style="margin-top: 20px; color: #888; font-size: 16px;">Loading posts...</p>
-        </div>
-    `;
+function showLoadingIndicator() {
+    // Check if indicator already exists
+    if (document.getElementById('loading-indicator')) return;
     
-    // Add CSS for spinner animation if not already added
-    if (!document.querySelector('style[data-spinner]')) {
-        const style = document.createElement('style');
-        style.setAttribute('data-spinner', 'true');
-        style.textContent = `
+    const loader = document.createElement('div');
+    loader.id = 'loading-indicator';
+    loader.style.cssText = `
+        text-align: center;
+        padding: 20px;
+        color: #5b53f2;
+        font-size: 14px;
+    `;
+    loader.innerHTML = `
+        <div style="display: inline-block; animation: spin 1s linear infinite;">
+            ⏳
+        </div>
+        <p>Loading more posts...</p>
+        <style>
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
-            .fa-spin {
-                animation: spin 1s linear infinite;
-            }
-        `;
-        document.head.appendChild(style);
-    }
+        </style>
+    `;
+    postsContainer.appendChild(loader);
 }
 
-// Hide initial loading spinner
-function hideInitialLoadingIndicator() {
-    const loader = document.getElementById('initial-loading-indicator');
+function hideLoadingIndicator() {
+    const loader = document.getElementById('loading-indicator');
     if (loader) {
         loader.remove();
     }
 }
 
-// Show a loading spinner at the bottom while fetching more posts
-// This keeps spinning as long as there are posts in database that haven't loaded yet
-function showLoadingIndicator() {
-    // Check if indicator already exists - don't create duplicates
-    if (document.getElementById('loading-indicator')) return;
-    
-    // Create the loading indicator element
-    const loader = document.createElement('div');
-    loader.id = 'loading-indicator';
-    loader.style.cssText = `
-        text-align: center;
-        padding: 30px 20px;
-        color: #5b53f2;
-        font-size: 14px;
-    `;
-    
-    // Create spinner icon
-    const spinner = document.createElement('div');
-    spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 40px; color: #5b53f2;"></i>';
-    
-    // Create reload text
-    const reloadText = document.createElement('p');
-    reloadText.style.cssText = 'margin-top: 2px; padding-bottom: 25px; color: #888; font-size: 14px;';
-    reloadText.textContent = 'Try to reload the page';
-    
-    // Add elements to loader
-    loader.appendChild(spinner);
-    loader.appendChild(reloadText);
-    
-    // Add it to the bottom of the posts container
-    postsContainer.appendChild(loader);
-}
-
-// Remove the loading spinner
-function hideLoadingIndicator() {
-    const loader = document.getElementById('loading-indicator');
-    if (loader) {
-        loader.remove();  // Remove from page
-    }
-}
-
-// Show "You've reached the end!" message when all posts are loaded
-// This only shows when totalPostsLoaded === totalPostsInDatabase
 function showEndMessage() {
-    // IMPORTANT: First remove loading indicator if it exists
-    // We should NEVER show both loading and "no more posts" at the same time
-    hideLoadingIndicator();
-    
-    // Check if message already exists - don't create duplicates
+    // Check if message already exists
     if (document.getElementById('end-message')) return;
-    
-    // Double check: Only show this if we've truly loaded all posts
-    if (totalPostsLoaded < totalPostsInDatabase) {
-        console.log("⚠️ Not showing end message - more posts exist in database");
-        return; // Don't show end message if posts still exist
-    }
     
     const endMsg = document.createElement('div');
     endMsg.id = 'end-message';
@@ -1029,13 +786,10 @@ function showEndMessage() {
         color: #888;
         font-size: 14px;
     `;
-    
     endMsg.innerHTML = `
-        <p style="font-size: 16px; margin-bottom: 5px;">🎉 You've reached the end!</p>
-        <p style="font-size: 12px; color: #666;">No more posts to load</p>
+        <p>🎉 You've reached the end!</p>
+        <p style="font-size: 12px;">No more posts to load</p>
     `;
-    
-    // Add it to the bottom of the posts container
     postsContainer.appendChild(endMsg);
 }
 
@@ -1043,74 +797,55 @@ function showEndMessage() {
 // HELPER FUNCTIONS
 // =================================================================
 
-// Convert timestamp to "time ago" format (e.g., "2h ago", "5d ago")
 function getTimeAgo(timestamp) {
-    // If no timestamp, return "Just now"
     if (!timestamp) return "Just now";
     
-    const now = new Date();  // Current time
-    
-    // Convert Firestore timestamp to JavaScript Date
+    const now = new Date();
     const postDate = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    
-    // Calculate difference in seconds
     const seconds = Math.floor((now - postDate) / 1000);
     
-    // Return appropriate format based on time difference
-    if (seconds < 60) return "Just now";                              // Less than 1 minute
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;    // Less than 1 hour
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`; // Less than 1 day
-    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`; // Less than 1 week
+    if (seconds < 60) return "Just now";
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
     
-    return postDate.toLocaleDateString();  // Show actual date for older posts
+    return postDate.toLocaleDateString();
 }
 
-// Set up click handlers for all "see more" links
 function setupSeeMoreLinks() {
-    // Find all elements with class "see-more-link"
     document.querySelectorAll('.see-more-link').forEach(link => {
-        // Add click event to each link
         link.addEventListener('click', function(e) {
-            e.preventDefault();  // Prevent default link behavior
-            const postId = this.dataset.postId;  // Get post ID from link
-            // Navigate to full post page
+            e.preventDefault();
+            const postId = this.dataset.postId;
             window.location.href = `./more/?view=post&id=${postId}`;
         });
     });
 }
 
-// Set up click handlers for post buttons (like, comment, share)
 function setupPostInteractions(postElement, post, postId) {
-    // Find the like button in this specific post
     const likeBtn = postElement.querySelector('.like-btn');
     if (likeBtn) {
         likeBtn.addEventListener('click', () => alert("Like functionality coming soon!"));
     }
     
-    // Find the comment button
     const commentBtn = postElement.querySelector('.comment-btn');
     if (commentBtn) {
         commentBtn.addEventListener('click', () => alert("Comment functionality coming soon!"));
     }
     
-    // Find the share button
     const shareBtn = postElement.querySelector('.share-btn');
     if (shareBtn) {
         shareBtn.addEventListener('click', () => handleShare(postId, post.text));
     }
 }
 
-// Handle sharing a post
 function handleShare(postId, text) {
-    // Check if browser supports native sharing
     if (navigator.share) {
-        // Use native share dialog (works on mobile)
         navigator.share({
             title: 'Check out this post on JOYIN',
             url: `./more/?tab=shared_post&id=${postId}`
         });
     } else {
-        // Fallback: Copy link to clipboard
         const link = `${window.location.origin}/post/?id=${postId}`;
         navigator.clipboard.writeText(link).then(() => {
             alert('Post link copied to clipboard!');
@@ -1118,20 +853,11 @@ function handleShare(postId, text) {
     }
 }
 
-// Show error message when posts fail to load
 function showErrorMessage(message) {
     postsContainer.innerHTML = `
-        <div class="error-message" style="text-align: center; padding: 20px; color: #ff6b6b;">
+        <div class="error-message">
             <p>${message}</p>
-            <button onclick="location.reload()" style="
-                background: #5b53f2;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 20px;
-                margin-top: 10px;
-                cursor: pointer;
-            ">Try Again</button>
+            <button onclick="location.reload()">Try Again</button>
         </div>
     `;
 }

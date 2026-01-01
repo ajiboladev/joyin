@@ -186,7 +186,7 @@ function displayPostDetail(post, postId) {
             <!-- User info container -->
             <div class="post-user-info">
                 <!-- Username -->
-                <p class="post-username">${safeUsername}</p>
+                <p class="post-username"></p>
                 
                 <!-- Time when post was created -->
                 <div class="post-status">${timeAgo}</div>
@@ -195,7 +195,7 @@ function displayPostDetail(post, postId) {
         
         <!-- POST TEXT CONTENT - Shows full text (not truncated like home page) -->
         <div class="post-text-content">
-            ${safeText || '<em>No text content</em>'}
+            
         </div>
         
         <!-- POST IMAGE - Only shown if post has an image -->
@@ -252,6 +252,9 @@ function displayPostDetail(post, postId) {
     
     // Insert the HTML into the post content container
     postContentElement.innerHTML = postHTML;
+
+    postContentElement.querySelector('.post-username').textContent =safeUsername || "User";
+    postContentElement.querySelector('.post-text-content').textContent = safeText || "";
     
     // Now that HTML is added, we need to make the buttons work
     setupButtonListeners(postId, safeText, post.imageUrl || '');

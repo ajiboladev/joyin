@@ -357,7 +357,7 @@
                              onerror="this.src='${defaultImg}'">
                         <div class="user-info">
                             <div class="username" onclick="window.location.href='../profile/?uid=${post.userId}'">
-                                ${post.username || 'Unknown User'}
+                                
                             </div>
                             <div class="post-time">${formatDate(post.createdAt?.toDate())}</div>
                         </div>
@@ -402,6 +402,9 @@
                     </div>
                 </div>
             `;
+
+           container.querySelector('.username').textContent = post.username  || "User";
+          container.querySelector('.post-text').textContent = displayText;
         }
 
         async function loadComments() {

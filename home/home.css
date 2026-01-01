@@ -588,11 +588,20 @@ a {
         }
 
         .post-main-image {
-    width: 100%;
+    width: 85%;
     display: block;
     max-height: 500px;
     object-fit: cover;
 }
+
+.post-text{
+    /* background-color: blue; */
+    white-space: pre-wrap;
+}
+/* 
+.post-image-container{
+    max-height: 250px;
+} */
 
 /* FEEDBACK WIDGET STYLES
 .feedback-widget {
