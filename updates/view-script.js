@@ -39,7 +39,7 @@ async function loadUpdate(updateId) {
         <div class="update-meta">📅 ${date} | 👤 Admin</div>
       </div>
       <div class="update-content-full">
-        ${update.content || '<p>No content available.</p>'}
+       <p> ${update.content || 'No content available.'}</p>
       </div>
       <div style="margin-top: 30px; display: flex; gap: 15px;">
         <button class="back-btn" onclick="goBack()" style="flex: 1;">← Back</button>

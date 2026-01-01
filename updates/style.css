@@ -373,3 +373,7 @@ body {
 .submit-btn:hover {
   background: var(--joyin-purple-light);
 }
+
+.update-content-full p{
+  white-space: pre-wrap;
+}
