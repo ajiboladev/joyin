@@ -588,9 +588,9 @@ a {
         }
 
         .post-main-image {
-    width: 85%;
+    width: 100%;
     display: block;
-    max-height: 500px;
+    max-height: 450px;
     object-fit: cover;
 }
 

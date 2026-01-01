@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        let lastTimestamp = -1;
+let sequence = 0;
+
+function generatePostIndex() {
+    let timestamp = Date.now(); // Current time in milliseconds
+
+    // If generated in the same millisecond, increment the sequence counter
+    if (timestamp === lastTimestamp) {
+        sequence++;
+    } else {
+        sequence = 0; // Reset for a new millisecond
+        lastTimestamp = timestamp;
+    }
+
+    // Combine Timestamp + Machine ID (optional) + Sequence
+    // This creates a long, unique numeric string
+    // Format: [TIMESTAMP][SEQUENCE]
+    const uniqueNumber = `${timestamp}${sequence.toString().padStart(3, '0')}`;
+    
+    return uniqueNumber;
+}
+
+// Example usage:
+console.log(generatePostIndex()); // e.g., "1735735100000000"
+
+    </script>
+</body>
+</html>
