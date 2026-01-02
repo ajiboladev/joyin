@@ -24,7 +24,7 @@
         <h2 class="brand"><a onclick="window.location.reload()">JOYIN</a></h2>
     </head>
 
-    <div class="search-icon" onclick="window.location.href='../searchbar/'">
+    <div class="search-icon" onclick="window.location.href='../../searchbar/'">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b53f2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="11" cy="11" r="8"/>
     <path d="m21 21-4.35-4.35"/>
@@ -37,7 +37,7 @@
             <!-- Profile top tab -->
             <section class="top-profile-tab">
                 <div class="profile-tab-container">
-                    <div class="profile" onclick=" window.location.href= '../profile/?view=profile&permission=allowed'" style="cursor: pointer;">
+                    <div class="profile" onclick=" window.location.href= '../../profile/?view=profile&permission=allowed'" style="cursor: pointer;">
                         <a  id="image"><img id="profileImage" src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt=""></a>
                         <p id="profile-username">no profile added yet</p>
                     </div>
@@ -77,7 +77,7 @@
                                 <path d="M12 12v9"/>
                                 <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
                             </svg></span> Upload</a>
-                            <a  class="nav-link" id="upload-desktop" onclick="window.location.href='../searchbar/'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <a  class="nav-link" id="upload-desktop" onclick="window.location.href='../../searchbar/'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"/>
                                 <path d="m21 21-4.35-4.35"/>
                             </svg></span>Search</a>
@@ -297,7 +297,7 @@
     const btn = document.getElementById('updates-btn');
     if (btn) {
       btn.addEventListener('click', () => {
-        window.location.href = '../updates/'; // Change this to your updates page path
+        window.location.href = '../../updates/'; // Change this to your updates page path
       });
     }
   }
@@ -647,10 +647,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div id="post-feed">
           <button id="post-latest" onclick="window.location.href = '../'">Latest</button>
         <button id="post-discover" onclick="window.location.reload()">Discover</button>
+        <button id="post-video" onclick="window.location.href = '../video/'">Video</button>
         </div>
 
         <style>
-            #post-latest, #post-discover {
+            #post-latest, #post-discover, #post-video {
     /* background: var(--accent-color, #5b53f2); */
     background-color: #333;
     color: white;
@@ -673,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
     z-index: 1000;
     flex-direction: column;
 }
-#post-latest:hover, #post-discover:hover {
+#post-latest:hover, #post-discover:hover, #post-video:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(91, 83, 242, 0.4);
     background: linear-gradient(135deg, #6a63f4 0%, #7a73f5 100%);
@@ -683,6 +684,25 @@ document.addEventListener('DOMContentLoaded', () => {
   background-color: #5b53f2;
 }
 
+@media (max-width: 800px) {
+
+    #post-feed {
+        top: 70px;
+        /* bottom: 100px; */
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+    }
+
+    #post-latest, #post-discover, #post-video {
+        background-color: transparent;
+    }
+
+    #post-discover {
+        color: #5b53f2;  
+        font-weight: 600;
+    }
+}
         </style>
         
 

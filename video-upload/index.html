@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOYIN - Upload Video</title>
+    <link rel="stylesheet" href="upload-video.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#5b53f2">
+    <script src="../pwa-install.js"></script>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <header class="top-nav">
+        <button class="nav-btn" id="cancelBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1 class="nav-title">Upload Video</h1>
+        <button class="nav-btn post-btn" id="postBtn" disabled>
+            Post
+        </button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div class="upload-container">
+        
+        <!-- VIDEO PREVIEW SECTION -->
+        <div class="preview-section" id="previewSection">
+            <!-- Initial state - no video selected -->
+            <div class="upload-prompt" id="uploadPrompt">
+                <i class="fas fa-video"></i>
+                <h3>Upload a Video</h3>
+                <p>Select a video from your device</p>
+                <p class="file-requirements">
+                    • Duration: 15-30 seconds<br>
+                    • Max size: 100 MB<br>
+                    • Formats: MP4, MOV, WebM
+                </p>
+                <button class="select-video-btn" id="selectVideoBtn">
+                    <i class="fas fa-folder-open"></i>
+                    Choose Video
+                </button>
+            </div>
+            
+            <!-- Video preview (hidden initially) -->
+            <div class="video-preview-container" id="videoPreviewContainer" style="display: none;">
+                <video id="videoPreview" controls playsinline></video>
+                <button class="change-video-btn" id="changeVideoBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Change Video
+                </button>
+                
+                <!-- Video Info Display -->
+                <div class="video-info-display">
+                    <p id="videoFileName"></p>
+                    <p id="videoDuration"></p>
+                    <p id="videoSize"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAPTION SECTION -->
+        <div class="caption-section">
+            <label for="captionInput">
+                <i class="fas fa-align-left"></i>
+                Add Caption (Optional)
+            </label>
+            <textarea 
+                id="captionInput" 
+                placeholder="Write a caption for your video..."
+                maxlength="500"
+                rows="4"
+            ></textarea>
+            <div class="char-count">
+                <span id="charCount">0</span>/500
+            </div>
+        </div>
+
+        <!-- UPLOAD PROGRESS (hidden initially) -->
+        <div class="upload-progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p class="progress-text" id="progressText">Uploading... 0%</p>
+            <p class="progress-status" id="progressStatus">Preparing video...</p>
+        </div>
+
+    </div>
+
+    <!-- Hidden file input -->
+    <input 
+        type="file" 
+        id="videoFileInput" 
+        accept="video/mp4,video/quicktime,video/webm" 
+        style="display: none;"
+    >
+
+    <!-- Firebase and Script imports -->
+    <script type="module" src="upload-video.js" defer></script>
+</body>
+</html>

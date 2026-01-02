@@ -647,10 +647,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <div id="post-feed">
           <button id="post-latest" onclick="window.location.reload()">Latest</button>
         <button id="post-discover" onclick="window.location.href = 'discover/'">Discover</button>
+        <button id="post-video" onclick="window.location.href = 'video/'">Video</button>
         </div>
 
         <style>
-            #post-latest, #post-discover {
+            #post-latest, #post-discover, #post-video {
     /* background: var(--accent-color, #5b53f2); */
     background-color: #333;
     color: white;
@@ -673,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
     z-index: 1000;
     flex-direction: column;
 }
-#post-latest:hover, #post-discover:hover {
+#post-latest:hover, #post-discover:hover, #post-video:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(91, 83, 242, 0.4);
     background: linear-gradient(135deg, #6a63f4 0%, #7a73f5 100%);
@@ -682,7 +683,27 @@ document.addEventListener('DOMContentLoaded', () => {
 #post-latest{
   background-color: #5b53f2;
 }
-</style>
+
+@media (max-width: 800px) {
+
+    #post-feed {
+        top: 70px;
+        /* bottom: 100px; */
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+    }
+
+    #post-latest, #post-discover, #post-video {
+        background-color: transparent;
+    }
+
+    #post-latest{
+        color: #5b53f2;  
+        font-weight: 600;
+    }
+}
+        </style>
         
 
         <script type="module" src="./home.js" defer></script>

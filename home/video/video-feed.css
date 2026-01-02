@@ -1,0 +1,432 @@
+/* 
+ * JOYIN VIDEO FEED - STYLES
+ * TikTok-style vertical video feed
+ * Full screen videos with swipe navigation
+ */
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #000;
+    color: white;
+    overflow: hidden; /* Prevent page scroll */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ============================================
+   TOP NAVIGATION BAR
+   ============================================ */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.nav-btn:active {
+    transform: scale(0.95);
+}
+
+.nav-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   VIDEO FEED CONTAINER
+   ============================================ */
+.video-feed-container {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; /* Snap to each video */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar */
+.video-feed-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* ============================================
+   VIDEO POST ITEM
+   ============================================ */
+.video-post {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start; /* Snap alignment */
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+/* Video element */
+.video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover full screen */
+    background: #000;
+}
+
+/* ============================================
+   VIDEO OVERLAY INFO (Bottom Left)
+   ============================================ */
+.video-info {
+    position: absolute;
+    bottom: 100px; /* Above bottom nav */
+    left: 20px;
+    right: 80px; /* Space for action buttons */
+    z-index: 10;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+/* User profile section */
+.video-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.video-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #5b53f2;
+    object-fit: cover;
+}
+
+.video-username {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Video caption/text */
+.video-caption {
+    font-size: 14px;
+    line-height: 1.5;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    max-height: 60px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.video-caption.expanded {
+    max-height: none;
+    -webkit-line-clamp: unset;
+}
+
+/* ============================================
+   ACTION BUTTONS (Right Side)
+   ============================================ */
+.video-actions {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.9);
+}
+
+.action-btn i {
+    font-size: 28px;
+}
+
+.action-btn.liked i {
+    color: #5b53f2;
+}
+
+.action-count {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ============================================
+   PLAY/PAUSE OVERLAY
+   ============================================ */
+.play-pause-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.play-pause-overlay.show {
+    opacity: 1;
+}
+
+.play-pause-overlay i {
+    font-size: 40px;
+    color: white;
+}
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+.loading-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.loading-screen i {
+    font-size: 50px;
+    color: #5b53f2;
+}
+
+.loading-screen p {
+    font-size: 16px;
+    color: #888;
+}
+
+/* ============================================
+   NO VIDEOS MESSAGE
+   ============================================ */
+.no-videos {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.no-videos i {
+    font-size: 80px;
+    color: #5b53f2;
+    opacity: 0.5;
+}
+
+.no-videos p {
+    font-size: 18px;
+    color: #888;
+}
+
+.no-videos button {
+    background: #5b53f2;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.no-videos button:hover {
+    background: #6a63f4;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   BOTTOM NAVIGATION
+   ============================================ */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+}
+
+.bottom-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.bottom-nav-btn:hover,
+.bottom-nav-btn.active {
+    color: #5b53f2;
+}
+
+.bottom-nav-btn i {
+    font-size: 24px;
+}
+
+.bottom-nav-btn span {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* ============================================
+   SPINNER ANIMATION
+   ============================================ */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+@media (max-width: 768px) {
+    .top-nav {
+        height: 50px;
+        padding: 0 15px;
+    }
+    
+    .nav-title {
+        font-size: 18px;
+    }
+    
+    .video-info {
+        bottom: 80px;
+        left: 15px;
+        right: 70px;
+        padding: 15px;
+    }
+    
+    .video-username {
+        font-size: 14px;
+    }
+    
+    .video-caption {
+        font-size: 13px;
+    }
+    
+    .video-actions {
+        right: 10px;
+        bottom: 100px;
+        gap: 15px;
+    }
+    
+    .action-btn i {
+        font-size: 24px;
+    }
+    
+    .action-count {
+        font-size: 11px;
+    }
+    
+    .bottom-nav {
+        height: 60px;
+    }
+}
+
+/* ============================================
+   LANDSCAPE MODE (Mobile)
+   ============================================ */
+@media (max-height: 500px) and (orientation: landscape) {
+    .top-nav,
+    .bottom-nav {
+        display: none;
+    }
+    
+    .video-info {
+        bottom: 20px;
+    }
+    
+    .video-actions {
+        bottom: 20px;
+    }
+}

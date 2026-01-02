@@ -300,6 +300,7 @@ async function createPost() {
         // addDoc() - Creates new document with auto-generated ID
         await addDoc(collection(db, "posts"), postData);
         
+        
         // STEP 7: SHOW SUCCESS AND CLEAN UP
         showStatus("✅ Post uploaded successfully!", "success");
         

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JOYIN - Video Feed</title>
+    <link rel="stylesheet" href="video-feed.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../../pwa-install.js"></script>
+
+<link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+</head>
+<body>
+    <!-- TOP NAVIGATION BAR -->
+    <header class="top-nav">
+        <button class="nav-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="nav-title">Videos</h1>
+        <button class="nav-btn" id="uploadBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </header>
+
+    <!-- VIDEO FEED CONTAINER -->
+    <!-- Each video takes up full screen (like TikTok) -->
+    <div class="video-feed-container" id="videoFeedContainer">
+        <!-- Videos will be loaded here dynamically -->
+        
+        <!-- LOADING INDICATOR (shown while fetching videos) -->
+        <div class="loading-screen" id="loadingScreen">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading videos...</p>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION (optional - for future features) -->
+    <nav class="bottom-nav">
+        <button class="bottom-nav-btn" onclick="window.location.href='../discover/'">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="bottom-nav-btn active">
+            <i class="fas fa-video"></i>
+            <span>Videos</span>
+        </button>
+        <button class="bottom-nav-btn" onclick="window.location.href='../../video-upload/'">
+            <i class="fas fa-plus-circle"></i>
+            <span>Upload</span>
+        </button>
+        <button class="bottom-nav-btn" onclick="window.location.href='../../profile/'">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </button>
+    </nav>
+
+    <!-- Firebase and Script imports -->
+    <script type="module" src="video-feed.js" defer></script>
+</body>
+</html>
