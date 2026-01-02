@@ -23,7 +23,7 @@ let videoMetadata = {                    // Store video info
 
 // Video constraints
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;  // 100 MB in bytes
-const MIN_DURATION = 15;                    // 15 seconds minimum
+const MIN_DURATION = 5;                    // 5 seconds minimum
 const MAX_DURATION = 40;                    // 40 seconds maximum
 
 // DOM elements
