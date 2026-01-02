@@ -8,15 +8,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=3.0, user-scalable=no">
-    <title>Always Fresh Social Media | JOYIN</title>
+    <title>Discover New Content | JOYIN</title>
     <link rel="stylesheet" href="./home.css">
-    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  
     
-    <link rel="manifest" href="../manifest.json">
+    <link rel="manifest" href="../../manifest.json">
 <meta name="theme-color" content="#5b53f2">
-<script src="../pwa-install.js"></script>
+<script src="../../pwa-install.js"></script>
 
 </head>
 <body id="body">
@@ -52,7 +52,7 @@
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                                 <polyline points="9 22 9 12 15 12 15 22"/>
                             </svg></span> Home</a>
-                        <a  class="nav-link" onclick="window.location.href= '../profile/?view=profile&permission=allowed'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <a  class="nav-link" onclick="window.location.href= '../../profile/?view=profile&permission=allowed'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="7" r="4"/>
                                 <path d="M6 21v-2a6 6 0 0 1 12 0v2"/>
                             </svg></span> Profile</a>
@@ -72,7 +72,7 @@
                                 <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
                                 <path d="M17 10l2 2 3-3"/>
                             </svg></span> Following</a>
-                        <a  class="nav-link" onclick="window.location.href='../upload/?view=upload'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <a  class="nav-link" onclick="window.location.href='../../upload/?view=upload'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <path d="M16 16l-4-4-4 4"/>
                                 <path d="M12 12v9"/>
                                 <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
@@ -106,7 +106,7 @@
                 </span>
                 <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);">Home</span>
             </a>
-            <a class="nav-link" onclick="window.location.href= '../profile/?view=profile&permission=allowed'">
+            <a class="nav-link" onclick="window.location.href= '../../profile/?view=profile&permission=allowed'">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="7" r="4"/>
@@ -115,7 +115,7 @@
                 </span>
                 <span class="nav-label" style="font-size: 10px; margin-top: 4px; color: rgba(255,255,255,0.8);"></span>
             </a>
-            <a class="nav-link" onclick="window.location.href='../upload/?view=upload'">
+            <a class="nav-link" onclick="window.location.href='../../upload/?view=upload'">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M16 16l-4-4-4 4"/>
@@ -285,7 +285,7 @@
 </style>
 
 <script type="module" defer>
-  import { auth, db } from '../firebase.js';
+  import { auth, db } from '../../firebase.js';
   import { 
     doc, getDoc, updateDoc, serverTimestamp,
     collection, query, where, orderBy, limit, getDocs
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <section class="text-image-post-system">
                <main class="main-container">
         <!-- Posts will be dynamically inserted here -->
-        <div id="posts" class="posts-container">
+        <div id="discovery-posts" class="posts-container">
             <!-- Posts from Firebase will appear here automatically -->
             <!-- Loading message will show temporarily -->
             <div class="loading-posts">
@@ -643,10 +643,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             
         </main>
-
-        <div id="post-feed">
-          <button id="post-latest" onclick="window.location.reload()">Latest</button>
-        <button id="post-discover" onclick="window.location.href = 'discover/'">Discover</button>
+        
+                <div id="post-feed">
+          <button id="post-latest" onclick="window.location.href = '../'">Latest</button>
+        <button id="post-discover" onclick="window.location.reload()">Discover</button>
         </div>
 
         <style>
@@ -679,13 +679,14 @@ document.addEventListener('DOMContentLoaded', () => {
     background: linear-gradient(135deg, #6a63f4 0%, #7a73f5 100%);
 }
 
-#post-latest{
+#post-discover{
   background-color: #5b53f2;
 }
-</style>
+
+        </style>
         
 
-        <script type="module" src="./home.js" defer></script>
+        <script type="module" src="./discover.js" defer></script>
       
 </body>
 </html>

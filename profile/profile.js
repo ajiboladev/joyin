@@ -892,6 +892,7 @@ async function loadUserPosts(userId) {
       class="post-main-image" 
       onerror="this.onerror=null; this.src=''"
       alt="Post image"
+      loading="lazy"
     >
   </div>` : 
   ''
