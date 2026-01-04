@@ -281,7 +281,7 @@ function createVideoElement(videoData, videoId) {
         <!-- VIDEO INFO (Bottom Left) -->
         <div class="video-info">
             <!-- User Profile -->
-            <div class="video-user" onclick="window.location.href='../../profile/?view=profile&uid=${videoData.userId}'">
+            <div class="video-user" onclick="window.location.href='../../video-profile/?view=video-profile&uid=${videoData.userId}'">
                 <img 
                     src="${videoData.userProfilePic || 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'}" 
                     alt="User avatar" 

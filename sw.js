@@ -17,6 +17,16 @@ const PRECACHE_URLS = [
   '/upload/',
   '/searchbar/',
   '/settings/',
+  '/home/video/',
+  '/home/discover/',
+  '/video-profile/',
+  '/video-upload/',
+  '/sign-up/',
+  '/login/',
+  '/updates/',
+  '/404.html',
+  '/following-list/',
+  '/followers-list/',
   '/manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];

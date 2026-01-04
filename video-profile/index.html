@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOYIN - Video Profile</title>
+    <link rel="stylesheet" href="video-profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../pwa-install.js"></script>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <header class="top-nav">
+        <button class="nav-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="nav-title">Video Profile</h1>
+        <button class="nav-btn" id="menuBtn">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+    </header>
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+        <div class="profile-avatar-container">
+            <img 
+                id="profileAvatar" 
+                src="https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" 
+                alt="Profile" 
+                class="profile-avatar"
+            >
+        </div>
+        
+        <div class="profile-info">
+            <h2 class="profile-username" id="profileUsername">
+                Loading... <i class="fa-solid fa-circle-check"></i>
+            </h2>
+            <p class="profile-bio" id="profileBio">Loading bio...</p>
+        </div>
+
+        <!-- PROFILE STATS -->
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value" id="followersCount">0</span>
+                <span class="stat-label">Followers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="followingCount">0</span>
+                <span class="stat-label">Following</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="LikesCount">0</span>
+                <span class="stat-label">Likes</span>
+            </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="profile-actions">
+            <button class="action-btn primary-btn" id="followBtn" style="display: none;">
+                Follow
+            </button>
+            <button class="action-btn secondary-btn" id="editProfileBtn" style="display: none;">
+                <i class="fas fa-edit"></i>
+                Edit Profile
+            </button>
+            <button class="action-btn secondary-btn" id="uploadVideoBtn" style="display: none;">
+                <i class="fas fa-video"></i>
+                Upload Video
+            </button>
+            <button class="action-btn secondary-btn" id="profile" >
+                <i class="fas fa-user"></i>
+               Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-container">
+        <button class="tab-btn active" data-tab="videos">
+            <i class="fas fa-video"></i>
+            Videos
+        </button>
+        <!-- <button class="tab-btn" data-tab="liked">
+            <i class="fas fa-heart"></i>
+            Liked
+        </button> -->
+    </div>
+
+    <!-- VIDEOS GRID -->
+    <div class="videos-container" id="videosContainer">
+        <!-- LOADING STATE -->
+        <div class="loading-state" id="loadingState">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading videos...</p>
+        </div>
+
+        <!-- VIDEOS GRID (Hidden initially) -->
+        <div class="videos-grid" id="videosGrid" style="display: none;">
+            <!-- Videos will be loaded here -->
+        </div>
+
+        <!-- LOAD MORE BUTTON -->
+        <button class="load-more-btn" id="loadMoreBtn" style="display: none;">
+            <i class="fas fa-plus-circle"></i>
+            Load More Videos
+        </button>
+
+        <!-- NO VIDEOS MESSAGE -->
+        <div class="no-videos" id="noVideosMessage" style="display: none;">
+            <i class="fas fa-video-slash"></i>
+            <p>No videos yet</p>
+            <button class="upload-btn" id="uploadPromptBtn" style="display: none;">
+                <i class="fas fa-plus"></i>
+                Upload Your First Video
+            </button>
+        </div>
+
+        <!-- BAN MESSAGE (will be injected if user is banned) -->
+        <div id="banMessageContainer"></div>
+    </div>
+
+    <!-- VIDEO PREVIEW MODAL -->
+    <div class="modal" id="videoModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <video id="modalVideo" controls playsinline></video>
+            
+            <div class="modal-info">
+                <div class="modal-user">
+                    <img id="modalUserAvatar" src="" alt="User" class="modal-user-avatar">
+                    <span id="modalUsername">Username</span>
+                </div>
+                <p id="modalCaption" class="modal-caption"></p>
+                <div class="modal-stats">
+                    <span><i class="fas fa-heart"></i> <span id="modalLikes">0</span></span>
+                    <span><i class="fas fa-comment"></i> <span id="modalComments">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="video-profile.js" defer></script>
+</body>
+</html>
