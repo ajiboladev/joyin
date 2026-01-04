@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = userSnap.data();
 
         usernameElements.forEach(el => {
-          el.textContent = data.username || "User";
+          el.innerHTML = ` ${data.username || "User"} <i class="fa-solid fa-circle-check" style="color: #6a63f4; margin-left: 5px;"></i>`;
         });
 
         bioElements.forEach(el => {
@@ -874,7 +874,7 @@ async function loadUserPosts(userId) {
             class="post-user-img"
             onerror="this.src='${defaultImg}'"
           >
-          <span class="post-username"></span>
+          <span class="post-username"></span><i class="fa-solid fa-circle-check" style="color: #6a63f4; margin-left: 5px;"></i>
           <span id="post-dtatus" style="font-size: 12px; color: rgb(88, 86, 86);">${timeAgo}</span>
         </div>
 

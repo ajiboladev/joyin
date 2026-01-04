@@ -356,7 +356,7 @@
                              class="user-img" 
                              onerror="this.src='${defaultImg}'">
                         <div class="user-info">
-                            <div class="username" onclick="window.location.href='../profile/?uid=${post.userId}'">
+                            <div class="username" >
                                 
                             </div>
                             <div class="post-time">${formatDate(post.createdAt?.toDate())}</div>
@@ -402,9 +402,8 @@
                     </div>
                 </div>
             `;
-
-           container.querySelector('.username').textContent = post.username  || "User";
-          container.querySelector('.post-text').textContent = displayText;
+           container.querySelector('.username').innerHTML = `${post.username || "User"} <i class="fa-solid fa-circle-check" style="color: #6a63f4; margin-left: 5px;"></i>`;
+          container.querySelector('.post-text').textContent = post.text || "";
         }
 
         async function loadComments() {

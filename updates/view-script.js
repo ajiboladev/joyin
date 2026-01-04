@@ -36,7 +36,7 @@ async function loadUpdate(updateId) {
       <div class="update-header-full">
         <div class="update-icon-large">${icon}</div>
         <h1 class="update-title-full">${update.title}</h1>
-        <div class="update-meta">📅 ${date} | 👤 Admin</div>
+        <div class="update-meta">📅 ${date} | 👤 JOYIN<i class="fa-solid fa-circle-check" style="color: #6a63f4; margin-left: 5px;"></i></div>
       </div>
       <div class="update-content-full">
        <p> ${update.content || 'No content available.'}</p>
