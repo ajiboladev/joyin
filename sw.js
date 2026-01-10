@@ -27,6 +27,9 @@ const PRECACHE_URLS = [
   '/404.html',
   '/following-list/',
   '/followers-list/',
+  '/chats/',
+  '/chats/inbox/',
+  '/joyin-favicon.ico',
   '/manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];

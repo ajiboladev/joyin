@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox • Joyin</title>
+    <link rel="stylesheet" href="./inbox.css">
+    <link rel="icon" type="image/x-icon" href="../../joyin-favicon.ico">
+
+    <link rel="manifest" href="../../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../../pwa-install.js"></script>
+</head>
+<body>
+    <!-- Inbox Header -->
+    <header class="inbox-header">
+        <button class="icon-btn" onclick="window.history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h1>Inbox</h1>
+        <div class="header-actions">
+            <button class="icon-btn" id="searchBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <button class="icon-btn" id="newChatBtn">
+                <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg> -->
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-container" id="searchContainer">
+        <div class="search-input-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="search-icon">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search conversations..." 
+                class="search-input"
+            >
+            <button class="clear-search" id="clearSearchBtn">×</button>
+        </div>
+    </div>
+
+    <!-- Inbox List -->
+    <main class="inbox-container" id="inboxContainer">
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">💬</div>
+            <h3>No conversations yet</h3>
+            <p>Start chatting with your friends!</p>
+            <button class="btn-primary" id="startChatBtn">Start New Chat</button>
+        </div>
+        
+        <div class="loading-state" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Loading conversations...</p>
+        </div>
+        <!-- Chat items will be inserted here -->
+    </main>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Error</h3>
+                <button class="modal-close" id="closeErrorModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">Failed to load conversations</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelBtn">Close</button>
+                <button class="btn-primary" id="retryBtn">Retry</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./inbox.js"></script>
+</body>
+</html>

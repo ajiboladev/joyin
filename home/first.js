@@ -548,7 +548,7 @@ async function loadPosts() {
         );
         
         // We have two ways to get data. We're using Method 2 (real-time):
-        
+         
         // Method 1 (commented out): One-time fetch
         // const snapshot = await getDocs(q);   // Get data once
         // displayPosts(snapshot);              // Display it

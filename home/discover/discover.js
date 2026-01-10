@@ -50,6 +50,7 @@ onAuthStateChanged(auth, async (user) => {
     await followingPage(profileUserId);
     await followersPage(profileUserId);
     loadUserName(profileUserId);
+    setupMessageButtons();
 
   } else {
     console.log("❌ No user logged in, redirecting to login...");
@@ -956,6 +957,51 @@ function showDiscoveryErrorMessage(message) {
 }
 
 console.log("✅ Discovery Feed system loaded!");
+
+
+// ============================================
+// PROFILE PAGE MESSAGE BUTTON
+// ============================================
+
+function setupMessageButtons() {
+    const messageBtns = document.querySelectorAll(".chat-button");
+    if (!messageBtns.length) return;
+
+    // Remove old listeners
+    messageBtns.forEach(btn => {
+        btn.replaceWith(btn.cloneNode(true));
+    });
+
+    const freshBtns = document.querySelectorAll(".chat-button");
+
+    // If viewing own profile - go to inbox
+    if (viewerId === profileUserId) {
+        freshBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = "../../chats/inbox/";
+            });
+        });
+        return;
+    }
+
+    // If viewing someone else's profile
+    freshBtns.forEach(btn => {
+        btn.style.display = "block";
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Generate chat ID
+            const chatId = [viewerId, profileUserId].sort().join("_");
+            
+            // Redirect to chat page
+            window.location.href = `../../chats/?chatId=${chatId}`;
+        });
+    });
+}
+
 
 // =================================================================
 // LOGOUT FUNCTIONALITY

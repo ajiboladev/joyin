@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat • Joyin</title>
+    <link rel="stylesheet" href="./chats.css">
+
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../pwa-install.js"></script>
+</head>
+<body>
+    <!-- Chat Header -->
+    <header class="chat-header">
+        <button class="back-btn" onclick="window.history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        
+        <div class="chat-partner-info">
+            <div class="avatar-container">
+                <img id="partnerAvatar" src="" alt="Avatar" class="avatar">
+                <div id="partnerStatus" class="status-indicator"></div>
+            </div>
+            <div class="user-details">
+                <h2 id="partnerName">Loading...</h2>
+                <p id="partnerStatusText" class="status-text">Connecting...</p>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <button class="icon-btn" id="menuBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="5" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat Messages Container -->
+    <main class="messages-container" id="messagesContainer">
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">💬</div>
+            <h3>No messages yet</h3>
+            <p>Send the first message to start the conversation!</p>
+        </div>
+        <!-- Messages will be inserted here -->
+    </main>
+
+    <!-- Message Input Area -->
+    <footer class="message-composer">
+        <div class="composer-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="Type a message..." 
+                    rows="1"
+                    maxlength="1000"
+                ></textarea>
+                <div class="input-actions">
+                    <button class="attach-btn" id="attachBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M21.44 11.05L12.25 20.24C11.1242 21.3658 9.59718 22 7.99995 22C6.40272 22 4.87565 21.3658 3.74995 20.24C2.62424 19.1143 1.98999 17.5872 1.98999 15.99C1.98999 14.3928 2.62424 12.8657 3.74995 11.74L12.94 2.55C13.7005 1.78951 14.7185 1.34351 15.78 1.30009C16.8416 1.25668 17.8756 1.61867 18.68 2.31C19.4843 3.00134 20 4.00444 20 5.07C20 6.13557 19.4843 7.13867 18.68 7.83L9.49995 17C9.13216 17.3678 8.63028 17.572 8.10632 17.5679C7.58237 17.5638 7.08452 17.3518 6.72361 16.9778C6.36269 16.6039 6.16918 16.0991 6.18905 15.5752C6.20892 15.0512 6.44044 14.5617 6.82995 14.21L15.07 5.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button id="sendBtn" class="send-btn" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+        <p class="typing-indicator" id="typingIndicator"></p>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay active" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Loading conversation...</p>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Error</h3>
+                <button class="modal-close" id="closeErrorModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">Something went wrong. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="retryButton">Retry</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./chat.js"></script>
+</body>
+</html>
