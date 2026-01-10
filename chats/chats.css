@@ -266,7 +266,7 @@ body {
 /* Message Composer */
 .message-composer {
     background-color: var(--surface);
-    padding: 16px;
+    padding: 16px ;
     border-top: 1px solid var(--border);
     flex-shrink: 0;
 }
@@ -554,7 +554,7 @@ textarea#messageInput::placeholder {
     }
     
     .message-composer {
-        padding: 12px 12px 15px 12px;
+        padding: 12px 12px 35px 12px;
     }
     
     .composer-container {
