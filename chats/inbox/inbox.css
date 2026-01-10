@@ -8,6 +8,12 @@
     box-sizing: border-box;
 }
 
+* {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 :root {
     --primary: #5b53f2;
     --primary-dark: #4a43d1;
