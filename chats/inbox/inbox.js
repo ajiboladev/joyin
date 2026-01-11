@@ -571,13 +571,13 @@ function setupEventListeners() {
     // When user clicks "New Chat" button
     elements.newChatBtn.addEventListener('click', () => {
         // Go to the users page to find someone to chat with
-        window.location.href = '/users.html';
+        window.location.href = '../../searchbar/';
     });
     
     // When user clicks "Start Chat" button (in empty state)
     elements.startChatBtn.addEventListener('click', () => {
         // Same as new chat button
-        window.location.href = '/users.html';
+        window.location.href = '../../searchbar/';
     });
     
     // -------- ERROR MODAL --------
