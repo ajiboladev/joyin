@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <title>Email-Reset • Joyin</title>
+    <link rel="stylesheet" href="./email-reset.css">
+
+    
+    <link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#5b53f2">
+<script src="../pwa-install.js"></script>
+    <link rel="icon" type="image/x-icon" href="../joyin-favicon.ico">
+</head>
+<body>
+    
+
+    <!-- Email Change Form -->
+<div class="email-change-container">
+    <div class="email-header">
+        <div class="email-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <h2 class="email-title">Change Email Address</h2>
+        <p class="email-subtitle">Update your account email securely</p>
+    </div>
+
+     <!-- Status Message -->
+        <div id="emailMessage" class="message-container"></div>
+
+    <div class="email-form">
+        <!-- Current Email Display -->
+        <div class="current-email-box">
+            <div class="current-email-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Current Email
+            </div>
+            <div class="current-email-value" id="currentEmailDisplay">Loading...</div>
+        </div>
+
+        <!-- New Email Input -->
+        <div class="form-group">
+            <label for="newEmail" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                New Email Address
+            </label>
+            <input 
+                type="email" 
+                id="newEmail" 
+                class="email-input" 
+                placeholder="Enter your new email address"
+                autocomplete="email"
+            >
+            <p class="input-hint">We'll send a verification email to this address</p>
+        </div>
+
+        <!-- Current Password -->
+        <div class="form-group">
+            <label for="currentPassword" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Current Password
+            </label>
+            <div class="input-with-toggle">
+                <input 
+                    type="password" 
+                    id="currentPassword" 
+                    class="email-input" 
+                    placeholder="Enter your current password"
+                    autocomplete="current-password"
+                >
+                <button type="button" class="toggle-password" id="toggleEmailPassword">
+                    <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="changeEmailBtn" class="change-email-btn">
+            <span class="btn-text">Send Verification Email</span>
+            <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <button onclick="window.history.back()" class="change-email-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M20 12H4M4 12L10 18M4 12L10 6" stroke="currentColor" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+            <span class="btn-text">Back</span>
+            
+        </button>
+
+       
+
+        <!-- Important Notes -->
+        <div class="email-notes">
+            <h4 class="notes-title">📝 Important Notes</h4>
+            <ul class="notes-list">
+                <li>You must verify the new email before it becomes active</li>
+                <li>Check your new email inbox for verification link</li>
+                <li>You'll use the new email for future logins</li>
+                <li>Your account data remains the same</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="./email-rest.js" defer></script>
+</body>
+</html>

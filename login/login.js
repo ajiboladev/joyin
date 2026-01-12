@@ -6,11 +6,11 @@
 import { auth, db } from "../firebase.js";
 import { 
   signInWithEmailAndPassword,
-  signOut  // ← Import signOut to logout incomplete accounts
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import { 
   doc, 
-  getDoc  // ← Import getDoc to check if Firestore profile exists
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 // ========================================
@@ -49,6 +49,12 @@ const loadingStyles = `
     opacity: 0.7;
     cursor: not-allowed;
   }
+  
+  /* Disabled input styling */
+  input:disabled {
+    cursor: not-allowed !important;
+    background-color: #f5f5f5 !important;
+  }
 `;
 
 const styleSheet = document.createElement("style");
@@ -56,6 +62,38 @@ styleSheet.textContent = loadingStyles;
 document.head.appendChild(styleSheet);
 
 const originalBtnText = loginBtn.innerHTML;
+
+// ========================================
+// FORM CONTROL FUNCTIONS
+// ========================================
+
+// Disables all form inputs and button during processing
+function disableLoginForm() {
+  loginBtn.disabled = true;
+  loginBtn.style.cursor = 'not-allowed';
+  
+  [emailInput, passwordInput].forEach(input => {
+    input.disabled = true;
+    input.style.opacity = '0.6';
+    input.style.cursor = 'not-allowed';
+  });
+  
+  console.log("🔒 Login form disabled - processing...");
+}
+
+// Enables all form inputs and button
+function enableLoginForm() {
+  loginBtn.disabled = false;
+  loginBtn.style.cursor = 'pointer';
+  
+  [emailInput, passwordInput].forEach(input => {
+    input.disabled = false;
+    input.style.opacity = '1';
+    input.style.cursor = 'text';
+  });
+  
+  console.log("✅ Login form enabled");
+}
 
 // ========================================
 // LOADING SPINNER FUNCTIONS
@@ -75,31 +113,23 @@ function createLoginSpinner() {
 
 // Shows loading state
 function showLoginLoading() {
-  loginBtn.disabled = true;
+  // Disable form first
+  disableLoginForm();
+  
   loginBtn.classList.add('btn-login-loading');
   loginBtn.innerHTML = 'Logging in... ';
   
   const spinner = createLoginSpinner();
   loginBtn.appendChild(spinner);
-  
-  [emailInput, passwordInput].forEach(input => {
-    input.disabled = true;
-    input.style.opacity = '0.7';
-    input.style.cursor = 'not-allowed';
-  });
 }
 
 // Hides loading state
 function hideLoginLoading() {
-  loginBtn.disabled = false;
   loginBtn.classList.remove('btn-login-loading');
   loginBtn.innerHTML = originalBtnText;
   
-  [emailInput, passwordInput].forEach(input => {
-    input.disabled = false;
-    input.style.opacity = '1';
-    input.style.cursor = 'text';
-  });
+  // Re-enable form
+  enableLoginForm();
 }
 
 // ========================================
@@ -112,7 +142,7 @@ loginBtn.addEventListener("click", async () => {
   // STEP 1: GET INPUT VALUES
   // ========================================
   const email = emailInput.value.trim();
-  const password = passwordInput.value.toLowerCase();
+  const password = passwordInput.value;
 
   // ========================================
   // STEP 2: INPUT VALIDATION
@@ -124,7 +154,7 @@ loginBtn.addEventListener("click", async () => {
   }
 
   // ========================================
-  // STEP 3: SHOW LOADING STATE
+  // STEP 3: SHOW LOADING STATE & DISABLE FORM
   // ========================================
   showLoginLoading();
   message.style.color = "#5b53f2";
@@ -141,31 +171,38 @@ loginBtn.addEventListener("click", async () => {
     
     // ========================================
     // 🔒 SECURITY CHECK 1: EMAIL VERIFICATION
-    // Check if user has verified their email
     // ========================================
-    // if (!user.emailVerified) {
-    //   console.log("❌ Email not verified");
-      
-    //   // Logout the unverified user
-    //   await signOut(auth);
-      
-    //   hideLoginLoading();
-    //   message.style.color = "red";
-    //   message.innerHTML = `
-    //     ❌ <strong>Email not verified!</strong><br><br>
-    //     Please check your email and click the verification link before logging in.<br>
-    //     📧 Check your spam folder if you don't see the email.
-    //   `;
-    //   return; // Stop login process
-    // }
+    message.style.color = "#5b53f2";
+    message.innerHTML = "🔍 Checking email verification...";
     
+    if (!user.emailVerified) {
+    console.log("❌ Email not verified");
+
+    try {
+        // Delete the unverified account
+        await user.delete();
+        console.log("✅ Unverified account deleted");
+    } catch (deleteError) {
+        console.error("❌ Error deleting unverified account:", deleteError);
+        // If deletion fails, just log out
+        await signOut(auth);
+    }
+
+    hideLoginLoading();
+    message.style.color = "red";
+    message.innerHTML = `
+        ❌ <strong>Email not verified!</strong><br><br>
+        Your account has been deleted because it was not verified.<br>
+        Please sign up again to create a new account.<br>
+        📧 Check your email for the verification link.
+    `;
+    return; // Stop login process
+}
+
     console.log("✅ Email verified");
     
     // ========================================
     // 🔒 SECURITY CHECK 2: FIRESTORE PROFILE EXISTS
-    // Check if user profile exists in Firestore
-    // This catches incomplete signups where email was verified
-    // but profile creation failed
     // ========================================
     message.style.color = "#5b53f2";
     message.innerHTML = "🔍 Verifying your profile...";
@@ -176,9 +213,6 @@ loginBtn.addEventListener("click", async () => {
     if (!userDocSnap.exists()) {
       // Profile doesn't exist in Firestore
       console.log("❌ Firestore profile missing for:", user.uid);
-      
-      // This is a broken account - Auth exists but no Firestore profile
-      // Delete the auth account to force them to sign up again
       
       message.style.color = "red";
       message.innerHTML = "🗑️ Cleaning up incomplete account...";
@@ -227,6 +261,7 @@ loginBtn.addEventListener("click", async () => {
     
     console.log("✅ Login successful for:", userData.username);
     
+    // Keep form disabled during redirect
     // Redirect to home page after 1 second
     setTimeout(() => {
       window.location.href = "../home/?view=home&tab=post&filter=popular";
@@ -236,7 +271,7 @@ loginBtn.addEventListener("click", async () => {
     // ========================================
     // ERROR HANDLING
     // ========================================
-    hideLoginLoading();
+    hideLoginLoading(); // This will re-enable the form
     
     console.error("❌ Login error:", error.code, error.message);
     
@@ -264,7 +299,8 @@ loginBtn.addEventListener("click", async () => {
 // ENTER KEY SUPPORT
 // ========================================
 passwordInput.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
+  // Only allow Enter key if form is not disabled
+  if (event.key === "Enter" && !loginBtn.disabled) {
     event.preventDefault();
     loginBtn.click();
   }

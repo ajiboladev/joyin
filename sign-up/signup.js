@@ -8,7 +8,7 @@ import { auth, db } from "../firebase.js";
 import { 
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  signOut  // ← Import signOut to logout user immediately
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import { 
   doc, 
@@ -81,6 +81,12 @@ const loadingStyles = `
     border-radius: 6px;
     text-align: center;
   }
+  
+  /* Disabled input styling */
+  input:disabled {
+    cursor: not-allowed !important;
+    background-color: #f5f5f5 !important;
+  }
 `;
 
 const styleSheet = document.createElement("style");
@@ -90,34 +96,60 @@ document.head.appendChild(styleSheet);
 const originalBtnText = signupBtn.innerHTML;
 
 // ========================================
+// FORM CONTROL FUNCTIONS
+// ========================================
+
+// Disables all form inputs and button during processing
+function disableForm() {
+  signupBtn.disabled = true;
+  signupBtn.style.cursor = 'not-allowed';
+  
+  [emailInput, passwordInput, confirmPasswordInput, usernameInput].forEach(input => {
+    input.disabled = true;
+    input.style.opacity = '0.6';
+    input.style.cursor = 'not-allowed';
+  });
+  
+  console.log("🔒 Form disabled - processing...");
+}
+
+// Enables all form inputs and button
+function enableForm() {
+  signupBtn.disabled = false;
+  signupBtn.style.cursor = 'pointer';
+  
+  [emailInput, passwordInput, confirmPasswordInput, usernameInput].forEach(input => {
+    input.disabled = false;
+    input.style.opacity = '1';
+    input.style.cursor = 'text';
+  });
+  
+  console.log("✅ Form enabled");
+}
+
+// ========================================
 // LOADING STATE FUNCTIONS
 // ========================================
 
 // Shows the loading state on the signup button
 function showLoading() {
-  signupBtn.disabled = true;
+  // Disable form first
+  disableForm();
+  
   signupBtn.classList.add('btn-loading');
   signupBtn.innerHTML = 'Processing... ';
   
   const spinner = createLoadingSpinner();
   signupBtn.appendChild(spinner);
-  
-  [emailInput, passwordInput, confirmPasswordInput, usernameInput].forEach(input => {
-    input.disabled = true;
-    input.style.opacity = '0.7';
-  });
 }
 
 // Hides the loading state and re-enables the form
 function hideLoading() {
-  signupBtn.disabled = false;
   signupBtn.classList.remove('btn-loading');
   signupBtn.innerHTML = originalBtnText;
   
-  [emailInput, passwordInput, confirmPasswordInput, usernameInput].forEach(input => {
-    input.disabled = false;
-    input.style.opacity = '1';
-  });
+  // Re-enable form
+  enableForm();
 }
 
 // ========================================
@@ -187,12 +219,16 @@ function monitorEmailVerification(user, username, email) {
         clearInterval(timer.intervalId);
         timer.element.remove();
         
+        // Keep form disabled during profile creation
+        disableForm();
+        
         try {
           message.style.color = "#5b53f2";
           message.innerHTML = "✅ Email verified! Setting up your profile...";
           
           // Create user document in Firestore
           await setDoc(doc(db, "users", user.uid), {
+            userId: user.uid,
             username: username,
             email: email,
             bio: "",
@@ -207,6 +243,11 @@ function monitorEmailVerification(user, username, email) {
             lastSeenUpdates: new Date(),
             createdAt: serverTimestamp()
           });
+
+          // ========================================
+      // 🔒 SECURITY: LOGOUT USER IMMEDIATELY
+      // ========================================
+      await signOut(auth);
           
           console.log("✅ User profile created in Firestore");
           
@@ -217,6 +258,7 @@ function monitorEmailVerification(user, username, email) {
             🔄 Redirecting to login...
           `;
           
+          // Keep form disabled during redirect
           // Redirect to login page after 2 seconds
           setTimeout(() => {
             window.location.href = "../login/?view=login";
@@ -226,7 +268,7 @@ function monitorEmailVerification(user, username, email) {
           console.error("❌ Error creating user profile:", error);
           message.style.color = "red";
           message.innerHTML = "❌ Error creating profile: " + error.message;
-          hideLoading();
+          enableForm(); // Re-enable form on error
         }
       }
       
@@ -237,6 +279,7 @@ function monitorEmailVerification(user, username, email) {
         clearInterval(checkInterval);
         clearInterval(timer.intervalId);
         timer.element.remove();
+        enableForm(); // Re-enable form
       }
     }
   }, 3000); // Check every 3 seconds
@@ -256,13 +299,15 @@ function monitorEmailVerification(user, username, email) {
         clearInterval(checkInterval);
         clearInterval(timer.intervalId);
         
+        // Disable form during deletion
+        disableForm();
+        
         // Delete the Firebase Auth account
         await user.delete();
         
         console.log("✅ Unverified account deleted successfully");
         
         timer.element.remove();
-        hideLoading();
         
         message.style.color = "red";
         message.innerHTML = `
@@ -277,6 +322,9 @@ function monitorEmailVerification(user, username, email) {
         passwordInput.value = "";
         confirmPasswordInput.value = "";
         usernameInput.value = "";
+        
+        // Re-enable form after clearing
+        enableForm();
       } else {
         clearInterval(checkInterval);
         console.log("✅ Account verified before timeout");
@@ -288,9 +336,9 @@ function monitorEmailVerification(user, username, email) {
       
       if (error.code === 'auth/user-token-expired' || error.code === 'auth/user-not-found') {
         timer.element.remove();
-        hideLoading();
         message.style.color = "red";
         message.innerHTML = "❌ Session expired. Please try signing up again.";
+        enableForm(); // Re-enable form
       }
     }
   }, TIMEOUT_SECONDS * 1000);
@@ -306,7 +354,7 @@ signupBtn.addEventListener("click", async () => {
   // STEP 1: GET INPUT VALUES
   // ========================================
   const email = emailInput.value.trim();
-  const password = passwordInput.value.toLowerCase();
+  const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
   const username = usernameInput.value.trim();
 
@@ -333,7 +381,7 @@ signupBtn.addEventListener("click", async () => {
   }
 
   // ========================================
-  // STEP 3: SHOW LOADING STATE
+  // STEP 3: SHOW LOADING STATE & DISABLE FORM
   // ========================================
   showLoading();
   message.style.color = "#5b53f2";
@@ -358,18 +406,14 @@ signupBtn.addEventListener("click", async () => {
       await sendEmailVerification(user);
       console.log("✅ Verification email sent to:", email);
       
-      // ========================================
-      // 🔒 SECURITY: LOGOUT USER IMMEDIATELY
-      // This prevents bypassing the verification process
-      // User MUST verify email before they can login
-      // ========================================
-      await signOut(auth);
+      
       console.log("🔒 User logged out for security (must verify email first)");
       
       // ========================================
       // STEP 6: SHOW VERIFICATION INSTRUCTIONS
       // ========================================
-      hideLoading();
+      hideLoading(); // Remove spinner but keep form disabled
+      disableForm(); // Keep form disabled during verification
       
       message.style.color = "#ff9800";
       message.innerHTML = `
@@ -387,6 +431,8 @@ signupBtn.addEventListener("click", async () => {
       // STEP 7: START MONITORING VERIFICATION
       // ========================================
       monitorEmailVerification(user, username, email);
+
+      
       
     } catch (emailError) {
       console.error("❌ Failed to send verification email:", emailError.message);
@@ -403,7 +449,7 @@ signupBtn.addEventListener("click", async () => {
     // ========================================
     // ERROR HANDLING
     // ========================================
-    hideLoading();
+    hideLoading(); // This will re-enable the form
     
     console.error("❌ Signup error:", error.code, error.message);
     
@@ -430,7 +476,8 @@ signupBtn.addEventListener("click", async () => {
 // ENTER KEY SUPPORT
 // ========================================
 confirmPasswordInput.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
+  // Only allow Enter key if form is not disabled
+  if (event.key === "Enter" && !signupBtn.disabled) {
     event.preventDefault();
     signupBtn.click();
   }

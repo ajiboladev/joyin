@@ -846,7 +846,7 @@ async function loadUserPosts(userId) {
       postSystem.style.display = "none";
       
       if (viewerId === profileUserId) {
-        postsContainer.textContent = `
+        postsContainer.innerHTML = `
           <div class="no-posts">
             <i class="fas fa-camera-retro"></i>
             <p>No posts yet. Be the first to post something!</p>
