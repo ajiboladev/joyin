@@ -172,7 +172,7 @@ function createMessageElement(messageData) {
     
     // Build the HTML for the message bubble
     messageDiv.innerHTML = `
-        <div class="message-content">${escapeHtml(messageData.text)}</div>
+        <div class="message-content">${formatMessage(messageData.text)}</div>
         <div class="message-meta">
             <span class="message-time">${time}</span>
             ${isSent ? '<div class="message-status">✓</div>' : ''}
@@ -184,6 +184,8 @@ function createMessageElement(messageData) {
     // Return the completed message element
     return messageDiv;
 }
+
+
 
 /**
  * Escapes HTML to prevent XSS attacks
@@ -209,15 +211,42 @@ function escapeHtml(text) {
 }
 
 /**
- * Scrolls to the bottom of messages container
- * Purpose: Auto-scroll to newest message (like WhatsApp does)
+ * Formats message text with clickable links, emails, and phone numbers
+ * @param {string} text - Raw message text
+ * @returns {string} Formatted HTML with clickable links
+ * 
+ * Purpose: Make URLs, emails, and phone numbers clickable in chat messages
  */
-function scrollToBottom() {
-    // scrollTop = how far scrolled down
-    // scrollHeight = total height of content
-    // Setting scrollTop to scrollHeight = scroll all the way down
-    elements.messagesContainer.scrollTop = elements.messagesContainer.scrollHeight;
+function formatMessage(text) {
+    // First, escape HTML to prevent XSS attacks
+    let formattedText = escapeHtml(text);
+    
+    // Links - Convert URLs to clickable links
+    formattedText = formattedText.replace(
+        /(https?:\/\/[^\s]+|www\.[^\s]+)/g,
+        (url) => {
+            const fullUrl = url.startsWith("http") ? url : `https://${url}`;
+            return `<a href="${fullUrl}" target="_blank">${url}</a>`;
+        }
+    );
+    
+    // Emails - Convert email addresses to mailto links
+    formattedText = formattedText.replace(
+        /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+        `<a href="mailto:$1">$1</a>`
+    );
+    
+    // Phone numbers - Convert phone numbers to tel links
+    formattedText = formattedText.replace(
+        /(\+?\d{10,14})/g,
+        `<a href="tel:$1">$1</a>`
+    );
+    
+    return formattedText;
 }
+
+
+
 
 /**
  * Auto-expands textarea based on content
