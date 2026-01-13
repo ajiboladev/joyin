@@ -246,6 +246,19 @@ function formatMessage(text) {
 }
 
 
+/**
+ * Scrolls to the bottom of messages container
+ * Purpose: Auto-scroll to newest message (like WhatsApp does)
+ */
+function scrollToBottom() {
+    // scrollTop = how far scrolled down
+    // scrollHeight = total height of content
+    // Setting scrollTop to scrollHeight = scroll all the way down
+    elements.messagesContainer.scrollTop = elements.messagesContainer.scrollHeight;
+}
+
+
+
 
 
 /**
