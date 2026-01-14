@@ -435,7 +435,8 @@ async function sendMessage() {
             senderId: currentUser.uid,        // Who sent it (your ID)
             text: messageText,                // What was said
             timestamp: serverTimestamp(),     // When it was sent
-            read: false                       // Has partner seen it? (no, it's new)
+            read: false,                      // Has partner seen it? (no, it's new)
+            participants: [currentUser.uid, partnerId]
         };
         
         // Create a batch (group of database operations that happen together)
