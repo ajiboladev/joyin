@@ -22,7 +22,7 @@
             </svg>
         </button>
         
-        <div class="chat-partner-info">
+        <div class="chat-partner-info" onclick="status()" style="cursor: pointer;">
             <div class="avatar-container">
                 <img id="partnerAvatar" src="" alt="Avatar" class="avatar">
                 <div id="partnerStatus" class="status-indicator"></div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         
-        <div id="openBtn" class="header-actions">
+        <div id="openBtn" class="header-actions" onclick="openPopup()">
             <button class="icon-btn" id="menuBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="5" r="1" fill="currentColor"/>
@@ -126,10 +126,10 @@
 <!-- Popup Overlay -->
 <div id="popupOverlay" class="overlay">
   <div class="popup-box">
-    <i class="fas fa-shield-halved" style="font-size: 35px; margin-bottom: 4px;"></i>
-    <h2>Encrypted in transit</h2>
-    <p>Your messages are protected from eavesdropping during transmission, but they are not end-to-end encrypted.</p>
-    <p>We secure your messages while they travel across the internet.</p>
+    <i id="overlayshieldIcon" class="fas fa-shield-halved" style="font-size: 35px; margin-bottom: 4px;"></i>
+    <h2 id="overlayh2">Encrypted in transit</h2>
+    <p id="overlayp1">Your messages are protected from eavesdropping during transmission, but they are not end-to-end encrypted.</p>
+    <p id="overlayp2">We secure your messages while they travel across the internet.</p>
     <button id="closeBtn">Close</button>
   </div>
 </div>
@@ -187,16 +187,29 @@
 }
 
 </style>
-
 <script>
-  const openBtn = document.getElementById('openBtn');
 const closeBtn = document.getElementById('closeBtn');
 const overlay = document.getElementById('popupOverlay');
+const icon = document.getElementById('overlayshieldIcon');
+
+// Select overlay text elements
+const h2 = document.getElementById('overlayh2');
+const p1 = document.getElementById('overlayp1');
+const p2 = document.getElementById('overlayp2');
 
 // Open popup
-openBtn.onclick = () => {
+function openPopup() {
   overlay.classList.add('active');
-};
+
+  // Update icon classes
+  icon.classList.add('fa-shield-halved');
+  icon.classList.remove('fa-check-circle');
+
+  // Update text content
+  h2.textContent = 'Encrypted in transit';
+  p1.textContent = 'Your messages are protected from eavesdropping during transmission, but they are not end-to-end encrypted.';
+  p2.textContent = 'We secure your messages while they travel across the internet.';
+}
 
 // Close popup
 closeBtn.onclick = () => {
@@ -210,8 +223,24 @@ window.onclick = (event) => {
   }
 };
 
-</script> 
+// Status popup
+function status() {
+  overlay.classList.add('active');
 
+  // Update icon classes for status
+  icon.classList.remove('fa-shield-halved');
+  icon.classList.add('fa-check-circle');
+
+  // Update text content for status
+  h2.textContent = 'Active status indicated';
+  p1.textContent = 'The green/red dot and online/offline status do not necessarily indicate that your friend is online and available to chat.';
+  p2.textContent = '';
+
+  closeBtn.onclick = () => {
+  overlay.classList.remove('active');
+};
+}
+</script>
 
 
 
