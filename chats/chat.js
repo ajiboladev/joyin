@@ -226,20 +226,22 @@ function formatMessage(text) {
         /(https?:\/\/[^\s]+|www\.[^\s]+)/g,
         (url) => {
             const fullUrl = url.startsWith("http") ? url : `https://${url}`;
-            return `<a href="${fullUrl}" target="_blank">${url}</a>`;
+            return `<a onclick="window.open('${fullUrl}', '_blank')" style="color: white; text-decoration: underline; cursor: pointer;">${url}</a>`;
         }
     );
     
     // Emails - Convert email addresses to mailto links
     formattedText = formattedText.replace(
         /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
-        `<a href="mailto:$1">$1</a>`
+        `<a onclick="window.open('mailto:$1', '_blank')" style="color: white; text-decoration: underline; cursor: pointer;">$1</a>`
+        // <a href="mailto:$1">$1</a>
     );
     
     // Phone numbers - Convert phone numbers to tel links
     formattedText = formattedText.replace(
         /(\+?\d{10,14})/g,
-        `<a href="tel:$1">$1</a>`
+        `<a onclick="window.open('tel:$1', '_blank')" style="color: white; text-decoration: underline; cursor: pointer;">$1</a>`
+        // <a href="tel:$1">$1</a>
     );
     
     return formattedText;
