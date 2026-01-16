@@ -291,7 +291,7 @@
     </div>
 
     <script type="module">
-        import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, increment } 
+        import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, increment, deleteDoc, setDoc, serverTimestamp } 
         from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
         import { auth, db } from "../../firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
@@ -369,12 +369,12 @@
                     </div>
 
                     <div class="post-stats">
-                        <span>${post.likesCount || 0} likes</span>
+                        <span class="like-count">${post.likeCount || 0} likes</span>
                         <span id="comments-count">${post.commentsCount || 0} comments</span>
                     </div>
 
                     <div class="post-actions">
-                        <button class="action-btn" id="like-btn" onclick="toggleLike()">
+                        <button class="action-btn like-btn" id="like-btn">
                             <i class="far fa-heart"></i>
                             <span>Like</span>
                         </button>
@@ -404,6 +404,8 @@
             `;
            container.querySelector('.username').innerHTML = `${post.username || "User"} <i class="fa-solid fa-circle-check" style="color: #6a63f4; margin-left: 5px;"></i>`;
           container.querySelector('.post-text').textContent = post.text || "";
+
+           setupPostInteractions(container, post, postId);
         }
 
         async function loadComments() {
@@ -478,21 +480,113 @@
             }
         };
 
-        window.toggleLike = async function() {
-            // Implement like functionality
-            const btn = document.getElementById('like-btn');
-            const icon = btn.querySelector('i');
+        // window.toggleLike = async function() {
+        //     // Implement like functionality
+        //     const btn = document.getElementById('like-btn');
+        //     const icon = btn.querySelector('i');
             
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                btn.classList.add('liked');
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                btn.classList.remove('liked');
+        //     if (icon.classList.contains('far')) {
+        //         icon.classList.remove('far');
+        //         icon.classList.add('fas');
+        //         btn.classList.add('liked');
+        //     } else {
+        //         icon.classList.remove('fas');
+        //         icon.classList.add('far');
+        //         btn.classList.remove('liked');
+        //     }
+        // };
+
+          function setupPostInteractions(postElement, post, postId){
+
+
+             const likeBtn = postElement.querySelector('.like-btn');
+
+
+    async function checkLikeStatus() {
+  if (!currentUser) return false;
+
+
+  try {
+    const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
+    const likeSnap = await getDoc(likeRef);
+    return likeSnap.exists();
+  } catch (error) {
+    console.error("Error checking like status:", error);
+    return false;
+  }
+}
+
+async function updateLikeButton() {
+  const isLiked = await checkLikeStatus();
+  likeBtn.classList.toggle('liked', isLiked);
+}
+
+updateLikeButton();
+
+likeBtn.addEventListener('click', async () => {
+  if (!currentUser) {
+    alert("Please log in to like posts.");
+    return;
+  }
+
+  likeBtn.disabled = true;
+
+  try {
+    const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
+    const postRef = doc(db, "posts", postId);
+    const likeSnap = await getDoc(likeRef);
+    const userRef = doc(db, "users", post.userId);
+
+    if (likeSnap.exists()) {
+      await deleteDoc(likeRef);
+      await updateDoc(postRef, { likeCount: increment(-1) });
+      await updateDoc(userRef, { likesCount: increment(-1) });
+    } else {
+      await setDoc(likeRef, {
+        userId: currentUser.uid,
+        createdAt: serverTimestamp()
+      });
+      await updateDoc(postRef, { likeCount: increment(1) });
+        await updateDoc(userRef, { likesCount: increment(1) });
+    }
+
+    await updateLikeButton();
+   const postSnap = await getDoc(postRef);
+const updatedCount = postSnap.data().likeCount || 0;
+
+postElement.querySelector('.like-count').textContent =
+  `${updatedCount} ${updatedCount === 1 ? 'like' : 'likes'}`;
+
+
+
+
+  } catch (error) {
+    console.error("Error toggling like:", error);
+  } finally {
+    likeBtn.disabled = false;
+  }
+});
+
+
             }
-        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         window.sharePost = async function() {
             const url = window.location.href;

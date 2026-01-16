@@ -222,17 +222,17 @@ function displayPostDetail(post, postId) {
         
         <!-- ACTION BUTTONS - Like, Comment, Share -->
         <div class="post-actions">
-            <!-- LIKE BUTTON -->
+            <!-- LIKE BUTTON 
             <button class="action-button like-btn" onclick="handleLike('${postId}')">
                 <i class="far fa-heart"></i>
                 <span>Like</span>
-            </button>
+            </button>-->
             
-            <!-- COMMENT BUTTON -->
+            <!-- COMMENT BUTTON 
             <button class="action-button comment-btn" onclick="handleComment('${postId}')">
                 <i class="far fa-comment"></i>
                 <span>Comment</span>
-            </button>
+            </button>-->
             
             <!-- SHARE BUTTON -->
             <button class="action-button share-btn" onclick="sharePost('${postId}', '${safeText}')">

@@ -599,9 +599,38 @@ document.addEventListener('DOMContentLoaded', () => {
     transition: background 0.2s;
 }
 
+
+.like-btn {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    color: var(--text-color, #fff);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.like-btn.liked{
+    color: #5b53f2;
+    border: 1px solid #5b53f2;
+    transform: scale(1.08);
+}
+
+.like-btn.liked:hover{
+    background: #655ef6;
+    color: white;
+}
+
 .action-button:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
+
 
 .loading-posts {
     text-align: center;

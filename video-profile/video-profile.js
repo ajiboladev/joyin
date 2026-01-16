@@ -27,6 +27,7 @@ const profileUsername = document.getElementById('profileUsername');
 const profileBio = document.getElementById('profileBio');
 const followersCount = document.getElementById('followersCount');
 const followingCount = document.getElementById('followingCount');
+const likesCount = document.getElementById('LikesCount');
 const videosCount = document.getElementById('videosCount');
 const followBtn = document.getElementById('followBtn');
 const editProfileBtn = document.getElementById('editProfileBtn');
@@ -124,6 +125,7 @@ async function loadUserProfile(uid) {
             profileBio.textContent = data.bio || 'No bio yet';
             followersCount.textContent = data.followersCount || 0;
             followingCount.textContent = data.followingCount || 0;
+            likesCount.textContent = data.likesCount || 0;
             
             // Update page title
             document.title = `${data.username || 'User'} - Videos | JOYIN`;

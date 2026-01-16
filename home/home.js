@@ -4,7 +4,7 @@
  *  (c) 2025 JOYIN
  */
 
-import { doc, getDoc, collection, orderBy, query, onSnapshot, getDocs, limit, startAfter, getCountFromServer } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { doc, getDoc, collection, orderBy, query, onSnapshot, getDocs, limit, startAfter, getCountFromServer, writeBatch, setDoc, updateDoc, deleteDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 import { auth, db } from "../../firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
@@ -889,7 +889,7 @@ function createPostElement(post, postId) {
         
         <!-- ACTION BUTTONS: Like, Comment, Share -->
         <div class="post-actions">
-            <button class="action-button like-btn" data-post-id="${postId}">
+            <button class=" like-btn" data-post-id="${postId}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
                 </svg>
@@ -1081,13 +1081,117 @@ function setupSeeMoreLinks() {
     });
 }
 
+
+
+
+
+
+
 // Set up click handlers for post buttons (like, comment, share)
-function setupPostInteractions(postElement, post, postId) {
+ function setupPostInteractions(postElement, post, postId) {
+    // ============================================
+// LIKE SYSTEM FUNCTIONS
+// ============================================
+
+
     // Find the like button in this specific post
     const likeBtn = postElement.querySelector('.like-btn');
-    if (likeBtn) {
-        likeBtn.addEventListener('click', () => alert("Like functionality coming soon!"));
+
+
+    async function checkLikeStatus() {
+  if (!currentUser) return false;
+
+
+  try {
+    const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
+    const likeSnap = await getDoc(likeRef);
+    return likeSnap.exists();
+  } catch (error) {
+    console.error("Error checking like status:", error);
+    return false;
+  }
+}
+
+async function updateLikeButton() {
+  const isLiked = await checkLikeStatus();
+  likeBtn.classList.toggle('liked', isLiked);
+}
+
+updateLikeButton();
+
+likeBtn.addEventListener('click', async () => {
+  if (!currentUser) {
+    alert("Please log in to like posts.");
+    return;
+  }
+
+  likeBtn.disabled = true;
+
+  try {
+    const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
+    const postRef = doc(db, "posts", postId);
+    const likeSnap = await getDoc(likeRef);
+    const userRef = doc(db, "users", post.userId);
+
+    if (likeSnap.exists()) {
+      await deleteDoc(likeRef);
+      await updateDoc(postRef, { likeCount: increment(-1) });
+      await updateDoc(userRef, { likesCount: increment(-1) });
+    } else {
+      await setDoc(likeRef, {
+        userId: currentUser.uid,
+        createdAt: serverTimestamp()
+      });
+      await updateDoc(postRef, { likeCount: increment(1) });
+        await updateDoc(userRef, { likesCount: increment(1) });
     }
+
+    await updateLikeButton();
+   const postSnap = await getDoc(postRef);
+const updatedCount = postSnap.data().likeCount || 0;
+
+postElement.querySelector('.reaction-count').textContent =
+  `${updatedCount} ${updatedCount === 1 ? 'like' : 'likes'}`;
+
+
+
+
+  } catch (error) {
+    console.error("Error toggling like:", error);
+  } finally {
+    likeBtn.disabled = false;
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     // Find the comment button
     const commentBtn = postElement.querySelector('.comment-btn');

@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc, increment, deleteDoc, setDoc,  collection,
   query,
   where,
   orderBy,
-  getDocs } 
+  getDocs, serverTimestamp } 
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 import { auth, db } from "../firebase.js";
@@ -20,7 +20,8 @@ const usernameElements = document.querySelectorAll(".username_s");
 const bioElements = document.querySelectorAll(".bio-text-content");
 const followersElements = document.querySelectorAll(".followers-count");
 const followingElements = document.querySelectorAll(".following-count");
-const likes = document.querySelectorAll(".like-count");
+// const likersElements = document.querySelectorAll(".likers-count");
+const likesElements = document.querySelectorAll(".like-count");
 const message = document.querySelector(".block");
 
 const followersDesktop = document.getElementById("followers-desktop");
@@ -252,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
           el.textContent = data.followingCount || 0;
         });
 
-        likes.forEach(el => {
+        likesElements.forEach(el => {
           el.textContent = data.likesCount || 0;
         });
 
@@ -911,10 +912,9 @@ async function loadUserPosts(userId) {
         <div style="padding: 12px 16px; border-top: 1px solid #424141ff;">
           <button 
             class="like-btn" 
-            onclick="event.stopPropagation(); handleLike('${postId}', this)"
             style="background:none; border:none; color:#5b53f2; cursor:pointer;"
           >
-            <i class="far fa-heart"></i> Like
+            <i class="far fa-heart"></i><span style="padding-right: 5px; padding-left: 5px;" class="like-count">${post.likeCount || 0}</span> Like
           </button>
           <button 
             class="view-btn" 
@@ -925,9 +925,10 @@ async function loadUserPosts(userId) {
           </button>
         </div>
       `;
-      
+      // setupPostInteractions(postDiv, post, postId);
 
       postsContainer.appendChild(postDiv);
+      // setupPostInteractions(postDiv, post, postId);
 
       postDiv.querySelector('.post-username').textContent = post.username || "User";
     postDiv.querySelector('.post-text').textContent = post.text || "";
@@ -1063,8 +1064,6 @@ function getTimeAgo(timestamp) {
     // toLocaleDateString(): Converts date to local format (e.g., "12/25/2023")
     return postDate.toLocaleDateString();
 }
-
-
 
 
 

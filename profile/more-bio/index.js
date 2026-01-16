@@ -17,6 +17,7 @@ const userHandleElement = document.getElementById("user-handle");
 const fullBioElement = document.getElementById("full-bio");
 const followersCountElement = document.getElementById("followers-count");
 const followingCountElement = document.getElementById("following-count");
+const likesCountElement = document.getElementById("likes-count");
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -69,6 +70,10 @@ async function loadUserProfile(uid) {
       
       if (followingCountElement) {
         followingCountElement.textContent = data.followingCount || 0;
+      }
+
+      if (likesCountElement) {
+        likesCountElement.textContent = data.likesCount || 0;
       }
 
       let profileImg = document.getElementById("profileImage");
