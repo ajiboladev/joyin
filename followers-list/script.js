@@ -1,1 +1,299 @@
-function _0x52ab(){const _0x83aca6=['class=\x22use','etails\x22>\x0a\x20','display','bio\x22>','\x20\x20\x20\x20\x20\x20\x20\x20\x20<','CZPUT','contains','userId','VIApg','goBack','HbrBo','e\x20user\x20dat','krqPk','GzpcQ','ing&uid=','oaJBw','../searchb','rs-list/?v','1672abVZDW','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20','length','../followe','ePppH','.\x20Please\x20t','3714356Zzyoyb','VcZNT','stopPropag','\x20\x20<div\x20cla','aGyPo','total-coun','disabled','following-','in\x20to\x20view','RWfkM','iew=follow','div','ZJkVq','\x20\x20\x20</div>\x0a','LvVCR','DVDWC','DrGHG','Umrjx','2054636BqFOiX','low(\x27','d\x20follower','ById','kJPxO','Error\x20load','remove','Loading\x20fo','closest','block','empty-stat','location','ing\x20profil','DOMContent','loading-st','PqgMm','ser','ling\x20follo','DVFUh','rGtwl','view=login','User','preventDef','\x27,\x20this,\x20e','ass=\x22follo','getElement','Please\x20log','FeGlw','bio','../login/?','uSFBa','Loaded','add','following','followers','viewUserPr','EdVPB','classList','4757;\x22>Fai','DBlJT','Ccsae',')\x20|\x20JOYIN','\x27s\x20Followe','toISOStrin','IoENg','ChCfh','NLbJo','div\x20class=','style','led\x20to\x20loa','\x27)\x22>\x0a\x20\x20\x20\x20\x20','PIqfj','\x20\x20\x20<div\x20cl','rname\x22>','zIEvy','ing\x20follow','ers&uid=','\x22toggleFol','5LubZiJ','sLcCc','gPgWP','charAt','\x20\x20\x20\x20\x20\x20\x20<di','FWJMH','ate','1232697OrNrcB','ick=\x22viewU','ss=\x22user-d','d\x20in:','target','</button>','kHlyU','toggle','low\x20status','ReUuJ','users','\x0a\x20\x20\x20\x20\x20\x20\x20\x20<','createElem','info\x22\x20oncl','Following','../followi','ng-list/?v','loading','/div>\x0a\x20\x20\x20\x20','stener','../profile','wuTeG','vnhIM','Failed\x20to\x20','v\x20class=\x22a','vpAOf','XVylB','size','addEventLi','history','substring','log','s</p>','\x20followers','pzZVW','textConten','</div>\x0a\x20\x20\x20','ry\x20again.','<button\x20cl','ers:','Error\x20togg','rs\x20(','error','href','link','uid','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','9tgxIjs','update\x20fol','...','isCurrentU','\x22\x0aonclick=','vatar\x22>\x0a\x20\x20','w-btn\x20','search','264826vZGrcw','vent)\x22>','back','BPJtj','\x0a\x20\x20\x20\x20','mVUvn','follower-i','title','<p\x20style=\x22','OUqKL','NKyJI','PzNbh','ent','username','pEibP','BxQTK','forEach','Followers\x20','color:\x20#ff','ault','FcQLP','isFollowin','ar/','NerCq','oFHXu','HdWnB','Follow','vGxSs','5409222vnnWAo','tem','all','KTbfU','.follow-bt','14567qroabN','BKjHQ','llowers\x20fo','list','/?uid=','zKijG','qgRGO','XceZk','none','onclick','exploreUse','innerHTML','\x20\x20\x20\x20','Uqdlf','get','\x0a\x20\x20\x20\x20\x20\x20\x20\x20','User\x20logge','serProfile','KCNFB','\x22follower-','OOOpo','UAHYG','LuFGo','HHppK','toUpperCas','sUhde','rs\x20|\x20JOYIN','\x20\x20\x20\x20</div>','|\x20JOYIN','r\x20user:','followers-','soMKh','jCsyU','exists','appendChil','\x20\x20\x20\x20\x20<div\x20','push','ass=\x22user-','jXxPq','data','4858620hagcKj','ofile','er\x20data:','ation','uQfZP','ibHdf','className','dataset','toggleFoll','mSfgr','NeXmN'];_0x52ab=function(){return _0x83aca6;};return _0x52ab();}const _0xf11fbc=_0x59db;(function(_0xde235a,_0x15fba5){const _0x32089b=_0x59db,_0x2cb721=_0xde235a();while(!![]){try{const _0x426918=parseInt(_0x32089b(0x10f))/(0xd81+-0x1fe+-0xb82)+-parseInt(_0x32089b(0x18d))/(-0x4*-0xca+0x7*0x193+-0x3*0x4b9)+parseInt(_0x32089b(0x1ce))/(-0x7bc+0x686+0x139)+-parseInt(_0x32089b(0x17b))/(-0x1915+0x11ab+0x2*0x3b7)+-parseInt(_0x32089b(0x1c7))/(0x308+0xab*-0x29+0x1860)*(-parseInt(_0x32089b(0x12b))/(-0x1a2b+0x103c+0x9f5))+parseInt(_0x32089b(0x130))/(0x2d*-0x25+0x5*-0x1c4+-0xf5c*-0x1)*(parseInt(_0x32089b(0x175))/(0x306+0x718+-0xa16))+parseInt(_0x32089b(0x1fd))/(-0x19*-0xcb+-0x1d0+-0x11fa)*(parseInt(_0x32089b(0x158))/(-0x26b9+0x1ff9+-0x2*-0x365));if(_0x426918===_0x15fba5)break;else _0x2cb721['push'](_0x2cb721['shift']());}catch(_0x493c38){_0x2cb721['push'](_0x2cb721['shift']());}}}(_0x52ab,0x2c7*-0x499+0x6d2db+-0x1f*-0x756a));import{auth,db}from'../firebase.js';import{onAuthStateChanged}from'https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js';import{collection,getDocs,doc,getDoc,setDoc,deleteDoc,updateDoc,increment}from'https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js';let currentUserId=null,profileUserId=null,profileUserName=null;document[_0xf11fbc(0x1ea)+_0xf11fbc(0x1e1)](_0xf11fbc(0x19a)+_0xf11fbc(0x1ac),()=>{const _0x201322=_0xf11fbc,_0x1db84a={'ibHdf':_0x201322(0x140)+_0x201322(0x1d1),'DVFUh':_0x201322(0x1fb),'ZJkVq':_0x201322(0x194)+_0x201322(0x132)+_0x201322(0x14d),'BxQTK':function(_0xca028c){return _0xca028c();},'VcZNT':function(_0x4b9f7b,_0x22a425){return _0x4b9f7b(_0x22a425);},'kHlyU':_0x201322(0x1a7)+_0x201322(0x183)+_0x201322(0x1ef),'OOOpo':_0x201322(0x1aa)+_0x201322(0x1a1),'CZPUT':function(_0x1dad43,_0x50864f,_0x58701d){return _0x1dad43(_0x50864f,_0x58701d);}};_0x1db84a[_0x201322(0x168)](onAuthStateChanged,auth,async _0x1747c7=>{const _0x533901=_0x201322;if(_0x1747c7){console[_0x533901(0x1ed)](_0x1db84a[_0x533901(0x15d)],_0x1747c7[_0x533901(0x1fb)]),currentUserId=_0x1747c7[_0x533901(0x1fb)];const _0x33ebe5=new URLSearchParams(window[_0x533901(0x198)][_0x533901(0x10e)]);profileUserId=_0x33ebe5[_0x533901(0x13e)](_0x1db84a[_0x533901(0x19f)])||currentUserId,console[_0x533901(0x1ed)](_0x1db84a[_0x533901(0x187)],profileUserId),await _0x1db84a[_0x533901(0x11e)](loadProfileUserData),await _0x1db84a[_0x533901(0x11e)](loadFollowers),await _0x1db84a[_0x533901(0x17c)](followersPage,profileUserId),await _0x1db84a[_0x533901(0x17c)](followingPage,profileUserId);}else _0x1db84a[_0x533901(0x17c)](alert,_0x1db84a[_0x533901(0x1d4)]),window[_0x533901(0x198)][_0x533901(0x1f9)]=_0x1db84a[_0x533901(0x144)];});});async function loadProfileUserData(){const _0x7c2a04=_0xf11fbc,_0x4752dd={'PqgMm':function(_0x2fd0aa,_0x4c0e1a,_0x37ac78,_0x23f680){return _0x2fd0aa(_0x4c0e1a,_0x37ac78,_0x23f680);},'mSfgr':_0x7c2a04(0x1d8),'rGtwl':function(_0x1fc083,_0x2a0b5a){return _0x1fc083(_0x2a0b5a);},'vGxSs':_0x7c2a04(0x1a2),'aGyPo':_0x7c2a04(0x120)+_0x7c2a04(0x14c),'FcQLP':_0x7c2a04(0x192)+_0x7c2a04(0x199)+_0x7c2a04(0x16e)+'a:'};try{const _0x3fac07=_0x4752dd[_0x7c2a04(0x19c)](doc,db,_0x4752dd[_0x7c2a04(0x161)],profileUserId),_0x1e3596=await _0x4752dd[_0x7c2a04(0x1a0)](getDoc,_0x3fac07);if(_0x1e3596[_0x7c2a04(0x151)]()){const _0x38c2bd=_0x1e3596[_0x7c2a04(0x157)]();profileUserName=_0x38c2bd[_0x7c2a04(0x11c)]||_0x4752dd[_0x7c2a04(0x12a)],document[_0x7c2a04(0x116)]=profileUserName+(_0x7c2a04(0x1b7)+_0x7c2a04(0x14a));}else document[_0x7c2a04(0x116)]=_0x4752dd[_0x7c2a04(0x17f)];}catch(_0x2a40a2){console[_0x7c2a04(0x1f8)](_0x4752dd[_0x7c2a04(0x123)],_0x2a40a2),document[_0x7c2a04(0x116)]=_0x4752dd[_0x7c2a04(0x17f)];}}async function loadFollowers(){const _0x2f02bb=_0xf11fbc,_0x2efb00={'GzpcQ':function(_0x83c5b0,_0x35ec4b){return _0x83c5b0(_0x35ec4b);},'ePppH':function(_0x1c5c68,_0x546bf){return _0x1c5c68(_0x546bf);},'LvVCR':_0x2f02bb(0x14e)+_0x2f02bb(0x133),'qgRGO':_0x2f02bb(0x19b)+_0x2f02bb(0x1cd),'PIqfj':_0x2f02bb(0x197)+'e','UAHYG':function(_0x4d1115,_0x1f862a,_0x54b6fb,_0x46ab7a,_0x41726c){return _0x4d1115(_0x1f862a,_0x54b6fb,_0x46ab7a,_0x41726c);},'EdVPB':_0x2f02bb(0x1d8),'XceZk':_0x2f02bb(0x1af),'LuFGo':_0x2f02bb(0x180)+'t','ChCfh':function(_0x1e343a,_0x30dc9b){return _0x1e343a===_0x30dc9b;},'Ccsae':_0x2f02bb(0x138),'jXxPq':_0x2f02bb(0x196),'zKijG':_0x2f02bb(0x192)+_0x2f02bb(0x1c4)+_0x2f02bb(0x1f5),'soMKh':_0x2f02bb(0x117)+_0x2f02bb(0x121)+_0x2f02bb(0x1b3)+_0x2f02bb(0x1be)+_0x2f02bb(0x18f)+_0x2f02bb(0x1ee),'Uqdlf':_0x2f02bb(0x120)+_0x2f02bb(0x14c)},_0x509cd0=document[_0x2f02bb(0x1a6)+_0x2f02bb(0x190)](_0x2efb00[_0x2f02bb(0x189)]),_0x49da62=document[_0x2f02bb(0x1a6)+_0x2f02bb(0x190)](_0x2efb00[_0x2f02bb(0x136)]),_0x1f5033=document[_0x2f02bb(0x1a6)+_0x2f02bb(0x190)](_0x2efb00[_0x2f02bb(0x1c0)]);try{const _0xb1425d=_0x2efb00[_0x2f02bb(0x145)](collection,db,_0x2efb00[_0x2f02bb(0x1b1)],profileUserId,_0x2efb00[_0x2f02bb(0x137)]),_0x91a301=await _0x2efb00[_0x2f02bb(0x170)](getDocs,_0xb1425d),_0x528865=document[_0x2f02bb(0x1a6)+_0x2f02bb(0x190)](_0x2efb00[_0x2f02bb(0x146)]);_0x528865[_0x2f02bb(0x1f1)+'t']=_0x91a301[_0x2f02bb(0x1e9)];profileUserName?document[_0x2f02bb(0x116)]=profileUserName+(_0x2f02bb(0x1b7)+_0x2f02bb(0x1f7))+_0x91a301[_0x2f02bb(0x1e9)]+_0x2f02bb(0x1b6):document[_0x2f02bb(0x116)]=_0x2f02bb(0x120)+'('+_0x91a301[_0x2f02bb(0x1e9)]+_0x2f02bb(0x1b6);if(_0x2efb00[_0x2f02bb(0x1ba)](_0x91a301[_0x2f02bb(0x1e9)],-0x1*-0x9c9+-0x1f6*0x7+0x3f1*0x1)){_0x49da62[_0x2f02bb(0x1bd)][_0x2f02bb(0x165)]=_0x2efb00[_0x2f02bb(0x1b5)],_0x1f5033[_0x2f02bb(0x1bd)][_0x2f02bb(0x165)]=_0x2efb00[_0x2f02bb(0x156)],_0x509cd0[_0x2f02bb(0x13b)]='';return;}_0x49da62[_0x2f02bb(0x1bd)][_0x2f02bb(0x165)]=_0x2efb00[_0x2f02bb(0x1b5)],_0x1f5033[_0x2f02bb(0x1bd)][_0x2f02bb(0x165)]=_0x2efb00[_0x2f02bb(0x1b5)],_0x509cd0[_0x2f02bb(0x13b)]='';const _0x28440b=[];_0x91a301[_0x2f02bb(0x11f)](_0x5610c6=>{const _0x5c9f2f=_0x2f02bb;_0x28440b[_0x5c9f2f(0x154)](_0x2efb00[_0x5c9f2f(0x170)](loadFollowerData,_0x5610c6['id']));});const _0x286e32=await Promise[_0x2f02bb(0x12d)](_0x28440b);_0x286e32[_0x2f02bb(0x11f)](_0x4cc14c=>{const _0x15f2dd=_0x2f02bb;_0x4cc14c&&_0x509cd0[_0x15f2dd(0x152)+'d'](_0x2efb00[_0x15f2dd(0x179)](createFollowerElement,_0x4cc14c));});}catch(_0x565c9b){console[_0x2f02bb(0x1f8)](_0x2efb00[_0x2f02bb(0x135)],_0x565c9b),_0x49da62[_0x2f02bb(0x13b)]=_0x2efb00[_0x2f02bb(0x14f)],document[_0x2f02bb(0x116)]=_0x2efb00[_0x2f02bb(0x13d)];}}async function loadFollowerData(_0x283c94){const _0x34079f=_0xf11fbc,_0x58cc24={'DVDWC':function(_0x5b14a3,_0x523902,_0x181c24,_0x3ed49f){return _0x5b14a3(_0x523902,_0x181c24,_0x3ed49f);},'NeXmN':_0x34079f(0x1d8),'pzZVW':function(_0x12da13,_0x4d9721){return _0x12da13(_0x4d9721);},'VIApg':function(_0x1abad8,_0x16df7a){return _0x1abad8!==_0x16df7a;},'ReUuJ':function(_0x3344e2,_0x411768,_0x13c7b1,_0x5a5a60,_0x5db837,_0x1b1809){return _0x3344e2(_0x411768,_0x13c7b1,_0x5a5a60,_0x5db837,_0x1b1809);},'XVylB':_0x34079f(0x1af),'vpAOf':_0x34079f(0x1a2),'DBlJT':function(_0xbe4554,_0x4c87b4){return _0xbe4554===_0x4c87b4;},'oaJBw':_0x34079f(0x192)+_0x34079f(0x1c4)+_0x34079f(0x15a)};try{const _0x5454a9=_0x58cc24[_0x34079f(0x18a)](doc,db,_0x58cc24[_0x34079f(0x162)],_0x283c94),_0x553c3c=await _0x58cc24[_0x34079f(0x1f0)](getDoc,_0x5454a9);if(_0x553c3c[_0x34079f(0x151)]()){const _0x148048=_0x553c3c[_0x34079f(0x157)]();let _0x3d8beb=!(-0x1*-0x10cc+0x254c+0x3617*-0x1);if(_0x58cc24[_0x34079f(0x16b)](currentUserId,_0x283c94)){const _0x1d5d73=_0x58cc24[_0x34079f(0x1d7)](doc,db,_0x58cc24[_0x34079f(0x162)],_0x283c94,_0x58cc24[_0x34079f(0x1e8)],currentUserId),_0x4aad14=await _0x58cc24[_0x34079f(0x1f0)](getDoc,_0x1d5d73);_0x3d8beb=_0x4aad14[_0x34079f(0x151)]();}return{'id':_0x283c94,'username':_0x148048[_0x34079f(0x11c)]||_0x58cc24[_0x34079f(0x1e7)],'bio':_0x148048[_0x34079f(0x1a9)]||'','isFollowing':_0x3d8beb,'isCurrentUser':_0x58cc24[_0x34079f(0x1b4)](currentUserId,_0x283c94)};}return null;}catch(_0x45f38c){return console[_0x34079f(0x1f8)](_0x58cc24[_0x34079f(0x172)],_0x45f38c),null;}}function _0x59db(_0x175d81,_0x544219){_0x175d81=_0x175d81-(0x1ee3*0x1+0x1*0x1177+-0x2f4e);const _0x50f998=_0x52ab();let _0xe98797=_0x50f998[_0x175d81];return _0xe98797;}function createFollowerElement(_0x281bbe){const _0x21abb7=_0xf11fbc,_0x542853={'zIEvy':_0x21abb7(0x12f)+'n','sLcCc':function(_0x47ae8d,_0x4c1ea9){return _0x47ae8d(_0x4c1ea9);},'kJPxO':_0x21abb7(0x186),'BPJtj':_0x21abb7(0x115)+_0x21abb7(0x12c),'RWfkM':function(_0xf8000b,_0x1ecc57){return _0xf8000b>_0x1ecc57;},'gPgWP':_0x21abb7(0x1ff),'FWJMH':_0x21abb7(0x1ae),'NLbJo':_0x21abb7(0x1dc),'NKyJI':_0x21abb7(0x129)},_0x45cf68=document[_0x21abb7(0x1da)+_0x21abb7(0x11b)](_0x542853[_0x21abb7(0x191)]);_0x45cf68[_0x21abb7(0x15e)]=_0x542853[_0x21abb7(0x112)],_0x45cf68[_0x21abb7(0x15f)][_0x21abb7(0x16a)]=_0x281bbe['id'];const _0x8c7b1=_0x281bbe[_0x21abb7(0x11c)][_0x21abb7(0x1ca)](0x1fd7+-0x13fb+-0x16*0x8a)[_0x21abb7(0x148)+'e']();return _0x45cf68[_0x21abb7(0x13b)]=_0x21abb7(0x1d9)+_0x21abb7(0x1bc)+_0x21abb7(0x143)+_0x21abb7(0x1db)+_0x21abb7(0x1cf)+_0x21abb7(0x141)+'(\x27'+_0x281bbe['id']+(_0x21abb7(0x1bf)+_0x21abb7(0x1cb)+_0x21abb7(0x1e6)+_0x21abb7(0x10c)+_0x21abb7(0x1fc)+_0x21abb7(0x13c))+_0x8c7b1+(_0x21abb7(0x176)+_0x21abb7(0x188)+_0x21abb7(0x1fc)+_0x21abb7(0x17e)+_0x21abb7(0x1d0)+_0x21abb7(0x164)+_0x21abb7(0x1fc)+_0x21abb7(0x153)+_0x21abb7(0x163)+_0x21abb7(0x1c2))+_0x281bbe[_0x21abb7(0x11c)]+(_0x21abb7(0x1f2)+_0x21abb7(0x1fc)+_0x21abb7(0x1c1)+_0x21abb7(0x155)+_0x21abb7(0x166))+_0x281bbe[_0x21abb7(0x1a9)][_0x21abb7(0x1ec)](-0x2*-0x72+0x2342+-0x2426,-0xb92+0x14c7+0x3*-0x301)+(_0x542853[_0x21abb7(0x184)](_0x281bbe[_0x21abb7(0x1a9)][_0x21abb7(0x177)],0x3*0x289+0x1291+-0x19fa)?_0x542853[_0x21abb7(0x1c9)]:'')+(_0x21abb7(0x1f2)+_0x21abb7(0x167)+_0x21abb7(0x1e0)+_0x21abb7(0x14b)+_0x21abb7(0x13f))+(_0x281bbe[_0x21abb7(0x200)+_0x21abb7(0x19d)]?'':_0x21abb7(0x1f4)+_0x21abb7(0x1a5)+_0x21abb7(0x10d)+(_0x281bbe[_0x21abb7(0x124)+'g']?_0x542853[_0x21abb7(0x1cc)]:'')+(_0x21abb7(0x201)+_0x21abb7(0x1c6)+_0x21abb7(0x18e))+_0x281bbe['id']+(_0x21abb7(0x1a4)+_0x21abb7(0x110))+(_0x281bbe[_0x21abb7(0x124)+'g']?_0x542853[_0x21abb7(0x1bb)]:_0x542853[_0x21abb7(0x119)])+_0x21abb7(0x1d3))+_0x21abb7(0x113),_0x45cf68[_0x21abb7(0x139)]=function(_0x5643fe){const _0x4e1a2c=_0x21abb7;!_0x5643fe[_0x4e1a2c(0x1d2)][_0x4e1a2c(0x195)](_0x542853[_0x4e1a2c(0x1c3)])&&_0x542853[_0x4e1a2c(0x1c8)](viewUserProfile,_0x281bbe['id']);},_0x45cf68;}window[_0xf11fbc(0x16c)]=function(){const _0x20e917=_0xf11fbc;window[_0x20e917(0x1eb)][_0x20e917(0x111)]();},window[_0xf11fbc(0x13a)+'rs']=function(){const _0x538311=_0xf11fbc,_0x3b448b={'uQfZP':_0x538311(0x173)+_0x538311(0x125)};window[_0x538311(0x198)][_0x538311(0x1f9)]=_0x3b448b[_0x538311(0x15c)];},window[_0xf11fbc(0x1b0)+_0xf11fbc(0x159)]=function(_0x32a267){const _0x1e15e0=_0xf11fbc;window[_0x1e15e0(0x198)][_0x1e15e0(0x1f9)]=_0x1e15e0(0x1e2)+_0x1e15e0(0x134)+_0x32a267;},window[_0xf11fbc(0x160)+'ow']=async function(_0x107582,_0x5c85a4,_0x5bf4e7){const _0x20d128=_0xf11fbc,_0xba5c2={'HdWnB':function(_0xd10b1d,_0x1d7482){return _0xd10b1d===_0x1d7482;},'IoENg':_0x20d128(0x1ae),'BKjHQ':_0x20d128(0x1df),'PzNbh':_0x20d128(0x1ff),'uSFBa':function(_0x4068b7,_0x3343bf,_0xf21cf8,_0x575d17,_0x793628,_0x29ad8d){return _0x4068b7(_0x3343bf,_0xf21cf8,_0x575d17,_0x793628,_0x29ad8d);},'wuTeG':_0x20d128(0x1d8),'Umrjx':_0x20d128(0x1af),'DrGHG':function(_0x11fb80,_0x3f1e19,_0x4e8b9b,_0x1fed73,_0x44cc07,_0x5ddb63){return _0x11fb80(_0x3f1e19,_0x4e8b9b,_0x1fed73,_0x44cc07,_0x5ddb63);},'oFHXu':function(_0x46fe40,_0xe7d663,_0x4705ad,_0x43be65){return _0x46fe40(_0xe7d663,_0x4705ad,_0x43be65);},'sUhde':function(_0x4b154a,_0x245f47){return _0x4b154a(_0x245f47);},'vnhIM':function(_0x41773b,_0x1514bb,_0xef5bb2){return _0x41773b(_0x1514bb,_0xef5bb2);},'NerCq':function(_0x991c47,_0x39d8f8){return _0x991c47(_0x39d8f8);},'FeGlw':function(_0x315cb1,_0x2a6a74,_0x2df809){return _0x315cb1(_0x2a6a74,_0x2df809);},'HHppK':function(_0x142c65,_0x21f743,_0x32b27a){return _0x142c65(_0x21f743,_0x32b27a);},'pEibP':function(_0x55cb4e,_0x3c51c6){return _0x55cb4e(_0x3c51c6);},'HbrBo':_0x20d128(0x1dc),'KTbfU':_0x20d128(0x129),'krqPk':_0x20d128(0x1f6)+_0x20d128(0x19e)+'w:','jCsyU':function(_0xb1e232,_0x45baa0){return _0xb1e232(_0x45baa0);},'KCNFB':_0x20d128(0x1e5)+_0x20d128(0x1fe)+_0x20d128(0x1d6)+_0x20d128(0x17a)+_0x20d128(0x1f3)};_0x5bf4e7&&(_0x5bf4e7[_0x20d128(0x17d)+_0x20d128(0x15b)](),_0x5bf4e7[_0x20d128(0x1a3)+_0x20d128(0x122)]());if(!currentUserId)return;if(_0xba5c2[_0x20d128(0x128)](_0x107582,currentUserId))return;const _0x32a3b1=_0x5c85a4[_0x20d128(0x1b2)][_0x20d128(0x169)](_0xba5c2[_0x20d128(0x1b9)]),_0x10a703=!_0x32a3b1;_0x5c85a4[_0x20d128(0x1b2)][_0x20d128(0x1ad)](_0xba5c2[_0x20d128(0x131)]),_0x5c85a4[_0x20d128(0x181)]=!(0x5b*0x45+-0x15*0x169+-0x1b2*-0x3),_0x5c85a4[_0x20d128(0x1f1)+'t']=_0xba5c2[_0x20d128(0x11a)];try{const _0x528981=_0xba5c2[_0x20d128(0x1ab)](doc,db,_0xba5c2[_0x20d128(0x1e3)],_0x107582,_0xba5c2[_0x20d128(0x18c)],currentUserId),_0x49244b=_0xba5c2[_0x20d128(0x18b)](doc,db,_0xba5c2[_0x20d128(0x1e3)],currentUserId,_0xba5c2[_0x20d128(0x1b9)],_0x107582),_0x1e7dbf=_0xba5c2[_0x20d128(0x127)](doc,db,_0xba5c2[_0x20d128(0x1e3)],_0x107582),_0x3ad2ac=_0xba5c2[_0x20d128(0x127)](doc,db,_0xba5c2[_0x20d128(0x1e3)],currentUserId);_0x32a3b1?(await _0xba5c2[_0x20d128(0x149)](deleteDoc,_0x528981),await _0xba5c2[_0x20d128(0x149)](deleteDoc,_0x49244b),await _0xba5c2[_0x20d128(0x1e4)](updateDoc,_0x1e7dbf,{'followersCount':_0xba5c2[_0x20d128(0x126)](increment,-(0x1c46+-0x5dc+-0x1669))}),await _0xba5c2[_0x20d128(0x1e4)](updateDoc,_0x3ad2ac,{'followingCount':_0xba5c2[_0x20d128(0x126)](increment,-(-0x4*-0x31+-0x9*0x32d+-0x3*-0x946))})):(await _0xba5c2[_0x20d128(0x1e4)](setDoc,_0x528981,{'followedAt':new Date()[_0x20d128(0x1b8)+'g'](),'userId':currentUserId}),await _0xba5c2[_0x20d128(0x1a8)](setDoc,_0x49244b,{'followedAt':new Date()[_0x20d128(0x1b8)+'g'](),'userId':_0x107582}),await _0xba5c2[_0x20d128(0x147)](updateDoc,_0x1e7dbf,{'followersCount':_0xba5c2[_0x20d128(0x11d)](increment,-0x2240+0x3*-0x4eb+0x3102)}),await _0xba5c2[_0x20d128(0x147)](updateDoc,_0x3ad2ac,{'followingCount':_0xba5c2[_0x20d128(0x149)](increment,-0x6*0x21d+0x193d+0x647*-0x2)})),_0x5c85a4[_0x20d128(0x1b2)][_0x20d128(0x1d5)](_0xba5c2[_0x20d128(0x1b9)]),_0x5c85a4[_0x20d128(0x1f1)+'t']=_0x10a703?_0xba5c2[_0x20d128(0x16d)]:_0xba5c2[_0x20d128(0x12e)];}catch(_0x148bdc){console[_0x20d128(0x1f8)](_0xba5c2[_0x20d128(0x16f)],_0x148bdc),_0x5c85a4[_0x20d128(0x1f1)+'t']=_0x32a3b1?_0xba5c2[_0x20d128(0x16d)]:_0xba5c2[_0x20d128(0x12e)],_0x5c85a4[_0x20d128(0x1b2)][_0x20d128(0x1d5)](_0xba5c2[_0x20d128(0x1b9)],_0x32a3b1),_0xba5c2[_0x20d128(0x150)](alert,_0xba5c2[_0x20d128(0x142)]);}finally{_0x5c85a4[_0x20d128(0x1b2)][_0x20d128(0x193)](_0xba5c2[_0x20d128(0x131)]),_0x5c85a4[_0x20d128(0x181)]=!(0x1293+0xa*0x5+-0x4b1*0x4);}};async function followersPage(_0x14187d){const _0x5a17fc=_0xf11fbc,_0x4d022f={'OUqKL':_0x5a17fc(0x14e)+_0x5a17fc(0x1fa)};let _0x4a137d=document[_0x5a17fc(0x1a6)+_0x5a17fc(0x190)](_0x4d022f[_0x5a17fc(0x118)]);_0x4a137d&&(_0x4a137d[_0x5a17fc(0x139)]=function(){const _0x15fc9e=_0x5a17fc;window[_0x15fc9e(0x198)][_0x15fc9e(0x1f9)]=_0x15fc9e(0x178)+_0x15fc9e(0x174)+_0x15fc9e(0x185)+_0x15fc9e(0x1c5)+_0x14187d;});}async function followingPage(_0x8c18f9){const _0x55437f=_0xf11fbc,_0x44260b={'mVUvn':_0x55437f(0x182)+_0x55437f(0x1fa)};let _0x297007=document[_0x55437f(0x1a6)+_0x55437f(0x190)](_0x44260b[_0x55437f(0x114)]);_0x297007&&(_0x297007[_0x55437f(0x139)]=function(){const _0x3f4e2d=_0x55437f;window[_0x3f4e2d(0x198)][_0x3f4e2d(0x1f9)]=_0x3f4e2d(0x1dd)+_0x3f4e2d(0x1de)+_0x3f4e2d(0x185)+_0x3f4e2d(0x171)+_0x8c18f9;});}
+import { auth, db } from "../firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { collection, getDocs, doc, getDoc, setDoc, deleteDoc, updateDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+let currentUserId = null;
+let profileUserId = null;
+let profileUserName = null;
+
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', () => {
+    // Check auth state
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            console.log("User logged in:", user.uid);
+            currentUserId = user.uid;
+
+            // Get user ID from URL or use current user
+            const urlParams = new URLSearchParams(window.location.search);
+            profileUserId = urlParams.get('uid') || currentUserId;
+            
+            console.log("Loading followers for user:", profileUserId);
+            
+            // Load profile user data first
+            await loadProfileUserData();
+            await loadFollowers();
+
+            //Pages
+            await followersPage(profileUserId);
+            await followingPage(profileUserId);
+            
+        } else {
+            alert("Please login to view followers");
+            // Redirect to login if not authenticated
+            window.location.href = '../login/?view=login';
+        }
+    });
+});
+
+async function loadProfileUserData() {
+    try {
+        const userRef = doc(db, "users", profileUserId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            profileUserName = userData.username || 'User';
+            
+            // Update page title
+            document.title = `${profileUserName}'s Followers | JOYIN`;
+        } else {
+            document.title = "Followers | JOYIN";
+        }
+    } catch (error) {
+        console.error("Error loading profile user data:", error);
+        document.title = "Followers | JOYIN";
+    }
+}
+
+async function loadFollowers() {
+    const followersList = document.getElementById('followers-list');
+    const loadingState = document.getElementById('loading-state');
+    const emptyState = document.getElementById('empty-state');
+    
+    try {
+        // Get followers collection
+        const followersRef = collection(db, "users", profileUserId, "followers");
+        const followersSnap = await getDocs(followersRef);
+        
+        // Update count
+        const totalCount = document.getElementById('total-count');
+        totalCount.textContent = followersSnap.size;
+        
+        // Update title with count
+        if (profileUserName) {
+            document.title = `${profileUserName}'s Followers (${followersSnap.size}) | JOYIN`;
+        } else {
+            document.title = `Followers (${followersSnap.size}) | JOYIN`;
+        }
+        
+        if (followersSnap.size === 0) {
+            // Show empty state
+            loadingState.style.display = 'none';
+            emptyState.style.display = 'block';
+            followersList.innerHTML = '';
+            return;
+        }
+        
+        // Hide loading and empty states
+        loadingState.style.display = 'none';
+        emptyState.style.display = 'none';
+        
+        // Clear current list
+        followersList.innerHTML = '';
+        
+        // Process each follower
+        const followerPromises = [];
+        followersSnap.forEach(followerDoc => {
+            followerPromises.push(loadFollowerData(followerDoc.id));
+        });
+        
+        // Wait for all follower data to load
+        const followersData = await Promise.all(followerPromises);
+        
+        // Display followers
+        followersData.forEach(follower => {
+            if (follower) {
+                followersList.appendChild(createFollowerElement(follower));
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error loading followers:', error);
+        loadingState.innerHTML = '<p style="color: #ff4757;">Failed to load followers</p>';
+        document.title = "Followers | JOYIN";
+    }
+}
+
+async function loadFollowerData(followerId) {
+    try {
+        // Get follower's user data
+        const userRef = doc(db, "users", followerId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            
+            // Check if current user follows this follower
+            let isFollowing = false;
+            if (currentUserId !== followerId) {
+                const followRef = doc(db, "users", followerId, "followers", currentUserId);
+                const followSnap = await getDoc(followRef);
+                isFollowing = followSnap.exists();
+            }
+            
+            return {
+                id: followerId,
+                username: userData.username || 'User',
+                bio: userData.bio || '',
+                isFollowing: isFollowing,
+                isCurrentUser: currentUserId === followerId
+            };
+        }
+        return null;
+    } catch (error) {
+        console.error('Error loading follower data:', error);
+        return null;
+    }
+}
+
+function createFollowerElement(follower) {
+    const div = document.createElement('div');
+    div.className = 'follower-item';
+    div.dataset.userId = follower.id;
+    
+    // Get first letter for avatar
+    const firstLetter = follower.username.charAt(0).toUpperCase();
+    
+    div.innerHTML = `
+        <div class="follower-info" onclick="viewUserProfile('${follower.id}')">
+            <div class="avatar">
+                ${firstLetter}
+            </div>
+            <div class="user-details">
+                <div class="username">${follower.username}</div>
+                <div class="user-bio">${follower.bio.substring(0, 50)}${follower.bio.length > 50 ? '...' : ''}</div>
+            </div>
+        </div>
+        ${follower.isCurrentUser ? '' : 
+            `<button class="follow-btn ${follower.isFollowing ? 'following' : ''}" 
+                    onclick="toggleFollow('${follower.id}', this, event)">
+                ${follower.isFollowing ? 'Following' : 'Follow'}
+            </button>`
+        }
+    `;
+    
+    // Make entire div clickable except for the follow button
+    div.onclick = function(e) {
+        // Only navigate if not clicking the follow button
+        if (!e.target.closest('.follow-btn')) {
+            viewUserProfile(follower.id);
+        }
+    };
+    
+    return div;
+}
+
+// Make functions globally available
+window.goBack = function() {
+    window.history.back();
+};
+
+window.exploreUsers = function() {
+    window.location.href = '../searchbar/';
+};
+
+window.viewUserProfile = function(userId) {
+    window.location.href = `../profile/?uid=${userId}`;
+};
+
+window.toggleFollow = async function(userId, button, event) {
+  // Stop event from bubbling
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  if (!currentUserId) return;
+
+  // Don't allow following yourself
+  if (userId === currentUserId) return;
+
+  const isCurrentlyFollowing = button.classList.contains('following');
+  const newFollowState = !isCurrentlyFollowing;
+
+  // Update button immediately for UX
+  button.classList.add('loading');
+  button.disabled = true;
+  button.textContent = '...';
+
+  try {
+    // Firestore references
+    const userFollowersRef = doc(db, "users", userId, "followers", currentUserId);
+    const currentUserFollowingRef = doc(db, "users", currentUserId, "following", userId);
+    const userRef = doc(db, "users", userId);
+    const currentUserRef = doc(db, "users", currentUserId);
+
+    await runTransaction(db, async (transaction) => {
+      const followerSnap = await transaction.get(userFollowersRef);
+      const followingSnap = await transaction.get(currentUserFollowingRef);
+
+      if (isCurrentlyFollowing) {
+        // Unfollow
+        if (followerSnap.exists() && followingSnap.exists()) {
+          transaction.delete(userFollowersRef);
+          transaction.delete(currentUserFollowingRef);
+          transaction.update(userRef, { followersCount: increment(-1) });
+          transaction.update(currentUserRef, { followingCount: increment(-1) });
+        }
+      } else {
+        // Follow
+        if (!followerSnap.exists() && !followingSnap.exists()) {
+          transaction.set(userFollowersRef, {
+            followedAt: new Date().toISOString(),
+            userId: currentUserId
+          });
+          transaction.set(currentUserFollowingRef, {
+            followedAt: new Date().toISOString(),
+            userId: userId
+          });
+          transaction.update(userRef, { followersCount: increment(1) });
+          transaction.update(currentUserRef, { followingCount: increment(1) });
+        }
+      }
+    });
+
+    // Update button UI after transaction
+    button.classList.toggle('following', newFollowState);
+    button.textContent = newFollowState ? 'Following' : 'Follow';
+
+  } catch (error) {
+    console.error('Error toggling follow:', error);
+    // Revert button state on error
+    button.classList.toggle('following', isCurrentlyFollowing);
+    button.textContent = isCurrentlyFollowing ? 'Following' : 'Follow';
+    alert('Failed to update follow status. Please try again.');
+  } finally {
+    button.classList.remove('loading');
+    button.disabled = false;
+  }
+};
+
+
+// ============================================
+// Followers Page FUNCTIONS
+// ============================================
+
+async function followersPage(uid) {
+    let followers = document.getElementById("followers-link");
+    
+    if (followers) {
+        followers.onclick = function() {
+            window.location.href = `../followers-list/?view=followers&uid=${uid}`;
+        };
+    }
+}
+
+// ============================================
+// Following Page FUNCTIONS
+// ============================================
+
+async function followingPage(uid) {
+    let following = document.getElementById("following-link");
+    
+    if (following) {
+        following.onclick = function() {
+            window.location.href = `../following-list/?view=following&uid=${uid}`;
+        };
+    }
+}

@@ -291,7 +291,7 @@
     </div>
 
     <script type="module">
-        import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, increment, deleteDoc, setDoc, serverTimestamp } 
+        import { doc, getDoc, collection, query, orderBy, getDocs, addDoc, updateDoc, increment, deleteDoc, setDoc, serverTimestamp, runTransaction } 
         from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
         import { auth, db } from "../../firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
@@ -534,41 +534,44 @@ likeBtn.addEventListener('click', async () => {
   try {
     const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
     const postRef = doc(db, "posts", postId);
-    const likeSnap = await getDoc(likeRef);
     const userRef = doc(db, "users", post.userId);
 
+  await runTransaction(db, async(transition)=>{
+  const likeSnap = await transition.get(likeRef);
     if (likeSnap.exists()) {
-      await deleteDoc(likeRef);
-      await updateDoc(postRef, { likeCount: increment(-1) });
-      await updateDoc(userRef, { likesCount: increment(-1) });
+       transition.delete(likeRef);
+       transition.update(postRef, { likeCount: increment(-1) });
+       transition.update(userRef, { likesCount: increment(-1) });
+       likeBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> UnLiking...`;
     } else {
-      await setDoc(likeRef, {
+       transition.set(likeRef, {
         userId: currentUser.uid,
         createdAt: serverTimestamp()
       });
-      await updateDoc(postRef, { likeCount: increment(1) });
-        await updateDoc(userRef, { likesCount: increment(1) });
+       transition.update(postRef, { likeCount: increment(1) });
+         transition.update(userRef, { likesCount: increment(1) });
+         likeBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Liking...`;
     }
+  })
 
-    await updateLikeButton();
+        await updateLikeButton();
    const postSnap = await getDoc(postRef);
 const updatedCount = postSnap.data().likeCount || 0;
 
 postElement.querySelector('.like-count').textContent =
   `${updatedCount} ${updatedCount === 1 ? 'like' : 'likes'}`;
-
-
-
-
-  } catch (error) {
+  
+} catch (error) {
     console.error("Error toggling like:", error);
   } finally {
     likeBtn.disabled = false;
+    likeBtn.innerHTML = ` <i class="far fa-heart"></i>
+                            <span>Like</span>`;
   }
 });
 
 
-            }
+}
 
 
 

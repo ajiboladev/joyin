@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc, increment, deleteDoc, setDoc,  collection,
   query,
   where,
   orderBy,
-  getDocs, serverTimestamp } 
+  getDocs, serverTimestamp, runTransaction } 
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 import { auth, db } from "../firebase.js";
@@ -516,52 +516,62 @@ async function handleFollowClick() {
 }
 
 async function toggleFollow() {
-
   console.log("=== FOLLOW DEBUG ===");
-console.log("viewerId:", viewerId);
-console.log("profileUserId:", profileUserId);  
-console.log("auth.currentUser.uid:", auth.currentUser?.uid);
-console.log("Match?", viewerId === auth.currentUser?.uid);
+  console.log("viewerId:", viewerId);
+  console.log("profileUserId:", profileUserId);  
+  console.log("auth.currentUser.uid:", auth.currentUser?.uid);
+  console.log("Match?", viewerId === auth.currentUser?.uid);
+
   if (!viewerId || !profileUserId) {
     throw new Error("Missing viewerId or profileUserId");
   }
-  
+
   const profileFollowersRef = doc(db, "users", profileUserId, "followers", viewerId);
   const viewerFollowingRef = doc(db, "users", viewerId, "following", profileUserId);
   const profileRef = doc(db, "users", profileUserId);
   const viewerRef = doc(db, "users", viewerId);
 
-  const alreadyFollowing = await getDoc(profileFollowersRef);
+  try {
+    await runTransaction(db, async (transaction) => {
+      // Get current follow state
+      const followerSnap = await transaction.get(profileFollowersRef);
 
-  if (alreadyFollowing.exists()) {
-    console.log("Unfollowing user...");
-    
-    await deleteDoc(profileFollowersRef);
-    await deleteDoc(viewerFollowingRef);
-    await updateDoc(profileRef, { followersCount: increment(-1) });
-    await updateDoc(viewerRef, { followingCount: increment(-1) });
-    
-  } else {
-    console.log("Following user...");
-    
-    await setDoc(profileFollowersRef, { 
-      followedAt: new Date().toISOString(),
-      userId: viewerId
+      if (followerSnap.exists()) {
+        // Unfollow
+        console.log("Unfollowing user...");
+        transaction.delete(profileFollowersRef);
+        transaction.delete(viewerFollowingRef);
+        transaction.update(profileRef, { followersCount: increment(-1) });
+        transaction.update(viewerRef, { followingCount: increment(-1) });
+
+      } else {
+        // Follow
+        console.log("Following user...");
+        transaction.set(profileFollowersRef, {
+          followedAt: new Date().toISOString(),
+          userId: viewerId
+        });
+        transaction.set(viewerFollowingRef, {
+          followedAt: new Date().toISOString(),
+          userId: profileUserId
+        });
+        transaction.update(profileRef, { followersCount: increment(1) });
+        transaction.update(viewerRef, { followingCount: increment(1) });
+      }
     });
-    
-    await setDoc(viewerFollowingRef, { 
-      followedAt: new Date().toISOString(),
-      userId: profileUserId
-    });
-    
-    await updateDoc(profileRef, { followersCount: increment(1) });
-    await updateDoc(viewerRef, { followingCount: increment(1) });
+
+    // Update UI **after transaction**
+    await updateFollowButton();
+    await refreshCounts();
+
+    // Show message
+    showFollowMessage(await getDoc(profileFollowersRef).then(snap => !snap.exists()));
+
+  } catch (error) {
+    console.error("Error toggling follow:", error);
   }
-
-  await updateFollowButton();
-  await refreshCounts();
-  showFollowMessage(!alreadyFollowing.exists());
 }
+
 
 async function refreshCounts() {
   if (!viewerId || !profileUserId) return;
@@ -615,8 +625,8 @@ function showFollowMessage(isFollowing) {
     }
   }
   
-  messageElement.textContent = isFollowing ? "Followed successfully!" : "Unfollowed";
-  messageElement.style.color = isFollowing ? "#5b53f2" : "#333";
+  messageElement.textContent = isFollowing ? "Unfollowed" : "Followed successfully!";
+  messageElement.style.color = isFollowing ? "#5b53f2" : "#5b53f2";
   messageElement.style.display = "block";
   
   setTimeout(() => {
