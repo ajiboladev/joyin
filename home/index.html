@@ -734,6 +734,204 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
         </style>
+
+
+
+
+
+
+
+
+
+
+
+<!-- The Comment Sheet -->
+<div id="commentSheet" class="comment-sheet">
+  <div class="sheet-backdrop" id="closeComments"></div>
+
+  <div class="sheet-content">
+    <div class="drag-handle"></div>
+
+    <div class="sheet-header">
+      <h3>Comments <span id="commentCount" class="comment-count">0<span></h3>
+    </div>
+
+    <!-- Scrollable area for comments -->
+    <div class="comment-list" id="commentList">
+      
+    </div>
+
+    <!-- Sticky Input Area -->
+    <div class="comment-input-area">
+      <textarea
+        id="newComment"
+        rows="1"
+        placeholder="Add a comment for JOYIN..."
+      ></textarea>
+      <button id="postComment">Post</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ===== SHEET ===== */
+.comment-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.comment-sheet.active {
+  display: flex;
+}
+
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+}
+
+.sheet-content {
+  position: relative;
+  background: black;
+  border-radius: 30px 30px 0 0;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.comment-sheet.active .sheet-content {
+  transform: translateY(0);
+}
+
+.drag-handle {
+  width: 40px;
+  height: 5px;
+  background: #ccc;
+  border-radius: 10px;
+  margin: 12px auto;
+}
+
+.sheet-header {
+  padding: 10px 20px;
+  color: white;
+}
+
+/* ===== COMMENTS ===== */
+.comment-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.comm-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.comm-user {
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+}
+
+.comm-text p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* ===== INPUT ===== */
+.comment-input-area {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  background: black;
+  border-top: 1px solid #222;
+}
+
+.comment-input-area.comment-active {
+  border-top: 1px solid #5b53f2;
+}
+
+.comment-input-area textarea {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 25px;
+  border: 1px solid #333;
+  outline: none;
+  background: black;
+  color: white;
+  font-size: 1rem;
+  caret-color: #5b53f2;
+  resize: none;
+  overflow-y: hidden;
+  line-height: 1.4;
+}
+
+.comment-input-area textarea:focus {
+  border-color: #5b53f2;
+}
+
+.comment-input-area button {
+  background: none;
+  color: #5b53f2;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+</style>
+
+<script>
+const sheet = document.getElementById("commentSheet");
+const closeBtn = document.getElementById("closeComments");
+
+const commentContainer = document.querySelector(".comment-input-area");
+const input = document.getElementById("newComment");
+
+/* OPEN (call this from your comment icon) */
+function openComments() {
+  sheet.style.display = "flex";
+  setTimeout(() => sheet.classList.add("active"), 10);
+}
+
+/* CLOSE */
+closeBtn.onclick = () => {
+  sheet.classList.remove("active");
+  setTimeout(() => sheet.style.display = "none", 400);
+};
+
+/* INPUT FOCUS BORDER */
+input.addEventListener("focus", () => {
+  commentContainer.classList.add("comment-active");
+});
+
+input.addEventListener("blur", () => {
+  commentContainer.classList.remove("comment-active");
+});
+
+/* AUTO-GROW TEXTAREA */
+input.addEventListener("input", () => {
+  input.style.height = "auto";
+  input.style.height = input.scrollHeight + "px";
+});
+</script>
+
+
+
         
 
         <script type="module" src="./home.js" defer></script>

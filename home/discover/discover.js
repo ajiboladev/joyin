@@ -1036,11 +1036,220 @@ likeBtn.addEventListener("click", async () => {
 
 
     
+    // const commentBtn = postElement.querySelector('.comment-btn');
+    // if (commentBtn) {
+    //     commentBtn.addEventListener('click', () => alert("Comment functionality coming soon!"));
+    // }
+    
+
+
+
+
+
+    
+    
+    // ============================================
+    // COMMENT SYSTEM (CORRECT & SAFE)
+    // ============================================
+    
+    // Sheet elements (GLOBAL – only once)
+    const sheet = document.getElementById('commentSheet');
+    const closeBtn = document.getElementById('closeComments');
+    const commentsContainer = document.getElementById('commentList');
+    const commentInput = document.getElementById("newComment");
+    const commentPostBtn = document.getElementById("postComment");
+    
+    
+    
+    
+    
+    
+    
     const commentBtn = postElement.querySelector('.comment-btn');
+    
     if (commentBtn) {
-        commentBtn.addEventListener('click', () => alert("Comment functionality coming soon!"));
+      commentBtn.addEventListener('click', () => {
+        sheet.dataset.postId = postId;
+    
+        sheet.style.display = 'flex';
+        showCommentLoadingIndicator();
+        loadComments(postId);
+    
+        setTimeout(() => sheet.classList.add('active'), 10);
+      });
     }
     
+    // --------------------------------------------
+    // Sheet helpers
+    // --------------------------------------------
+    const hideSheet = () => {
+      sheet.classList.remove('active');
+      setTimeout(() => {
+        sheet.style.display = 'none';
+        commentsContainer.innerHTML = '';
+        sheet.dataset.postId = '';
+      }, 300);
+    };
+    
+    closeBtn.onclick = hideSheet;
+    
+    // --------------------------------------------
+    // Loading indicator
+    // --------------------------------------------
+    function showCommentLoadingIndicator() {
+      commentsContainer.innerHTML = `
+        <div style="text-align:center;padding:20px;">
+          <i class="fas fa-spinner fa-spin"
+             style="font-size:28px;color:#5b53f2;"></i>
+          <p style="margin-top:10px;color:#5b53f2;font-size:14px;">
+            Loading comments...
+          </p>
+        </div>
+      `;
+    }
+    
+    // --------------------------------------------
+    // Fetch comments
+    // --------------------------------------------
+    async function loadComments(postId) {
+      try {
+        const q = query(
+          collection(db, "posts", postId, "comments"),
+          orderBy("createdAt", "desc")
+        );
+    
+        const snapshot = await getDocs(q);
+        commentsContainer.innerHTML = '';
+    
+        if (snapshot.empty) {
+          commentsContainer.innerHTML = `
+            <p style="text-align:center;color:white;padding:20px;">
+              No comments yet. Be the first to comment!
+            </p>
+          `;
+          return;
+        }
+    
+        snapshot.forEach(docSnap => {
+          const c = docSnap.data();
+          commentsContainer.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="comment-item">
+              <img src="${c.profilePic || 'https://tse1.mm.bing.net/th/id/OIP.cEvbluCvNFD_k4wC3k-_UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'}" class="comm-avatar">
+              <div class="comm-text">
+                <span class="comm-user">${c.username || 'user'}</span>
+                <p>${c.text || ''}</p>
+              </div>
+            </div>
+            `
+          );
+        });
+    
+        // Update comment count (optional UI)
+        const postSnap = await getDoc(doc(db, "posts", postId));
+       const commentCountEls = document.querySelector('.comment-count');
+    
+    if (postSnap.data().commentCount >= 0 && commentCountEls) {
+      commentCountEls.textContent = postSnap.data().commentCount;
+    }else{
+        commentCountEls.textContent = '0';
+    }
+    
+      } catch (err) {
+        console.error("Error loading comments:", err);
+        commentsContainer.innerHTML = `
+          <p style="text-align:center;color:red;padding:20px;">
+            Failed to load comments.
+          </p>
+        `;
+      }
+    }
+    
+    // --------------------------------------------
+    // Post a comment (ATTACHED ONCE)
+    // --------------------------------------------
+    commentPostBtn.onclick = async () => {
+      const postId = sheet.dataset.postId;
+      if (!postId || !currentUser) return;
+    
+      const text = commentInput.value.trim();
+      if (!text) return;
+
+      const commentUserData = await getDoc(doc(db, "users", currentUser.uid));
+      const commentUser = commentUserData.data() ;
+    
+      commentPostBtn.disabled = true;
+      commentPostBtn.innerHTML =
+        `<i class="fas fa-spinner fa-spin"></i> Posting...`;
+    
+      try {
+        const postRef = doc(db, "posts", postId);
+        const commentsRef = collection(db, "posts", postId, "comments");
+        const userRef = doc(db, "users", currentUser.uid);
+    
+        await runTransaction(db, async (transaction) => {
+          transaction.set(doc(commentsRef), {
+            userId: currentUser.uid,
+            username: commentUser.username || "user",
+            profilePic: commentUser.profilePic || "",
+            text,
+            createdAt: serverTimestamp()
+          });
+    
+          transaction.update(postRef, { commentCount: increment(1) });
+          transaction.update(userRef, { commentsCount: increment(1) });
+        });
+    
+        commentInput.value = "";
+        await loadComments(postId);
+    
+      } catch (err) {
+        console.error("Error posting comment:", err);
+        alert("Failed to post comment.");
+      } finally {
+        commentPostBtn.disabled = false;
+        commentPostBtn.textContent = "Post";
+      }
+    };
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const shareBtn = postElement.querySelector('.share-btn');
     if (shareBtn) {
         shareBtn.addEventListener('click', () => handleDiscoveryShare(postId, post.text));

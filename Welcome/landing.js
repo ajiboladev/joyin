@@ -4,6 +4,10 @@
  *  © 2025 JOYIN. All rights reserved.
  */
 
+import { auth } from "../firebase.js";
+import { onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
 // Current page state
 let currentPage = 1;
 const totalPages = 4;
@@ -239,12 +243,28 @@ function redirectToApp(page = '') {
     showLoading();
     
     // Simulate loading time
+    // setTimeout(() => {
+    //     if (page === 'login') {
+    //         window.location.href = '../login/?view=login';
+    //     } else {
+    //         window.location.href = '../home/?view=home';
+    //     }
+    // }, 8000);
     setTimeout(() => {
-        if (page === 'login') {
-            window.location.href = '../login/?view=login';
-        } else {
-            window.location.href = '../home/?view=home';
-        }
+        
+        // Check authentication status
+        // onAuthStateChanged listens for login/logout events
+        onAuthStateChanged(auth, (user) => {
+            // The callback function runs whenever auth state changes
+            
+            if (user) {
+                // USER IS LOGGED IN
+                window.location.href = '../home/?view=home';
+            } else {
+                // NO USER LOGGED IN - REDIRECT TO LOGIN
+                 window.location.href = '../login/?view=login';
+            }
+        });
     }, 8000);
 }
 

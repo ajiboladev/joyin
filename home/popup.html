@@ -7,7 +7,7 @@
 </head>
 <body>
   <!-- Trigger Button -->
-<button id="openBtn">Open Popup</button>
+<!-- <button id="openBtn">Open Popup</button>
 
 Popup Overlay
 <div id="popupOverlay" class="overlay">
@@ -71,7 +71,7 @@ window.onclick = (event) => {
   }
 };
 
-</script> 
+</script>  -->
 
 
 
@@ -678,6 +678,131 @@ overlay.onclick = (e) => {
 };
 
 </script>
-</main>
+</main>-->
+
+
+
+
+
+
+<!-- The Comment Sheet -->
+<div id="commentSheet" class="comment-sheet">
+  <div class="sheet-backdrop" id="closeComments"></div>
+  <div class="sheet-content">
+    <div class="drag-handle"></div>
+    
+    <div class="sheet-header">
+      <h3>Comments <span id="commentCount">24</span></h3>
+    </div>
+
+    <!-- Scrollable area for comments -->
+    <div class="comment-list" id="commentList">
+      <!-- Comment Item Example -->
+      <div class="comment-item">
+        <img src="https://api.dicebear.com" class="comm-avatar">
+        <div class="comm-text">
+          <span class="comm-user">@dev_junior</span>
+          <p>This UI is fire! Is this v1.1.0? 🚀</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Input Area -->
+    <div class="comment-input-area">
+      <input type="text" placeholder="Add a comment for JOYIN..." id="newComment">
+      <button id="postComment">Post</button>
+    </div>
+  </div>
+</div>
+
+<button id="openCommentsTrigger">comment</button>
+<style>
+  .comment-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px); /* Modern blur */
+}
+
+.sheet-content {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-radius: 30px 30px 0 0;
+  height: 70vh; /* Covers 70% of screen */
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.comment-sheet.active { display: flex; }
+.comment-sheet.active .sheet-content { transform: translateY(0); }
+
+.drag-handle {
+  width: 40px; height: 5px; background: #ccc;
+  border-radius: 10px; margin: 12px auto;
+}
+
+.comment-list {
+  flex: 1; overflow-y: auto; padding: 0 20px;
+}
+
+.comment-item {
+  display: flex; gap: 12px; margin-bottom: 20px;
+}
+
+.comm-avatar { width: 35px; height: 35px; border-radius: 50%; }
+.comm-user { font-weight: 700; font-size: 13px; color: #333; }
+.comm-text p { margin: 2px 0; font-size: 14px; color: #555; }
+
+.comment-input-area {
+  padding: 20px;
+  background: #fff;
+  display: flex; gap: 10px;
+  border-top: 1px solid #eee;
+}
+
+.comment-input-area input {
+  flex: 1; padding: 12px 18px; border-radius: 25px;
+  border: 1px solid #ddd; outline: none; background: #f9f9f9;
+}
+
+.comment-input-area button {
+  background: none; color: #007AFF; font-weight: 700; border: none;
+}
+
+</style>
+<script>
+  const sheet = document.getElementById('commentSheet');
+const openBtn = document.getElementById('openCommentsTrigger'); // Your comment icon
+const closeBtn = document.getElementById('closeComments');
+
+// OPEN
+openBtn.onclick = () => {
+    sheet.style.display = 'flex';
+    // Small delay to trigger CSS transition
+    setTimeout(() => sheet.classList.add('active'), 10);
+};
+
+// CLOSE
+const hideSheet = () => {
+    sheet.classList.remove('active');
+    setTimeout(() => sheet.style.display = 'none', 400);
+};
+
+closeBtn.onclick = hideSheet;
+
+</script>
 </body>
-</html> -->
+</html>

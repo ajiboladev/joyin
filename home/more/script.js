@@ -219,6 +219,16 @@ function displayPostDetail(post, postId) {
                 ${post.likeCount === 1 ? 'like' : 'likes'}
             </p>
         </div>
+
+         <div class="reaction-section">
+            <div class="reaction-icon">
+                <i class="fas fa-comment"></i>
+            </div>
+            <p class="reaction-count">
+                ${post.commentCount || 0} 
+                ${post.commentCount === 1 ? 'comment' : 'comments'}
+            </p>
+        </div>
         
         <!-- ACTION BUTTONS - Like, Comment, Share -->
         <div class="post-actions">

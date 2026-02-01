@@ -924,7 +924,14 @@ async function loadUserPosts(userId) {
             class="like-btn" 
             style="background:none; border:none; color:#5b53f2; cursor:pointer;"
           >
-            <i class="far fa-heart"></i><span style="padding-right: 5px; padding-left: 5px;" class="like-count">${post.likeCount || 0}</span> Like
+            <i class="far fa-heart"></i><span style="padding-right: 5px; padding-left: 5px;" class="like-count">${post.likeCount || 0}</span>
+          </button>
+
+          <button 
+            class="like-btn" 
+            style="background:none; border:none; color:#5b53f2; cursor:pointer; padding-left: 5px;"
+          >
+            <i class="far fa-comment"></i><span style="padding-right: 5px; padding-left: 5px;" class="like-count">${post.commentCount || 0}</span> 
           </button>
           <button 
             class="view-btn" 

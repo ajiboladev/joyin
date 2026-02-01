@@ -370,7 +370,7 @@
 
                     <div class="post-stats">
                         <span class="like-count">${post.likeCount || 0} likes</span>
-                        <span id="comments-count">${post.commentsCount || 0} comments</span>
+                        <span id="comments-count">${post.commentCount || 0} comments</span>
                     </div>
 
                     <div class="post-actions">
@@ -393,7 +393,7 @@
                     <div class="comments-header">Comments</div>
                     <div class="comment-input">
                         <input type="text" id="comment-input" placeholder="Write a comment...">
-                        <button onclick="postComment()">Post</button>
+                        <button onclick="postComment()" id="postBtn">Post</button>
                     </div>
                     <div class="comments-list" id="comments-list">
                         <div class="loading">
@@ -412,7 +412,7 @@
             const commentsList = document.getElementById('comments-list');
             
             try {
-                // const commentsRef = collection(db, "posts", postId, "comments");
+                const commentsRef = collection(db, "posts", postId, "comments");
                 const q = query(commentsRef, orderBy("createdAt", "desc"));
                 const snapshot = await getDocs(q);
 
@@ -445,40 +445,65 @@
             }
         }
 
-        window.postComment = async function() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
+       window.postComment = async function () {
+        
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || !currentUser) return;
 
-            if (!text) return;
 
-            try {
-                // const commentsRef = collection(db, "posts", postId, "comments");
-                await addDoc(commentsRef, {
-                    text: text,
-                    userId: currentUser.uid,
-                    username: currentUser.displayName || 'User',
-                    userProfilePic: currentUser.photoURL || '',
-                    createdAt: new Date()
-                });
+  try {
+    // Get user data
+    const userSnap = await getDoc(
+      doc(db, "users", currentUser.uid)
+    );
 
-                // Update comments count
-                await updateDoc(doc(db, "posts", postId), {
-                    commentsCount: increment(1)
-                });
+    if (!userSnap.exists()) return;
 
-                input.value = '';
-                await loadComments();
+    const userData = userSnap.data();
 
-                // Update count display
-                const countElement = document.getElementById('comments-count');
-                const currentCount = parseInt(countElement.textContent);
-                countElement.textContent = `${currentCount + 1} comments`;
+    const postRef = doc(db, "posts", postId);
+    const commentsRef = collection(db, "posts", postId, "comments");
+    const userRef = doc(db, "users", currentUser.uid);
+    input.disabled = true
+    postBtn.disabled = true;
 
-            } catch (error) {
-                console.error("Error posting comment:", error);
-                alert("Failed to post comment");
-            }
-        };
+
+    await runTransaction(db, async (transaction) => {
+      const commentRef = doc(commentsRef);
+
+      transaction.set(commentRef, {
+        text,
+        userId: currentUser.uid,
+        username: userData.username || "User",
+        profilePic: userData.profilePic || "",
+        createdAt: serverTimestamp()
+      });
+
+      transaction.update(postRef, {
+        commentCount: increment(1)
+      });
+
+      transaction.update(userRef, {
+        commentsCount: increment(1)
+      });
+    });
+
+    postBtn.disabled = false;
+    input.value = '';
+    input.disabled= false
+    await loadComments(postId);
+    // Update count display c
+    const countElement = document.getElementById('comments-count'); 
+    const commentCounts = await getDoc(doc(db, "posts", postId));
+
+    countElement.textContent = `${commentCounts.data().commentCount} comments`
+
+  } catch (error) {
+    console.error("Error posting comment:", error);
+    alert("Failed to post comment");
+  }
+};
 
         // window.toggleLike = async function() {
         //     // Implement like functionality
