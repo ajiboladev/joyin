@@ -501,6 +501,7 @@ body {
     word-wrap: break-word;
     hyphens: auto;
     text-align: left;
+    white-space: pre-wrap
 }
 
 /* Post Image */

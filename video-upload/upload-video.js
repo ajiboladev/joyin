@@ -73,6 +73,8 @@ cancelBtn.addEventListener('click', () => {
 
 // Select video button - trigger file input
 selectVideoBtn.addEventListener('click', () => {
+    alert("Video upload are coming soon. You can still post Text for now - thank you for being an early user!");
+    return true;
     videoFileInput.click();
 });
 

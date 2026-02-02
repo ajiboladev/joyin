@@ -242,6 +242,7 @@ body {
 .message-content {
     font-size: 15px;
     margin-bottom: 4px;
+    white-space: pre-wrap;
 }
 
 .message-meta {

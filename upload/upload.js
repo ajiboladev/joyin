@@ -201,7 +201,7 @@ function setupEventListeners() {
     postText.addEventListener('input', updateCharCount);
     
     // IMAGE UPLOAD - Handle image selection
-    uploadBox.addEventListener('click', () => imageInput.click());  // Click upload box = open file picker
+    uploadBox.addEventListener('click', () => alert("Image upload are coming soon. You can still post Text for now - thank you for being an early user!"));  // Click upload box = open file picker    // imageInput.click()
     imageInput.addEventListener('change', handleImageUpload);       // When file is selected
     removeImageBtn.addEventListener('click', removeImage);          // Remove uploaded image
     

@@ -247,6 +247,7 @@
             font-size: 14px;
             line-height: 1.5;
             color: rgba(255, 255, 255, 0.9);
+            white-space: pre-wrap;
         }
 
         .comment-time {
@@ -427,7 +428,7 @@
                     const commentDiv = document.createElement('div');
                     commentDiv.className = 'comment';
                     commentDiv.innerHTML = `
-                        <img src="${comment.userProfilePic || defaultImg}" 
+                        <img src="${comment.profilePic || defaultImg}" 
                              class="comment-img" 
                              onerror="this.src='${defaultImg}'">
                         <div class="comment-content">

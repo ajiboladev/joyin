@@ -195,6 +195,8 @@ const ORIGINAL_BUTTON_TEXT = saveButton.textContent || "Save Changes";
 
 // 2. When camera icon is clicked, trigger the hidden file input
 cameraIcon.onclick = function () {
+  alert("Profile picture upload are coming soon. You can still edit Text profile for now - thank you for being an early user!");
+  return true;
   imageInput.click(); // This opens the file selection dialog
 };
 
