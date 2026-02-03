@@ -23,6 +23,24 @@ import {
 
 import { auth, db } from "../firebase.js";  // Import our Firebase configuration
 
+
+
+
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        // Not logged in
+       window.location.replace("../../login/");
+        return;
+    }
+
+    if (!user.emailVerified) {
+        // Logged in but email not verified
+        window.location.replace("../../login/");
+        return;
+    }
+});
+
+
 // ============================================
 // DOM Elements - Grabbing HTML elements to control them with JavaScript
 // ============================================

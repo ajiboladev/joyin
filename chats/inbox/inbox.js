@@ -29,6 +29,21 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/fi
 // Import our Firebase configuration (auth = authentication, db = database)
 import { auth, db } from "../../firebase.js";
 
+
+
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        // Not logged in
+       window.location.replace("../login/");
+        return;
+    }
+
+    if (!user.emailVerified) {
+        // Logged in but email not verified
+        window.location.replace("../login/");
+        return;
+    }
+});
 // ============================================
 // DOM ELEMENTS
 // These are references to HTML elements on the page

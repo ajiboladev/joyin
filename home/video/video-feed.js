@@ -36,16 +36,29 @@ const uploadBtn = document.getElementById('uploadBtn');
 // ============================================
 
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        console.log("✅ User authenticated:", user.uid);
-        currentUser = user;
-        
+    if (!user) {
+        console.log("❌ No user logged in, redirecting to login...");
+        window.location.replace("../../login/?view=login");
+        return;
+    }
+
+    if (!user.emailVerified) {
+        console.log("⚠️ Email not verified, redirecting to login...");
+        alert("Please verify your email before accessing this page.");
+        window.location.replace("../../login/?view=login");
+        return;
+    }
+
+    try {
+        console.log("✅ User authenticated and verified:", user.uid);
+        const currentUser = user;
+
         // Start loading videos
         await initializeVideoFeed();
-        
-    } else {
-        console.log("❌ No user logged in, redirecting...");
-        window.location.href = "../../login/?view=login";
+
+    } catch (error) {
+        console.error("❌ Error initializing video feed:", error);
+        alert("An error occurred while loading videos. Please try again.");
     }
 });
 

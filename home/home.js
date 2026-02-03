@@ -48,33 +48,48 @@ let totalPostsInDatabase = 0;
 let totalPostsLoaded = 0;
 
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("User logged in:", user.uid);
-    viewerId = user.uid;
-
-    const params = new URLSearchParams(window.location.search);
-    profileUserId = params.get("uid") || viewerId;
-
-    console.log("Viewer:", viewerId);
-    console.log("Profile:", profileUserId);
-
-    // Check if user is banned BEFORE doing anything else
-    const isBanned = await softBan(profileUserId);
-    
-    if (isBanned) {
-        console.log("🛑 User is banned, stopping all other functions");
+    if (!user) {
+        console.log("❌ No user logged in, redirecting to login...");
+        window.location.replace("../login/?view=login");
         return;
     }
 
-    await followingPage(profileUserId);
-    await followersPage(profileUserId);
-    loadUserName(profileUserId);
-    setupMessageButtons();
+    if (!user.emailVerified) {
+        console.log("⚠️ Email not verified, redirecting to login...");
+        alert("Please verify your email before accessing this page.");
+        window.location.replace("../login/?view=login");
+        return;
+    }
 
-  } else {
-    window.location.href = "../login/?view=login";
-  }
+    try {
+        console.log("✅ User logged in and verified:", user.uid);
+        const viewerId = user.uid;
+
+        const params = new URLSearchParams(window.location.search);
+        const profileUserId = params.get("uid") || viewerId;
+
+        console.log("👤 Viewer:", viewerId);
+        console.log("👤 Profile:", profileUserId);
+
+        // Check if user is banned BEFORE doing anything else
+        const isBanned = await softBan(profileUserId);
+        if (isBanned) {
+            console.log("🛑 User is banned, stopping all other functions");
+            return;
+        }
+
+        // Load profile-related pages
+        await followingPage(profileUserId);
+        await followersPage(profileUserId);
+        await loadUserName(profileUserId); // await if async
+        setupMessageButtons(); // synchronous
+
+    } catch (error) {
+        console.error("❌ Error loading profile pages:", error);
+        alert("An error occurred while loading the profile. Please try again.");
+    }
 });
+
 
 // ============================================
 // Soft Ban FUNCTIONS

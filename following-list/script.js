@@ -10,8 +10,22 @@ let profileUserName = null;
 document.addEventListener('DOMContentLoaded', () => {
     // Check auth state
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUserId = user.uid;
+        if (!user) {
+        // Not logged in
+        alert("Please login to view followers");
+        window.location.replace('../login/?view=login');
+        return;
+    }
+
+
+    if (!user.emailVerified) {
+        // Logged in but email not verified
+        alert("Please verify your email before accessing this page.");
+        window.location.replace('../login/?view=login');
+        return;
+    }
+        try {
+                currentUserId = user.uid;
             
             // Get user ID from URL or use current user
             const urlParams = new URLSearchParams(window.location.search);
@@ -26,11 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
             //Pages
             await followersPage(profileUserId);
             await followingPage(profileUserId);
-            
-        } else {
-            alert("Please login to view following list");
-            // Redirect to login if not authenticated
-            window.location.href = '../login/?view=login';
+        } catch (error) {
+                    alert("Please login to view following list");
+                // Redirect to login if not authenticated
+               window.location.replace('../login/?view=login');
         }
     });
 });

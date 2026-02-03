@@ -69,7 +69,10 @@ const postBtn = document.getElementById('post-btn');            // Main "Post" b
 const clearBtn = document.getElementById('clear-btn');          // "Clear All" button
 
 // STATUS ELEMENT (for showing messages to user):
-const uploadStatus = document.getElementById('upload-status');  // Where we show success/error messages
+const uploadStatus = document.getElementById('upload-status'); 
+
+        // Where we show success/error messages
+        const MAX_POST_LENGTH = 2000;
 
 // ============================================
 // SECTION 3: GLOBAL VARIABLES (APP STATE)
@@ -94,23 +97,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check authentication status
     // onAuthStateChanged listens for login/logout events
-    onAuthStateChanged(auth, (user) => {
-        // The callback function runs whenever auth state changes
-        
-        if (user) {
-            // USER IS LOGGED IN
-            console.log("✅ User logged in:", user.uid);
-            currentUser = user;  // Store the user object for later use
-            
-            // Now that we know user is logged in, set up the page
-            initializePage();
-            
-        } else {
-            // NO USER LOGGED IN - REDIRECT TO LOGIN
-            console.log("❌ No user logged in, redirecting to login...");
-            window.location.href = "../login/?view=login";
-        }
-    });
+  onAuthStateChanged(auth, (user) => {
+    // Runs whenever auth state changes
+    if (!user) {
+        // NO USER LOGGED IN - REDIRECT TO LOGIN
+        console.log("❌ No user logged in, redirecting to login...");
+        window.location.replace("../login/?view=login");
+        return;
+    }
+
+    if (!user.emailVerified) {
+        // USER LOGGED IN BUT EMAIL NOT VERIFIED
+        console.log("⚠️ Email not verified, redirecting to login...");
+        alert("Please verify your email before accessing this page.");
+        window.location.replace("../login/?view=login");
+        return;
+    }
+
+    // USER LOGGED IN AND VERIFIED
+    console.log("✅ User logged in and verified:", user.uid);
+    const currentUser = user; // store for later use
+
+    // Now that user is verified, set up the page
+    initializePage();
+});
 });
 
 // ============================================
@@ -332,6 +342,11 @@ async function createPost() {
 
 // VALIDATE POST - Check if post has required content based on type
 function validatePost(text, imageFile) {
+    if (text.length > MAX_POST_LENGTH) {
+    showStatus(`Post is too long (max ${MAX_POST_LENGTH} characters)`, "error");
+    return false;
+}
+
     // Check based on current post type
     
     if (currentPostType === 'text-only' && !text) {
@@ -443,6 +458,9 @@ function selectPostType(type) {
     updatePreview();
 }
 
+
+
+
 // UPDATE CHARACTER COUNT - Track text length as user types
 function updateCharCount() {
     // Get current text length
@@ -452,7 +470,7 @@ function updateCharCount() {
     charCount.textContent = count;
     
     // Show warning when approaching limit (450/500)
-    if (count > 450) {
+    if (count >  MAX_POST_LENGTH * 0.9) {
         charCounter.classList.add('warning');      // Add warning class (turns orange)
     } else {
         charCounter.classList.remove('warning');   // Remove warning class

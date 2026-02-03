@@ -30,33 +30,48 @@ let discovery_hasMorePosts = true;
 // ============================================
 
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("✅ User logged in:", user.uid);
-    viewerId = user.uid;
-
-    const params = new URLSearchParams(window.location.search);
-    profileUserId = params.get("uid") || viewerId;
-
-    console.log("👤 Viewer:", viewerId);
-    console.log("👤 Profile:", profileUserId);
-
-    const isBanned = await softBan(profileUserId);
-    
-    if (isBanned) {
-        console.log("🛑 User is banned, stopping all functions");
+    if (!user) {
+        console.log("❌ No user logged in, redirecting to login...");
+        window.location.replace('../login/?view=login');
         return;
     }
 
-    await followingPage(profileUserId);
-    await followersPage(profileUserId);
-    loadUserName(profileUserId);
-    setupMessageButtons();
+    if (!user.emailVerified) {
+        console.log("⚠️ Email not verified, redirecting to login...");
+        window.location.replace('../login/?view=login');
+        return;
+    }
 
-  } else {
-    console.log("❌ No user logged in, redirecting to login...");
-    window.location.href = "../login/?view=login";
-  }
+    try {
+        console.log("✅ User logged in:", user.uid);
+        const viewerId = user.uid;
+
+        const params = new URLSearchParams(window.location.search);
+        const profileUserId = params.get("uid") || viewerId;
+
+        console.log("👤 Viewer:", viewerId);
+        console.log("👤 Profile:", profileUserId);
+
+        const isBanned = await softBan(profileUserId);
+        if (isBanned) {
+            console.log("🛑 User is banned, stopping all functions");
+            return;
+        }
+
+        // Load profile and follower/following pages
+        await followingPage(profileUserId);
+        await followersPage(profileUserId);
+
+        // Load username and setup messaging
+        await loadUserName(profileUserId); // await if async
+        setupMessageButtons(); // synchronous
+
+    } catch (error) {
+        console.error("❌ Error loading profile:", error);
+        alert("An error occurred while loading the profile. Please try again.");
+    }
 });
+
 
 // ============================================
 // BAN SYSTEM FUNCTIONS

@@ -80,15 +80,20 @@ function checkForChanges() {
 }
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+    if (!user || !user.emailVerified) {
+        // Not logged in or email not verified → redirect
+        window.location.replace("../login/?view=login");
+        return;
+    }
+
+    // User is logged in and verified
     currentUser = user;
-    // Load existing profile data when user is authenticated
+
+    // Load profile data
     loadExistingProfile();
-  } else {
-    window.location.href = "../login/?view=login";
-  }
 });
 
+  
 
 saveBtn.addEventListener("click", async () => {
   if (!currentUser) return;
