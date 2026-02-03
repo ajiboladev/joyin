@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check authentication status
     // onAuthStateChanged listens for login/logout events
-  onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
     // Runs whenever auth state changes
     if (!user) {
         // NO USER LOGGED IN - REDIRECT TO LOGIN
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // USER LOGGED IN AND VERIFIED
     console.log("✅ User logged in and verified:", user.uid);
-    const currentUser = user; // store for later use
+    currentUser = user; // ✅ CORRECT: Updates the GLOBAL variable
 
     // Now that user is verified, set up the page
     initializePage();
@@ -130,6 +130,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // It's called from the auth check above.
 
 async function initializePage() {
+
+    if (!currentUser) {
+        console.error("❌ No user found when initializing page");
+        showStatus("Authentication error. Please refresh the page.", "error");
+        return;
+    }
     // try/catch handles errors gracefully
     try {
         // Step 1: Load user's data (username, profile picture) from Firestore
