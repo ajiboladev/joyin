@@ -446,7 +446,10 @@
             }
         }
 
+        //     alert("hello")
+        // }
        window.postComment = async function () {
+        const postBtn = document.getElementById('postBtn');
         
   const input = document.getElementById('comment-input');
   const text = input.value.trim();
@@ -466,8 +469,9 @@
     const postRef = doc(db, "posts", postId);
     const commentsRef = collection(db, "posts", postId, "comments");
     const userRef = doc(db, "users", currentUser.uid);
-    input.disabled = true
+    input.disabled = true;
     postBtn.disabled = true;
+    postBtn.textContent = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
 
     await runTransaction(db, async (transaction) => {
@@ -493,6 +497,7 @@
     postBtn.disabled = false;
     input.value = '';
     input.disabled= false
+    postBtn.textContent='Post'
     await loadComments(postId);
     // Update count display c
     const countElement = document.getElementById('comments-count'); 
