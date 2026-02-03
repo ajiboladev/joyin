@@ -1333,21 +1333,32 @@ if (postSnap.data().commentCount >= 0 && commentCountEls) {
 // --------------------------------------------
 // Post a comment (ATTACHED ONCE)
 // --------------------------------------------
+let isPostingComment = false;
 commentPostBtn.onclick = async () => {
+
+      if (isPostingComment) {
+    console.log("⏸️ Already posting comment...");
+    return;
+  }
+
   const postId = sheet.dataset.postId;
   if (!postId || !currentUser) return;
 
   const text = commentInput.value.trim();
   if (!text) return;
 
-
+  // Disable button and input IMMEDIATELY
+  commentInput.disabled = true;
+  commentInput.readOnly = true;
+  commentPostBtn.disabled = true;
+  commentPostBtn.style.pointerEvents = 'none';
+  commentPostBtn.style.opacity = '0.6';
+  commentPostBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Posting...`;
 
 const commentUserData = await getDoc(doc(db, "users", currentUser.uid));
 const commentUser = commentUserData.data() ;
 
-  commentPostBtn.disabled = true;
-  commentPostBtn.innerHTML =
-    `<i class="fas fa-spinner fa-spin"></i> Posting...`;
+
 
   try {
     const postRef = doc(db, "posts", postId);
@@ -1374,8 +1385,15 @@ const commentUser = commentUserData.data() ;
     console.error("Error posting comment:", err);
     alert("Failed to post comment.");
   } finally {
+   // ALWAYS re-enable (whether success or error)
+    commentInput.disabled = false;
+    commentInput.readOnly = false;
     commentPostBtn.disabled = false;
-    commentPostBtn.textContent = "Post";
+    commentPostBtn.style.pointerEvents = 'auto';
+    commentPostBtn.style.opacity = '1';
+    commentPostBtn.innerHTML = "Post";
+
+    isPostingComment = false;
   }
 };
 

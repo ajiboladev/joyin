@@ -451,6 +451,7 @@
        window.postComment = async function () {
         const postBtn = document.getElementById('postBtn');
         
+        
   const input = document.getElementById('comment-input');
   const text = input.value.trim();
   if (!text || !currentUser) return;
@@ -469,9 +470,12 @@
     const postRef = doc(db, "posts", postId);
     const commentsRef = collection(db, "posts", postId, "comments");
     const userRef = doc(db, "users", currentUser.uid);
-    input.disabled = true;
+   input.disabled = true;
+    input.readOnly = true;
     postBtn.disabled = true;
-    postBtn.textContent = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+    postBtn.style.pointerEvents = 'none'; // Prevent any clicks
+    postBtn.style.opacity = '0.6';
+    postBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
 
     await runTransaction(db, async (transaction) => {
@@ -493,11 +497,15 @@
         commentsCount: increment(1)
       });
     });
+     input.value =''
 
-    postBtn.disabled = false;
-    input.value = '';
-    input.disabled= false
-    postBtn.textContent='Post'
+   input.disabled = false;
+        input.readOnly = false;
+        postBtn.disabled = false;
+        postBtn.style.pointerEvents = 'auto';
+        postBtn.style.opacity = '1';
+        postBtn.innerHTML = 'Post';
+       
     await loadComments(postId);
     // Update count display c
     const countElement = document.getElementById('comments-count'); 
